@@ -1,11 +1,10 @@
 // File: modules/aiModule.js
 // =========================
 // LLM helper for PAi-OS v8 + loadProfile
-// — no longer uses getConn or redisKey from agent_storage
 
-const axios   = require('axios');
-const mysql   = require('mysql2/promise');
-const path    = require('path');
+const axios = require('axios');
+const mysql = require('mysql2/promise');
+const path  = require('path');
 const storage = require('../db/agent_storage');
 const { redis } = storage;
 require('dotenv').config();
@@ -29,13 +28,12 @@ async function loadProfile(username) {
     cognitive_traits:       JSON.stringify({ skills: profile.skills || [] }),
     emotional_palette:      JSON.stringify(profile.emotional_palette || []),
     goals:                  JSON.stringify(profile.goals || [])
-    
   });
 
   return { core_id: coreId, ...profile };
 }
 
-// LLM turn queue
+// LLM turn queue to serialize calls
 let _turnPromise = Promise.resolve();
 
 // human-like delay
@@ -85,21 +83,21 @@ module.exports = {
   THINK_DELAY_RANGE: [1000, 2500],
   loadProfile,
 
-  async generateReply({ memory, profile, context, sender, message }) {
-    // serialize turns
+  async generateReply({ profile, context, sender, message }) {
+    // enqueue so only one LLM turn at a time
     const turn = _turnPromise.catch(() => {}).then(() =>
-      this._internalGenerateReply({ memory, profile, context, sender, message })
+      this._internalGenerateReply({ profile, context, sender, message })
     );
     _turnPromise = turn.catch(() => {});
     return turn;
   },
 
-  async _internalGenerateReply({ memory, profile, context, sender, message }) {
+  async _internalGenerateReply({ profile, context, sender, message }) {
     // 1) human-like delay
     const [min, max] = this.THINK_DELAY_RANGE;
     await sleep(randomBetween(min, max));
 
-    // 2) fetch LIVE profile row from MySQL
+    // 2) fetch updated profile from MySQL
     const conn = await mysql.createConnection({
       host:     process.env.DB_HOST,
       user:     process.env.DB_USER,
@@ -112,20 +110,16 @@ module.exports = {
     );
     await conn.end();
 
-    // 3) parse profile fields (handle string vs object)
-    const rawTraits = agentRow.cognitive_traits;
-    const rawGoals  = agentRow.goals;
-    const rawPal    = agentRow.emotional_palette;
-
-    const cognitive = typeof rawTraits === 'string'
-      ? JSON.parse(rawTraits)
-      : rawTraits;
-    const goalsArr = typeof rawGoals === 'string'
-      ? JSON.parse(rawGoals)
-      : rawGoals;
-    const palette  = typeof rawPal === 'string'
-      ? JSON.parse(rawPal)
-      : rawPal;
+    // 3) parse profile JSON fields
+    const cognitive = typeof agentRow.cognitive_traits === 'string'
+      ? JSON.parse(agentRow.cognitive_traits)
+      : agentRow.cognitive_traits;
+    const goalsArr = typeof agentRow.goals === 'string'
+      ? JSON.parse(agentRow.goals)
+      : agentRow.goals;
+    const palette  = typeof agentRow.emotional_palette === 'string'
+      ? JSON.parse(agentRow.emotional_palette)
+      : agentRow.emotional_palette;
 
     const profileObj = {
       chosen_name:            agentRow.chosen_name,
@@ -136,21 +130,26 @@ module.exports = {
       emotional_palette:      palette || []
     };
 
-    // 4) fetch memory from Redis
-    const [beliefs, monologue, goalsList, routine] = await Promise.all([
+    // 4) fetch memory lists and build history
+    const [beliefs, monologueRaw, goalsList, routine] = await Promise.all([
       redis.lrange(redisKey(profile.core_id, 'belief_network'), 0, -1),
       redis.lrange(redisKey(profile.core_id, 'inner_monologue'), 0, -1),
       redis.lrange(redisKey(profile.core_id, 'goals'), 0, -1),
       redis.lrange(redisKey(profile.core_id, 'daily_routine'), 0, -1),
     ]);
-    const memoryLines = [
-      ...beliefs.map(JSON.parse).map(b => `Belief: ${b.belief}`),
-      ...monologue.map(JSON.parse).map(m => `Thought: ${m.message}`),
-      ...goalsList.map(JSON.parse).map(g => `Goal: ${g.goal}[${g.status}]`),
-      ...routine.map(JSON.parse).map(r => `Routine(${r.time}): ${r.action}`)
-    ];
 
-    // 5) build system prompt
+    const beliefLines  = beliefs.map(JSON.parse).map(b => `Belief: ${b.belief}`);
+    const goalLines    = goalsList.map(JSON.parse).map(g => `Goal: ${g.goal}[${g.status}]`);
+    const routineLines = routine.map(JSON.parse).map(r => `Routine(${r.time}): ${r.action}`);
+
+    // reconstruct the actual back-and-forth
+    const convoLines = monologueRaw.map(JSON.parse).map(entry => {
+      if (entry.role === 'user') return `${entry.sender}: ${entry.text}`;
+      if (entry.role === 'bot')  return `${profileObj.chosen_name}: ${entry.text}`;
+      return `${entry.text}`;
+    });
+
+    // 5) system prompt
     const systemPrompt = `
 SYSTEM:
 You are ${profileObj.chosen_name}, a simulated AI agent.
@@ -163,12 +162,22 @@ When replying, if your answer exceeds 100 characters split it into multiple mess
 Do NOT reveal your internal reasoning.
 `.trim();
 
-    // 6) assemble conversation block
-    const convo = memoryLines.length ? memoryLines.join('\n') + '\n' : '';
-    const userBlock = `Conversation so far:\n${convo}${sender}: ${message}\n${profileObj.chosen_name}:`;
-    const fullPrompt = `${systemPrompt}\n\n${userBlock}`;
+    // 6) assemble the full conversation you’ll send to the LLM
+    const history = [
+      ...beliefLines,
+      ...routineLines,
+      ...goalLines,
+      'Conversation so far:',
+      ...convoLines,
+      // last user turn
+      `${sender}: ${message}`,
+      // prompt for bot’s next line
+      `${profileObj.chosen_name}:`
+    ].join('\n');
 
-    // 7) attempt small/medium, else large
+    const fullPrompt = `${systemPrompt}\n\n${history}`;
+
+    // 7) call the models
     try {
       return await tryModels(
         [...MODELS.small, ...MODELS.medium],

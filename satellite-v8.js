@@ -142,16 +142,25 @@ function makeHandler(cfg, getClient) {
         message: text
       });
 
-      // 8) record memory
-      await addToList(cfg.botId, 'inner_monologue', { role:'user', sender, text, ts: now });
-      await addToList(cfg.botId, 'inner_monologue', { role:'bot', sender:botName, text:reply, ts: Date.now() });
+      // 8) record memory **<-- FIXED: use `message` key**
+      await addToList(cfg.botId, 'inner_monologue', {
+        role:   'user',
+        sender,
+        message: text,
+        ts:     now
+      });
+      await addToList(cfg.botId, 'inner_monologue', {
+        role:   'bot',
+        sender: botName,
+        message: reply,
+        ts:     Date.now()
+      });
 
       // 9) send reply, tagging the original sender
-      //    e.g. "Nova → user123: Hello there!"
       const out = `${cfg.username} → ${senderRaw}: ${reply}`;
       await client.sendChat(out);
 
-      // 10) clear busy immediately so you can respond quickly again
+      // 10) clear busy immediately
       busy.delete(botKey);
       busy.delete(sender);
     }
@@ -159,12 +168,10 @@ function makeHandler(cfg, getClient) {
       console.error(`[${cfg.username}] onChat error:`, err);
     }
     finally {
-      // fallback clear in case something went wrong
       setTimeout(() => busy.delete(botKey), GLOBAL_CD);
       setTimeout(() => busy.delete(sender),   USER_CD);
     }
   };
 }
-
 
 main().catch(console.error);
