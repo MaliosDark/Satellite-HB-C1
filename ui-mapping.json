@@ -447,5 +447,368 @@
       "width": 19,
       "height": 20
     }
+  },
+  {
+    "timestamp": 1747691677288,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747691678212,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747691783448,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747691784368,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747691790232,
+    "x": 788,
+    "y": 277,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692284580,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692285531,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692288825,
+    "x": 790,
+    "y": 276,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692440681,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692441606,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692443089,
+    "x": 788,
+    "y": 276,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692535650,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692536748,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692539342,
+    "x": 784,
+    "y": 275,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692780691,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692781618,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692783364,
+    "x": 788,
+    "y": 277,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692923120,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692924115,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747692928228,
+    "x": 787,
+    "y": 275,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747692935057,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747693041652,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
   }
 ]

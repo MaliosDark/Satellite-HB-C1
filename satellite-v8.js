@@ -37,6 +37,9 @@ console.log(
 );
 
 
+// File: satellite-v8.js
+// =====================
+
 require('dotenv').config();
 const {
   initMySQL,
@@ -68,19 +71,28 @@ async function main(){
   console.log('✅ MySQL schema ready');
 
   for(const cfg of botConfigs){
-    const client = new HabboClient({
+    // define handler and client in sequence so `client` is in scope
+    let client;
+    const handler = makeHandler(cfg, () => client);
+
+    client = new HabboClient({
       iframeUrl: cfg.iframeUrl,
       username:  cfg.username,
       roomId:    cfg.roomId,
-      onChat:    makeHandler(cfg)
+      onChat:    handler
     });
     console.log(`🚀 ${cfg.username} launched`);
     await sleep(300);
   }
 }
 
-function makeHandler(cfg){
+/**
+ * @param {object} cfg
+ * @param {() => HabboClient} getClient
+ */
+function makeHandler(cfg, getClient){
   return async function onChat(senderRaw, textRaw){
+    const client = getClient();
     const botName = cfg.username.toLowerCase();
     const sender  = senderRaw.toLowerCase();
     const text    = textRaw.trim();
@@ -98,7 +110,6 @@ function makeHandler(cfg){
       if (!profile || !profile.core_id) {
         profile = await aiModule.loadProfile(cfg.username);
       }
-
 
       const lists = [
         'daily_routine',
@@ -137,6 +148,7 @@ function makeHandler(cfg){
       await addToList(cfg.botId, 'inner_monologue', { role:'user',   sender, text, ts: now });
       await addToList(cfg.botId, 'inner_monologue', { role:'bot',    sender:botName, text:reply, ts: Date.now() });
 
+      // send via the correctly scoped client
       await client.sendChat(`${cfg.username}: ${reply}`);
     }
     catch(err) {

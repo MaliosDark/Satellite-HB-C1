@@ -20,6 +20,7 @@ const schema = {
     current_emotion:      "VARCHAR(32)",
     emotional_palette:    "JSON",
     shop_behavior:        "JSON",
+    goals:                "JSON",
     motivations:          "JSON",
     perceptions:          "JSON",
     sensory_memory:       "JSON",

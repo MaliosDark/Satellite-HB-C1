@@ -85,7 +85,7 @@ module.exports = {
       }
     }, Boolean(chatHandler), actions);
 
-    console.log('[UI MAPPER] Click logger installed');
+    // console.log('[UI MAPPER] Click logger installed');
     if (chatHandler) console.log('[UI MAPPER] Chat‐bubble detector installed');
   },
 
@@ -124,13 +124,13 @@ module.exports = {
    */
   async sendChat(page, text) {
     await this.focusChat(page);
-    const MAX = 110;
+    const MAX = 100;
     for (let i = 0; i < text.length; i += MAX) {
       await page.keyboard.type(text.slice(i, i + MAX));
-      await sleep(50);
+      await sleep(100);
     }
     await page.keyboard.press('Enter');
-    await sleep(200);
+    await sleep(300);
   },
 
   register(actionName, className) {

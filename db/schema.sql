@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS agents (
   philosophical_position TEXT,
   current_emotion VARCHAR(32),
   emotional_palette JSON,
+  goals JSON,
   shop_behavior JSON,
   motivations JSON,
   perceptions JSON,
@@ -112,3 +113,21 @@ CREATE TABLE IF NOT EXISTS agent_goals (
   priority INT,
   FOREIGN KEY (core_id) REFERENCES agents(core_id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS rooms_users (
+  id       INT AUTO_INCREMENT PRIMARY KEY,
+  room_id  INT NOT NULL,
+  user_id  VARCHAR(64) NOT NULL,
+  joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX(room_id),
+  INDEX(user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS items_rooms (
+  id       INT AUTO_INCREMENT PRIMARY KEY,
+  room_id  INT NOT NULL,
+  item_id  VARCHAR(64) NOT NULL,
+  placed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX(room_id),
+  INDEX(item_id)
+) ENGINE=InnoDB;
