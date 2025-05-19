@@ -35,7 +35,7 @@ module.exports = {
       const arr = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
       arr.push(data);
       fs.writeFileSync(outputFile, JSON.stringify(arr, null, 2), 'utf8');
-      console.log('[UI MAPPER] Saved:', data);
+    //   console.log('[UI MAPPER] Saved:', data);
     });
 
     // optional recorder for chat bubbles

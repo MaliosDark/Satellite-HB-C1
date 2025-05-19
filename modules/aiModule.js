@@ -29,6 +29,7 @@ async function loadProfile(username) {
     cognitive_traits:       JSON.stringify({ skills: profile.skills || [] }),
     emotional_palette:      JSON.stringify(profile.emotional_palette || []),
     goals:                  JSON.stringify(profile.goals || [])
+    
   });
 
   return { core_id: coreId, ...profile };
@@ -70,8 +71,8 @@ async function tryModels(list, prompt, maxTokens, temperature) {
 
 const MODELS = {
   small:  ['llama3.2:3b'],
-  medium: ['gemma3:4b','llama3:latest'],
-  large:  ['qwen2.5:7b','solar:10.7b']
+  medium: [],
+  large:  []
 };
 
 const PARAMS = {

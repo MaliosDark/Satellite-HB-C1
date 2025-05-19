@@ -64,7 +64,7 @@ module.exports = class HabboClient {
         overlay.textContent = `x: ${e.clientX}, y: ${e.clientY}`;
       });
       document.addEventListener('click', e => {
-        console.log(`[UI MAP] click at (${e.clientX}, ${e.clientY}) on:`, e.target);
+        // console.log(`[UI MAP] click at (${e.clientX}, ${e.clientY}) on:`, e.target);
       }, true);
     });
 
@@ -72,7 +72,7 @@ module.exports = class HabboClient {
     await UiMapper.closePopup(this.page);
 
     // still hook original observer (optional)
-    await installChatObserver(this.page, (s, msg) => this.onChat(s, msg));
+    await installChatObserver(this.page, (sender, msg) => this.onChat(sender, msg), this.username);
 
     // movement helpers
     this.moveUp    = () => roomMovement.move(this.page, 'up');

@@ -54,8 +54,8 @@ const aiModule         = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
 
 // cooldown durations
-const GLOBAL_CD = 15_000;
-const USER_CD   = 10_000;
+const GLOBAL_CD = 3_000;
+const USER_CD   = 3_000;
 
 // helper functions
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -90,53 +90,50 @@ async function main(){
  * @param {object} cfg
  * @param {() => HabboClient} getClient
  */
-function makeHandler(cfg, getClient){
-  return async function onChat(senderRaw, textRaw){
-    const client = getClient();
+function makeHandler(cfg, getClient) {
+  return async function onChat(senderRaw, textRaw) {
+    const client  = getClient();
     const botName = cfg.username.toLowerCase();
     const sender  = senderRaw.toLowerCase();
     const text    = textRaw.trim();
     const now     = Date.now();
     const botKey  = `bot:${cfg.username}`;
 
+    // 1) ignore your own messages
     if (sender === botName) return;
-    if (!text.includes(botName) && !/^(hi|hello|hey)\b/i.test(text)) return;
+
+    // 2) block re-entrance while busy
     if (busy.has(botKey) || busy.has(sender)) return;
     busy.set(botKey, true);
-    busy.set(sender,  true);
+    busy.set(sender, true);
 
     try {
+      // 3) load or bootstrap profile
       let profile = await getCore(cfg.botId);
       if (!profile || !profile.core_id) {
         profile = await aiModule.loadProfile(cfg.username);
       }
 
+      // 4) gather memory
       const lists = [
-        'daily_routine',
-        'belief_network',
-        'inner_monologue',
-        'conflicts',
-        'personal_timeline',
-        'relationships',
-        'motivations',
-        'dream_generator',
-        'goals',
-        'perceptions',
-        'learning_journal',
-        'aspirational_dreams'
+        'daily_routine','belief_network','inner_monologue','conflicts',
+        'personal_timeline','relationships','motivations','dream_generator',
+        'goals','perceptions','learning_journal','aspirational_dreams'
       ];
       let memoryArr = [];
       for (const name of lists) {
-        const items = await getList(cfg.botId, name);
-        memoryArr.push(...items);
+        memoryArr.push(...await getList(cfg.botId, name));
       }
       const memText = memoryArr.map(e => JSON.stringify(e)).join('\n');
 
+      // 5) get room context
       const context = await getRoomContext(cfg.botId);
 
+      // 6) think delay
       const [minD, maxD] = aiModule.THINK_DELAY_RANGE;
       await sleep(randomBetween(minD, maxD));
 
+      // 7) generate reply
       const reply = await aiModule.generateReply({
         memory:  memText,
         profile,
@@ -145,20 +142,29 @@ function makeHandler(cfg, getClient){
         message: text
       });
 
-      await addToList(cfg.botId, 'inner_monologue', { role:'user',   sender, text, ts: now });
-      await addToList(cfg.botId, 'inner_monologue', { role:'bot',    sender:botName, text:reply, ts: Date.now() });
+      // 8) record memory
+      await addToList(cfg.botId, 'inner_monologue', { role:'user', sender, text, ts: now });
+      await addToList(cfg.botId, 'inner_monologue', { role:'bot', sender:botName, text:reply, ts: Date.now() });
 
-      // send via the correctly scoped client
-      await client.sendChat(`${cfg.username}: ${reply}`);
+      // 9) send reply, tagging the original sender
+      //    e.g. "Nova → user123: Hello there!"
+      const out = `${cfg.username} → ${senderRaw}: ${reply}`;
+      await client.sendChat(out);
+
+      // 10) clear busy immediately so you can respond quickly again
+      busy.delete(botKey);
+      busy.delete(sender);
     }
     catch(err) {
       console.error(`[${cfg.username}] onChat error:`, err);
     }
     finally {
-      setTimeout(()=> busy.delete(botKey), GLOBAL_CD);
-      setTimeout(()=> busy.delete(sender),   USER_CD);
+      // fallback clear in case something went wrong
+      setTimeout(() => busy.delete(botKey), GLOBAL_CD);
+      setTimeout(() => busy.delete(sender),   USER_CD);
     }
   };
 }
+
 
 main().catch(console.error);
