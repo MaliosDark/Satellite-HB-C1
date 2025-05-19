@@ -1,5 +1,5 @@
 config/bots-config.js
 db/.env
 .env
-node_modules
+node_modules/
 modules/logs/chat.jsonl
