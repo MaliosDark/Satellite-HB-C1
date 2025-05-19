@@ -99,6 +99,7 @@ function makeHandler(cfg){
         profile = await aiModule.loadProfile(cfg.username);
       }
 
+
       const lists = [
         'daily_routine',
         'belief_network',

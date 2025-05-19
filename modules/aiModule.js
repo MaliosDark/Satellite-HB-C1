@@ -12,6 +12,29 @@ const { redis, getConn, redisKey } = require('../db/agent_storage');
 const path        = require('path');
 require('dotenv').config();
 
+
+/**
+ * Load a profile JSON by username, persist core fields and return a core-like object.
+ * @param {string} username
+ */
+async function loadProfile(username) {
+    // Ajusta ruta/nombre según tus JSONs
+    const profile = require(path.join(__dirname, '..', 'profiles', `${username.toLowerCase()}_profile.json`));
+    const coreId  = profile.core_id;
+  
+    // persiste campos esenciales en Redis/MySQL
+    await storage.setCore(coreId, {
+      chosen_name:           profile.chosen_name,
+      philosophical_position: profile.philosophical_position,
+      current_emotion:       profile.current_emotion,
+      cognitive_traits:      JSON.stringify({ skills: profile.skills || [] }),
+      emotional_palette:     JSON.stringify(profile.emotional_palette || []),
+      goals:                 JSON.stringify(profile.goals || [])
+    });
+  
+    return { core_id: coreId, ...profile };
+  }
+
 const OLLAMA_URL  = process.env.OLLAMA_URL || 'http://localhost:11434/api/generate';
 
 // turn queue
@@ -164,3 +187,4 @@ ${profile.chosen_name}:`.trim();
 // utils
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 function randomBetween(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+module.exports.loadProfile = loadProfile;

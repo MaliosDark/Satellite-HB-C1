@@ -2,13 +2,17 @@
 // ========================
 // Minimal Puppeteer client that:
 // - Loads Nitro iframe URL
-// - Hooks every chat line via chatObserver
+// - Hooks every chat line via chatObserver *and* UiMapper
 // - Exposes onChat(sender, message)
-// - Provides sendChat(text)
+// - Provides sendChat(text) via UiMapper
+// - Provides movement via roomMovement
+// - Provides exploreAndAct()
 
 const puppeteer           = require('puppeteer-extra');
 const StealthPlugin       = require('puppeteer-extra-plugin-stealth');
 const installChatObserver = require('./chatObserver');
+const UiMapper            = require('./ui-mapper');
+const roomMovement        = require('./room-movement');
 
 puppeteer.use(StealthPlugin());
 
@@ -21,8 +25,11 @@ module.exports = class HabboClient {
   }
 
   async _init() {
-    this.browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'] });
-    this.page    = await this.browser.newPage();
+    this.browser = await puppeteer.launch({
+      headless: false,
+      args: ['--start-maximized']
+    });
+    this.page = await this.browser.newPage();
 
     // stealth flags
     await this.page.evaluateOnNewDocument(() => {
@@ -35,39 +42,71 @@ module.exports = class HabboClient {
     await this.page.goto(this.url, { waitUntil: 'domcontentloaded' });
     await this.page.waitForSelector('canvas', { timeout: 60000 });
 
-    // close any popups
+    // install UI mapping (with chat‐bubble detection)
+    await UiMapper.install(this.page, undefined, (sender, msg) => this.onChat(sender, msg));
+
+    // coordinate overlay for dev
     await this.page.evaluate(() => {
-      document.querySelectorAll('.nitro-card-header-close').forEach(btn => btn.click());
+      const overlay = document.createElement('div');
+      Object.assign(overlay.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        padding: '4px 8px',
+        background: 'rgba(0,0,0,0.6)',
+        color: '#0f0',
+        fontSize: '12px',
+        zIndex: '10000',
+        pointerEvents: 'none'
+      });
+      document.body.appendChild(overlay);
+      document.addEventListener('mousemove', e => {
+        overlay.textContent = `x: ${e.clientX}, y: ${e.clientY}`;
+      });
+      document.addEventListener('click', e => {
+        console.log(`[UI MAP] click at (${e.clientX}, ${e.clientY}) on:`, e.target);
+      }, true);
     });
 
-    // hook chat
+    // close any initial popups
+    await UiMapper.closePopup(this.page);
+
+    // still hook original observer (optional)
     await installChatObserver(this.page, (s, msg) => this.onChat(s, msg));
 
+    // movement helpers
+    this.moveUp    = () => roomMovement.move(this.page, 'up');
+    this.moveDown  = () => roomMovement.move(this.page, 'down');
+    this.moveLeft  = () => roomMovement.move(this.page, 'left');
+    this.moveRight = () => roomMovement.move(this.page, 'right');
+    this.walkPath  = path => roomMovement.walkPath(this.page, path);
+
+    // high-level explore & act sequence
+    this.exploreAndAct = async () => {
+      await this.walkPath(['down','down','down','down']);
+      const target = await this.page.evaluate(() => {
+        const item = document.querySelector('.item, .seat');
+        if (!item) return null;
+        const r = item.getBoundingClientRect();
+        return { x: r.left + r.width/2, y: r.top + r.height/2 };
+      });
+      if (target) {
+        await this.page.mouse.click(target.x, target.y);
+        console.log('[ACTION] clicked on detected element at', target);
+      } else {
+        console.log('[ACTION] no item/seat found at current location');
+      }
+    };
+
     // initial greeting
-    await this.sendChat(`Hello, I am ${this.username}!`);
+    await UiMapper.sendChat(this.page, `Hello, I am ${this.username}!`);
   }
 
   async sendChat(text) {
-    const SEL    = '.input-sizer .chat-input, .input-sizer input[type="text"]';
-    const MAXLEN = 110;
-    await this.page.waitForSelector(SEL, { timeout: 5000 });
-
-    for (let i = 0; i < text.length; i += MAXLEN) {
-      const chunk = text.slice(i, i + MAXLEN);
-      await this.page.$eval(SEL, (el, v) => {
-        el.value = v;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-      }, chunk);
-      await this.page.keyboard.press('Enter');
-      await sleep(500);
-    }
+    await UiMapper.sendChat(this.page, text);
   }
 
   async close() {
     await this.browser.close();
   }
 };
-
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
