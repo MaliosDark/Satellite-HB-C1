@@ -2339,5 +2339,18 @@
       "width": 1210,
       "height": 910
     }
+  },
+  {
+    "timestamp": 1747697359222,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
   }
 ]
