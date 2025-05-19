@@ -1,0 +1,19 @@
+{
+    "name": "pai-os-satellite-hb-c1",
+    "version": "8.0.0",
+    "main": "satellite-v8.js",
+    "scripts": {
+        "init-db": "node db/init.js",
+        "start": "npm run init-db && node satellite-v8.js"
+    },
+    "dependencies": {
+        "axios": "^1.4.0",
+        "dotenv": "^16.0.0",
+        "ioredis": "^5.3.0",
+        "mysql2": "^3.2.0",
+        "puppeteer": "^24.8.2",
+        "puppeteer-core": "^24.8.2",
+        "puppeteer-extra": "^3.3.4",
+        "puppeteer-extra-plugin-stealth": "^2.7.10"
+    }
+}

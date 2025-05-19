@@ -1,0 +1,4 @@
+config/bots-config.js
+db/.env
+.env
+modules/logs/chat.jsonl
