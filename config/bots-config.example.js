@@ -5,14 +5,12 @@ module.exports = [
     {
       botId:    1,
       username: 'USERNAME',
-      password: 'PASSWORD',
       iframeUrl:'https://game.Your-emulator-cms-url.com/react/index.html?sso=Hotel-266/0ca...',
       roomId:   2
     },
     {
       botId:    2,
       username: 'USERNAME',
-      password: 'PASSWORD',
       iframeUrl:'https://game.Your-emulator-cms-url.com/react/index.html?sso=Hotel-266/0ca...',
       roomId:   2
     }

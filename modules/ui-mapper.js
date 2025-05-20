@@ -122,16 +122,52 @@ module.exports = {
    * @param {import('puppeteer').Page} page
    * @param {string} text
    */
-  async sendChat(page, text) {
+  // File: modules/ui-mapper.js
+// ==========================
+// File: modules/ui-mapper.js
+async sendChat(page, text) {
     await this.focusChat(page);
-    const MAX = 100;
-    for (let i = 0; i < text.length; i += MAX) {
-      await page.keyboard.type(text.slice(i, i + MAX));
-      await sleep(100);
+  
+    const MAX = 110;              // tu límite real de burbuja
+    const MIN_DELAY = 3000;        // mínimo 1 s entre envíos
+    const MAX_DELAY = 3000;       // hasta 3 s aleatorio
+  
+    // si cabe entero, envía de una
+    if (text.length <= MAX) {
+      await page.keyboard.type(text);
+      await page.keyboard.press('Enter');
+      return;
     }
-    await page.keyboard.press('Enter');
-    await sleep(300);
+  
+    // si no, trocea por palabras
+    const words = text.split(' ');
+    let chunk = '';
+  
+    for (const w of words) {
+      const candidate = chunk ? `${chunk} ${w}` : w;
+      if (candidate.length > MAX) {
+        // envía lo acumulado
+        await page.keyboard.type(chunk);
+        await page.keyboard.press('Enter');
+  
+        // espera un intervalo aleatorio para simular humano
+        const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
+        await new Promise(r => setTimeout(r, delay));
+  
+        // comienza un nuevo chunk
+        chunk = w;
+      } else {
+        chunk = candidate;
+      }
+    }
+  
+    // envía el último trozo
+    if (chunk) {
+      await page.keyboard.type(chunk);
+      await page.keyboard.press('Enter');
+    }
   },
+  
 
   register(actionName, className) {
     actions[actionName] = className;
