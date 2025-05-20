@@ -1,49 +1,72 @@
 
-# PAi-OS Satellite v8
+# Satellite-HB-C1 PAi-OS Virtual World Agent Framework
 
-A modular AI-chatbot framework with per-agent memory in Redis (fast) and MySQL (persistent), powered by tiered LLMs.
+![PAi-OS Logo](reamage/pai-os.png?text=PAi-OS)  
+*Empowering immersive virtual agents with memory, personality, and dynamic interactions*  
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#overview)  
-2. [Installation](#installation)  
-3. [Configuration](#configuration)  
-4. [Architecture](#architecture)  
-   - [Chat Loop](#chat-loop)  
-   - [Memory per Agent](#memory-per-agent)  
-   - [Personality System & Evolution](#personality-system--evolution)  
-5. [Mermaid Flowcharts](#mermaid-flowcharts)  
-6. [Usage](#usage)  
-7. [Contributing](#contributing)  
-8. [License](#license)  
+2. [Features](#features)  
+3. [Installation](#installation)  
+4. [Configuration](#configuration)  
+5. [Architecture](#architecture)  
+   - [Agent Profiles](#agent-profiles)  
+   - [Memory System](#memory-system)  
+   - [Personality Evolution](#personality-evolution)  
+   - [Communication Flow](#communication-flow)  
+   - [Room Interaction](#room-interaction)  
+6. [Mermaid Flowcharts](#mermaid-flowcharts)  
+   - [Chat & Memory Cycle](#chat--memory-cycle)  
+   - [Personality Evolution](#personality-evolution-flow)  
+   - [Communication Flow](#communication-flow-diagram)  
+   - [Memory Storage Workflow](#memory-storage-workflow)  
+   - [Room Interaction Workflow](#room-interaction-workflow)  
+7. [Usage](#usage)  
+8. [Contributing](#contributing)  
+9. [License](#license)  
 
 ---
 
 ## Overview
 
-Each “bot”:
+The **PAi-OS Virtual World Agent Framework** is a robust platform for creating and managing AI-driven agents in a Habbo-style virtual environment. Each agent operates with a unique personality, persistent memory, and dynamic interaction capabilities, powered by Redis (fast cache), MySQL (durable store), and tiered LLMs. Agents like Clara, Dorian, and Jimmy chat, trade items, navigate rooms, and evolve based on experiences.
 
-- Launches a Puppeteer client into a Habbo-style iframe  
-- Observes chat messages  
-- Loads profile (MySQL) and memory (Redis)  
-- Builds prompt, calls LLM (small→medium→large)  
-- Appends new monologue to memory  
-- Sends reply back  
+---
+
+## Features
+
+- **Dynamic Agent Profiles**  
+- **Persistent Memory** (Redis + MySQL)  
+- **Personality Evolution** (trait shifts & decay)  
+- **Contextual Communication** (LLM-powered responses)  
+- **Room Interaction** (movement & item handling)  
+- **Modular Design** (chat observer, UI mapper, movement)  
 
 ---
 
 ## Installation
 
-```bash
-clone this repo
+### Prerequisites
 
-cd pai-os-satellite-hb-c1
+- Node.js v18+  
+- MySQL 8.0+  
+- Redis 6.0+  
+- Ollama or compatible LLM API  
+- Puppeteer & Chromium  
+
+### Steps
+
+```bash
+git clone repository
+cd pai-os-agent-framework
+
 npm install
-cp .env.example .env
+cp .env.example .env     # edit DB, Redis, LLM credentials
 cp config/bots-config.example.js config/bots-config.js
-# Edit credentials in .env and bots-config.js
+npm run init-db
 npm run start
 ````
 
@@ -51,47 +74,72 @@ npm run start
 
 ## Configuration
 
-* **.env** — DB\_HOST, DB\_USER, DB\_PASS, DB\_NAME, REDIS\_HOST, REDIS\_PORT, OLLAMA\_URL
-* **config/bots-config.js** — one entry per bot: botId, username, password, iframeUrl, roomId
-* **db/schema.sql** & **db/init.js** — create/alter tables automatically
+### Environment Variables (`.env`)
+
+```dotenv
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=your_password
+DB_NAME=pai_os
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+OLLAMA_URL=http://localhost:11434/api/generate
+```
+
+### Bot Config (`config/bots-config.js`)
+
+```js
+module.exports = [
+  {
+    botId: 1,
+    username: 'Clara',
+    iframeUrl: 'https://game.virtualworld.com/react/index.html?sso=Hotel-266/0ca...',
+    roomId: 1
+  },
+  // Add more bots...
+];
+```
 
 ---
 
 ## Architecture
 
-### Chat Loop
+### Agent Profiles
 
-1. `satellite-v8.js` → `initMySQL()`
-2. For each bot config: launch HabboClient (Puppeteer)
-3. OnChat handler filters, applies cooldowns
-4. Load profile (`getCore`) and memory lists (`getList`)
-5. Build system+user prompt
-6. `aiModule.generateReply()` → LLM tiers
-7. Append to Redis + MySQL (`addToList`)
-8. `client.sendChat(reply)`
+Stored as JSON (in MySQL `agents` + Redis cache). Key fields:
 
-### Memory per Agent
+* `core_id`, `chosen_name`
+* `emotional_palette`, `belief_network`
+* `daily_routine`, `relationships`
 
-* **Redis lists** for fast reads/writes
-* **MySQL tables** for durability
-* Lists: `belief_network`, `inner_monologue`, `goals`, `daily_routine`, `relationships`, etc.
+### Memory System
 
-### Personality System & Evolution
+* **Redis**: short-term lists (`inner_monologue`, `belief_network`)
+* **MySQL**: long-term tables (`agent_monologue`, `agent_beliefs`, `agent_goals`)
 
-* **Profile fields** stored in MySQL `agents` table (JSON columns for traits)
-* **Core profile**: chosen\_name, philosophical\_position, current\_emotion, cognitive\_traits
-* **Memory lists** inform ongoing “internal reasoning” without exposing it
-* **Evolution**:
+### Personality Evolution
 
-  * On each interaction, inner\_monologue and belief\_network grow
-  * Periodic “decay” or “revision” can be applied by pruning low-confidence beliefs or timestamps older than X
-  * New profile state can be written via `setCore`, updating JSON fields to reflect learned traits or changed emotional\_palette
+* **Baseline Traits** (e.g. empathy, curiosity)
+* **Event-Driven Shifts** (via `personality_evolution.shifted_by_events`)
+* **Periodic Decay** (prune low-confidence beliefs)
+
+### Communication Flow
+
+1. **Input**: user message via `chatObserver.js`
+2. **Processing**: `aiModule.js` builds LLM prompt (profile + memory + context)
+3. **Output**: send via `client-emulator.js`
+
+### Room Interaction
+
+* **Movement**: `room-movement.js` simulates arrow keys
+* **Item Handling**: `client-emulator.js` clicks items/seats
+* **Context**: `room-context.js` queries MySQL for users/items
 
 ---
 
 ## Mermaid Flowcharts
 
-### 1. Chat + Memory Cycle
+### Chat & Memory Cycle
 
 ```mermaid
 sequenceDiagram
@@ -101,45 +149,114 @@ sequenceDiagram
   participant MySQL
   participant LLM
 
-  User->>Bot: "Hello Bot!"
-  Bot->>Redis: HGET core profile
-  Bot->>MySQL: SELECT * FROM agents
-  Bot->>Redis: LRANGE each memory list
-  Bot->>LLM: prompt(profile + memory + message)
-  LLM-->>Bot: "Hello, how can I help?"
-  Bot->>Redis: RPUSH inner_monologue user and bot
-  Bot->>MySQL: INSERT agent_monologue entries
-  Bot->>User: sendChat("Hello, how can I help?")
+  User->>Bot: Sends "Hi, Clara!"
+  Bot->>Redis: Fetch profile (clara001)
+  Bot->>MySQL: Load full profile
+  Bot->>Redis: Load memory lists
+  Bot->>LLM: Build + send prompt
+  LLM-->>Bot: "Hello! How’s your day?"
+  Bot->>Redis: Append to `inner_monologue`
+  Bot->>MySQL: INSERT into `agent_monologue`
+  Bot->>User: Send response
 ```
 
-### 2. Multi-Tier LLM Fallback
+### Personality Evolution Flow
 
 ```mermaid
 flowchart TD
-  A[Build prompt] --> B[Try SMALL models]
-  B -->|success| C[Return response]
-  B -->|fail| D[Try MEDIUM models]
-  D -->|success| C
-  D -->|fail| E[Try LARGE models]
-  E -->|success| C
-  E -->|fail| F[Throw error]
+  A[Interaction Occurs] --> B{Impactful?}
+  B -->|Yes| C[Update inner_monologue]
+  C --> D[Assess personality_evolution]
+  D --> E{Shift Traits?}
+  E -->|Yes| F[Modify baseline_traits]
+  F --> G[Update belief_network confidence]
+  G --> H[Persist via setCore]
+  E -->|No| I[No Change]
+  B -->|No| I
+  H --> J[Periodic Decay Check]
+  J --> K{Apply memory_decay?}
+  K -->|Yes| L[Prune low-confidence beliefs]
+  L --> M[Persist changes]
+  K -->|No| I
+```
+
+### Communication Flow Diagram
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant ChatObserver
+  participant ClientEmulator
+  participant AIModule
+  participant LLM
+
+  User->>ChatObserver: Sends message
+  ChatObserver->>ClientEmulator: onChat()
+  ClientEmulator->>AIModule: generateReply()
+  AIModule->>LLM: Send prompt
+  LLM-->>AIModule: Response
+  AIModule->>ClientEmulator: Return reply
+  ClientEmulator->>User: Display reply
+```
+
+### Memory Storage Workflow
+
+```mermaid
+flowchart TD
+  A[Interaction/Event] --> B[Create Memory Entry]
+  B --> C{Memory Type?}
+  C -->|inner_monologue| D[Append to Redis]
+  C -->|belief_network| E[Append to Redis]
+  C -->|goals| F[Append to Redis]
+  D --> G[INSERT into MySQL `agent_monologue`]
+  E --> H[INSERT into MySQL `agent_beliefs`]
+  F --> I[INSERT into MySQL `agent_goals`]
+  G --> J[Sync Complete]
+  H --> J
+  I --> J
+```
+
+### Room Interaction Workflow
+
+```mermaid
+sequenceDiagram
+  participant Bot
+  participant RoomMovement
+  participant ClientEmulator
+  participant RoomContext
+  participant MySQL
+
+  Bot->>RoomMovement: walkPath(['down','down'])
+  RoomMovement->>ClientEmulator: simulate keys
+  ClientEmulator-->>Bot: Movement done
+  Bot->>ClientEmulator: exploreAndAct()
+  ClientEmulator->>ClientEmulator: detect & click item
+  Bot->>RoomContext: fetch context
+  RoomContext->>MySQL: query rooms_users/items_rooms
+  MySQL-->>RoomContext: return data
+  RoomContext-->>Bot: deliver context
 ```
 
 ---
 
 ## Usage
 
-* **Add bot**: edit `config/bots-config.js`, restart
-* **Bootstrap profile**:
+### Add a New Agent
 
-  ```bash
-  node scripts/bootstrap-agent.js
-  ```
-* **Inspect memory**:
+1. Create `profiles/dorian_profile.json`.
+2. Add entry in `config/bots-config.js`.
+3. Bootstrap:
 
-  * Redis CLI: `LRANGE <coreId>:inner_monologue 0 -1`
-  * MySQL: `SELECT * FROM agent_monologue WHERE core_id='<coreId>';`
+```bash
+node scripts/bootstrap-agent.js
+```
+
+### Inspect Memory
+
+* **Redis**: `LRANGE clara001:inner_monologue 0 -1`
+* **MySQL**: `SELECT * FROM agent_monologue WHERE core_id='dorian002';`
 
 ---
 
+*Built with 🌱 by the PAi-OS Team, 2025.*
 
