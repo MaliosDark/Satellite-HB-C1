@@ -52,6 +52,7 @@ const HabboClient        = require('./modules/client-emulator');
 const botConfigs         = require('./config/bots-config');
 const aiModule           = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
+const movement           = require('./modules/room-movement');
 
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS = 5000;
@@ -59,6 +60,10 @@ const REPLY_DEBOUNCE_MS = 5000;
 // cooldown durations after sending (ms)
 const GLOBAL_CD = 3000;
 const USER_CD   = 3000;
+
+// periodic wander interval (ms)
+const WANDER_INTERVAL_MIN = 30000;  // 30s
+const WANDER_INTERVAL_MAX = 60000;  // 60s
 
 // helpers
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -78,6 +83,7 @@ async function main() {
 
   for (const cfg of botConfigs) {
     let client;
+
     // wrap onChat to debounce
     const handler = makeHandler(cfg, () => client);
 
@@ -87,7 +93,25 @@ async function main() {
       roomId:    cfg.roomId,
       onChat:    handler
     });
+
     console.log(`🚀 ${cfg.username} launched`);
+
+    // start autonomous wandering
+    (async function wanderForever() {
+      while (true) {
+        const wait = randomBetween(WANDER_INTERVAL_MIN, WANDER_INTERVAL_MAX);
+        await sleep(wait);
+
+        try {
+          // wander 5 random steps within a 10×10 area
+          await movement.randomWander(client.page, { width: 10, height: 10 }, 5);
+        } catch (err) {
+          console.error(`[${cfg.username}] wander error:`, err);
+        }
+      }
+    })();
+
+    // small startup pause between clients
     await sleep(300);
   }
 }
@@ -103,7 +127,7 @@ function makeHandler(cfg, getClient) {
     const sender  = senderRaw.toLowerCase();
     const text    = textRaw.trim();
 
-    // ignore your own
+    // ignore your own messages
     if (sender === botName) return;
 
     // clear any previous timer for this sender
@@ -156,14 +180,23 @@ async function handleMessage(cfg, client, sender, text) {
     const [minD, maxD] = aiModule.THINK_DELAY_RANGE;
     await sleep(randomBetween(minD, maxD));
 
-    // 5) generate reply
-    const reply = await aiModule.generateReply({
-      memory:  memText,
-      profile,
-      context,
-      sender,
-      message: text
-    });
+    // 5) generate reply, but skip if NOT_MY_TURN
+    let reply;
+    try {
+      reply = await aiModule.generateReply({
+        memory:  memText,
+        profile,
+        context,
+        sender,
+        message: text
+      });
+    } catch (err) {
+      if (err.message === 'NOT_MY_TURN') {
+        // simply return without logging
+        return;
+      }
+      throw err;  // re-throw anything else
+    }
 
     // 6) record memory
     await addToList(coreId, 'inner_monologue', {

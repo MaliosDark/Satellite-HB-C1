@@ -9055,5 +9055,2307 @@
       "width": 1210,
       "height": 910
     }
+  },
+  {
+    "timestamp": 1747703925416,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704118271,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704208021,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704208704,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704208979,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704209671,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704222792,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704227130,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704305850,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704404311,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704484675,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704484768,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704485644,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704485730,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704706346,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704707433,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704708191,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704709131,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704808845,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704809808,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704812345,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747704813254,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705035397,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705036295,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705037011,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705038040,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705054672,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705059264,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705091589,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705149833,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705174492,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705230555,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705325457,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705390089,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705430726,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705507634,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705521244,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705524961,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705582811,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705724260,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705725245,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705725770,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705726719,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705727592,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705728501,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747705734977,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706006025,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706006938,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706009805,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706009920,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706010830,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706010883,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706023537,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706079207,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706259338,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706289059,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706289939,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706290451,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706290570,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706291411,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706291463,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747706303966,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707140265,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707140286,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707141175,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707141271,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707159420,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707183674,
+    "x": 785,
+    "y": 275,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 262.5,
+      "left": 779,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747707226745,
+    "x": 78,
+    "y": 666,
+    "tag": "div",
+    "classes": [
+      "d-inline",
+      "text-muted",
+      "small",
+      "text-decoration-settings-underline",
+      "text-hover-effect"
+    ],
+    "bbox": {
+      "top": 657,
+      "left": 56,
+      "width": 47.609375,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747707268964,
+    "x": 706,
+    "y": 328,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 314,
+      "left": 697,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747707636717,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707637653,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707639742,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707640662,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707647721,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707648846,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707656966,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707662062,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707674486,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707720980,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707737025,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707779934,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707796834,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707847237,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707872426,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707914397,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707914425,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707915195,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707915296,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707915383,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707916092,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707927579,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707930434,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747707960539,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708031708,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708051539,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708091684,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708115788,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708154518,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708155435,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708163284,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708163839,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708164180,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708164728,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708164813,
+    "x": 0,
+    "y": 0,
+    "tag": "div",
+    "classes": [
+      "w-100",
+      "h-100",
+      "overflow-hidden",
+      "image-rendering-pixelated"
+    ],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708165728,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708181691,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708181692,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708183388,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708184237,
+    "x": 685,
+    "y": 205,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "position-absolute",
+      "align-items-center",
+      "justify-content-center",
+      "end-2",
+      "nitro-card-header-close"
+    ],
+    "bbox": {
+      "top": 198.5,
+      "left": 677,
+      "width": 19,
+      "height": 20
+    }
+  },
+  {
+    "timestamp": 1747708187777,
+    "x": 238,
+    "y": 795,
+    "tag": "div",
+    "classes": [
+      "d-flex",
+      "cursor-pointer",
+      "align-items-center",
+      "justify-content-center",
+      "navigation-item",
+      "item-avatar"
+    ],
+    "bbox": {
+      "top": 763.5,
+      "left": 212,
+      "width": 50,
+      "height": 45
+    }
+  },
+  {
+    "timestamp": 1747708191154,
+    "x": 368,
+    "y": 603,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708196140,
+    "x": 321,
+    "y": 777,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 774.5,
+      "left": 309,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708197077,
+    "x": 321,
+    "y": 729,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 725,
+      "left": 315,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708203316,
+    "x": 375,
+    "y": 633,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-56"
+    ],
+    "bbox": {
+      "top": 617.5,
+      "left": 369.15625,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708206288,
+    "x": 317,
+    "y": 787,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 774.5,
+      "left": 309,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708207065,
+    "x": 317,
+    "y": 787,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 774.5,
+      "left": 309,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708208117,
+    "x": 328,
+    "y": 729,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 725,
+      "left": 315,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708211390,
+    "x": 312,
+    "y": 683,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-73"
+    ],
+    "bbox": {
+      "top": 681.5,
+      "left": 292.484375,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708220436,
+    "x": 402,
+    "y": 886,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 870.5,
+      "left": 393.5,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708222732,
+    "x": 406,
+    "y": 824,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 821,
+      "left": 399.5,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708223355,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708227883,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708228191,
+    "x": 322,
+    "y": 682,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-51"
+    ],
+    "bbox": {
+      "top": 675.5,
+      "left": 300.828125,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708245671,
+    "x": 404,
+    "y": 881,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 870.5,
+      "left": 393.5,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708248000,
+    "x": 403,
+    "y": 825,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 821,
+      "left": 399.5,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708252553,
+    "x": 400,
+    "y": 784,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-16"
+    ],
+    "bbox": {
+      "top": 775.5,
+      "left": 377.484375,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708263550,
+    "x": 407,
+    "y": 870,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chataddons-icon"
+    ],
+    "bbox": {
+      "top": 856.5,
+      "left": 393.5,
+      "width": 22,
+      "height": 26
+    }
+  },
+  {
+    "timestamp": 1747708265477,
+    "x": 406,
+    "y": 812,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 807,
+      "left": 399.5,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708286206,
+    "x": 398,
+    "y": 676,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-36"
+    ],
+    "bbox": {
+      "top": 667.5,
+      "left": 377.484375,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708306466,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708325063,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708341248,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708346982,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708358136,
+    "x": 412,
+    "y": 813,
+    "tag": "div",
+    "classes": [
+      "icon",
+      "chatstyles-icon"
+    ],
+    "bbox": {
+      "top": 807,
+      "left": 399.5,
+      "width": 17,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708362438,
+    "x": 416,
+    "y": 654,
+    "tag": "div",
+    "classes": [
+      "chat-bubble",
+      "bubble-6"
+    ],
+    "bbox": {
+      "top": 647.5,
+      "left": 377.484375,
+      "width": 50,
+      "height": 19
+    }
+  },
+  {
+    "timestamp": 1747708383978,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708406531,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708414572,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708421437,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708432731,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708435231,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708450271,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708452675,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708467802,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708475216,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708478653,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -14,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708519105,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -32,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708528682,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708626655,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708639601,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708646546,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708653650,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708716681,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708752438,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -41,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708773708,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": -23,
+      "left": 0,
+      "width": 1210,
+      "height": 910
+    }
+  },
+  {
+    "timestamp": 1747708825292,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
+  },
+  {
+    "timestamp": 1747708886633,
+    "x": 375,
+    "y": 633,
+    "tag": "canvas",
+    "classes": [],
+    "bbox": {
+      "top": 0,
+      "left": 0,
+      "width": 1006,
+      "height": 846
+    }
   }
 ]
