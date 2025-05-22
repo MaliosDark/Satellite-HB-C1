@@ -71,15 +71,15 @@ async function tryModels(modelList, fullPrompt, temperature, maxTokens) {
 // ─────────────────────────────────────────────────────────
 
 const MODELS = {
-  small:  ['llama3.2:3b'],
-  medium: ['gemma3:4b'],
-  large:  []
+  small:  ['llama3.2:1b'],
+  medium: [''],
+  large:  ['qwen3:0.6b']
 };
 
 const PARAMS = {
   small:  { maxTokens:  60, temperature: 0.6 },
-  medium: { maxTokens: 110, temperature: 0.7 },
-  large:  { maxTokens: 150, temperature: 0.8 }
+  medium: { maxTokens: 60, temperature: 0.7 },
+  large:  { maxTokens: 110, temperature: 0.8 }
 };
 
 // ─────────────────────────────────────────────────────────

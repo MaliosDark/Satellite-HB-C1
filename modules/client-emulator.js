@@ -1,7 +1,7 @@
 // File: modules/client-emulator.js
 // ========================
 // Minimal Puppeteer client that:
-// - Loads Nitro iframe URL
+// - Loads Nitro iframe URL with extended timeout and retry.
 // - Hooks every chat line via chatObserver *and* UiMapper
 // - Exposes onChat(sender, message)
 // - Provides sendChat(text) via UiMapper (with fallback to direct input and enforced 3 s throttle)
@@ -45,8 +45,21 @@ module.exports = class HabboClient {
       Object.defineProperty(navigator, 'plugins',   { get: () => [1,2,3] });
     });
 
-    await this.page.goto(this.url, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForSelector('.nitro-chat-widget', { timeout: 60000 });
+    // navegación con timeout extendido y reintento
+    try {
+      await this.page.goto(this.url, {
+        waitUntil: 'domcontentloaded',
+        timeout: 60000
+      });
+      await this.page.waitForSelector('.nitro-chat-widget', { timeout: 60000 });
+    } catch (err) {
+      console.warn('[INIT] First navigation failed, retrying:', err.message);
+      await this.page.goto(this.url, {
+        waitUntil: 'domcontentloaded',
+        timeout: 60000
+      });
+      await this.page.waitForSelector('.nitro-chat-widget', { timeout: 60000 });
+    }
 
     // install UI mapping
     await UiMapper.install(this.page, undefined, (sender, msg) => this.onChat(sender, msg));
@@ -71,7 +84,7 @@ module.exports = class HabboClient {
         /* Deshabilita todos los clics en el ícono "habbo" */
         .navigation-item.icon.icon-habbo {
           pointer-events: none !important;
-          opacity: 0.5;          /* opcional: lo “grisa” para verlo deshabilitado */
+          opacity: 0.5;
         }
       `
     });
@@ -97,6 +110,39 @@ module.exports = class HabboClient {
       console.warn('[INIT] Could not find or click the room-tool toggle:', e.message);
     }
 
+    // helper to open self menu, click one of [Dance, Actions, Signs], then close it
+    this.performContextAction = async () => {
+      // 1) click your own avatar to open the context menu
+      await this.page.evaluate(username => {
+        const avatars = Array.from(document.querySelectorAll('.user-avatar'));
+        const mine = avatars.find(a => a.getAttribute('data-username') === username);
+        if (mine) mine.click();
+      }, this.username);
+
+      // 2) wait for the menu
+      await this.page.waitForSelector('.nitro-context-menu.visible', { timeout: 5000 });
+
+      // 3) pick from allowed items
+      const choice = await this.page.evaluate(() => {
+        const allowed = ['Dance', 'Actions', 'Signs'];
+        const items = Array.from(document.querySelectorAll('.nitro-context-menu .menu-item'));
+        const candidates = items.filter(i =>
+          allowed.some(label => i.textContent.trim().startsWith(label))
+        );
+        if (candidates.length === 0) return null;
+        const pick = candidates[Math.floor(Math.random() * candidates.length)];
+        pick.click();
+        return pick.textContent.trim();
+      });
+
+      if (choice) {
+        console.log(`[MENU] performed context action: ${choice}`);
+      }
+
+      // 4) click outside the menu to close it
+      await this.page.mouse.click(10, 10); // adjust coords if needed
+      await sleep(200);
+    };
 
     // original observer
     await installChatObserver(this.page, (s,m)=>this.onChat(s,m), this.username);
@@ -130,19 +176,15 @@ module.exports = class HabboClient {
   }
 
   /**
-   * Sends chat with at least 3 s between calls.
+   * Sends chat in chunks ≤100 chars, with at least 3 s between each send.
    */
-  /**
- * Sends chat in chunks ≤100 chars, with at least 3 s between each send.
- */
-async sendChat(text) {
+  async sendChat(text) {
     const now   = Date.now();
     const since = now - this._lastSentAt;
     if (since < 3000) {
       await sleep(3000 - since);
     }
   
-    // split into ≤100-char chunks
     const MAX = 100;
     const chunks = [];
     if (text.length <= MAX) {
@@ -162,7 +204,6 @@ async sendChat(text) {
       if (chunk) chunks.push(chunk);
     }
   
-    // send each chunk with 3 s throttle and UiMapper fallback
     for (const chunk of chunks) {
       try {
         await UiMapper.sendChat(this.page, chunk);
@@ -176,5 +217,4 @@ async sendChat(text) {
   
     this._lastSentAt = Date.now();
   }
-  
 };

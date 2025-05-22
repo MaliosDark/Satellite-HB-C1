@@ -99,8 +99,19 @@ async function main() {
     console.log(`🚀 ${cfg.username} launched`);
 
     // autonomous random wandering
-    movement.startAutoWander(() => client.page);
-    
+    ;(async function wanderForever() {
+      while (!client.page) {
+        await sleep(100);
+      }
+      while (true) {
+        await sleep(randomBetween(WANDER_INTERVAL_MIN, WANDER_INTERVAL_MAX));
+        try {
+          await movement.randomWander(client.page, { width: 20, height: 20 }, 5);
+        } catch (err) {
+          console.error(`[${cfg.username}] wander error:`, err);
+        }
+      }
+    })();
   
     await sleep(300);
   }
