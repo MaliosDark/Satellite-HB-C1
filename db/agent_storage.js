@@ -189,6 +189,14 @@ async function addToList(coreId, listName, item) {
       );
       break;
 
+    case 'recent_topics':
+      await conn.query(
+        `INSERT INTO agent_recent_topics (core_id, topic, ts)
+        VALUES (?, ?, ?)`,
+        [ coreId, item.topic, item.ts ]
+      );
+      break;
+
     default:
       // no MySQL table for this list, Redis-only
       break;

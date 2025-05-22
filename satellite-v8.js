@@ -44,16 +44,21 @@ require('dotenv').config();
 const {
   initMySQL,
   getCore,
+  setCore,
   addToList,
   getList,
-  redis               // for the room-turn lock
+  redis
 } = require('./db/agent_storage');
+
 
 const HabboClient        = require('./modules/client-emulator');
 const botConfigs         = require('./config/bots-config');
 const aiModule           = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
+const { extractTopics } = require('./modules/topicExtractor');
+const evo = require('./modules/evolution');
+
 
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS    = 8000;
@@ -94,19 +99,8 @@ async function main() {
     console.log(`🚀 ${cfg.username} launched`);
 
     // autonomous random wandering
-    ;(async function wanderForever() {
-      while (!client.page) {
-        await sleep(100);
-      }
-      while (true) {
-        await sleep(randomBetween(WANDER_INTERVAL_MIN, WANDER_INTERVAL_MAX));
-        try {
-          await movement.randomWander(client.page, { width: 10, height: 10 }, 5);
-        } catch (err) {
-          console.error(`[${cfg.username}] wander error:`, err);
-        }
-      }
-    })();
+    movement.startAutoWander(() => client.page);
+    
   
     await sleep(300);
   }
@@ -155,15 +149,26 @@ async function handleMessage(cfg, client, sender, text) {
   busy.set(sender, true);
 
   try {
-    // 2) Load or bootstrap profile
+     // 2) Load or bootstrap profile
     let profile = await getCore(cfg.botId);
     if (!profile || !profile.core_id) {
       profile = await aiModule.loadProfile(cfg.username);
     }
     const coreId = profile.core_id;
 
+    // Make sure cognitive_traits is always an object, never a "[object Object]" string
+    if (typeof profile.cognitive_traits === 'string') {
+      try {
+        profile.cognitive_traits = JSON.parse(profile.cognitive_traits);
+      } catch (err) {
+        // If parsing fails, fall back to an empty traits object
+        profile.cognitive_traits = {};
+        console.warn(`[${cfg.username}] Warning: failed to parse cognitive_traits; reset to {}`, err);
+      }
+    }
+
     // 3) Gather memory (commented for later study)
-    /*
+    
     const lists = [
       'daily_routine','belief_network','inner_monologue','conflicts',
       'personal_timeline','relationships','motivations','dream_generator',
@@ -174,7 +179,7 @@ async function handleMessage(cfg, client, sender, text) {
       memArr.push(...await getList(coreId, name));
     }
     const memText = memArr.map(e => JSON.stringify(e)).join('\n');
-    */
+    
 
     // 4) Get current room context
     const context = await getRoomContext(cfg.botId);
@@ -190,6 +195,54 @@ async function handleMessage(cfg, client, sender, text) {
       sender,
       message: text
     });
+
+    // 6.5) Extract “real” topics from the user’s text
+    const topics = extractTopics(text, { lang: 'en' });
+    for (const topic of topics) {
+      await addToList(coreId, 'recent_topics', { topic, ts: Date.now() });
+    }
+
+    // 6.6) EVOLUTION & MEMORY-DECAY STEP — based on last turn
+    const oldEmo = profile.current_emotion;
+    const oldCog = profile.cognitive_traits;    // now guaranteed to be an object
+    const now    = Date.now();
+
+    // A) Emotion shift
+    const newEmotion   = evo.computeEmotionShift(oldEmo, text, reply);
+
+    // B) Cognitive traits shift
+    const newCogTraits = evo.computeCognitiveShift(oldCog, text, reply);
+
+    // C) Belief revision
+    const rawBeliefs     = await getList(coreId, 'belief_network');
+    const updatedBeliefs = evo.reviseBeliefs(rawBeliefs, text, reply);
+
+    // D) Memory decay
+    const rawMono     = await getList(coreId, 'inner_monologue');
+    const filteredMono = evo.applyMemoryDecay(rawMono, now);
+
+    // E) Persist core updates
+    await setCore(coreId, {
+      current_emotion:   newEmotion,
+      cognitive_traits: JSON.stringify(newCogTraits)
+    });
+
+    // F) Replace belief_network in Redis/MySQL
+    await redis.del(`${coreId}:belief_network`);
+    for (const b of updatedBeliefs) {
+      await addToList(coreId, 'belief_network', b);
+    }
+
+    // G) (Optional) prune inner_monologue
+    // await redis.del(`${coreId}:inner_monologue`);
+    // for (const m of filteredMono) {
+    //   await addToList(coreId, 'inner_monologue', m);
+    // }
+
+    // Update in-memory profile for remainder of this turn
+    profile.current_emotion   = newEmotion;
+    profile.cognitive_traits  = newCogTraits;
+
 
     // 7) Record memory
     await addToList(coreId, 'inner_monologue', {

@@ -8,3 +8,4 @@ profiles/clara_profile.json
 profiles/dorian_profile.json
 profiles/jimmy_profile.json
 ui-mapping.json
+redis-full-dump.json

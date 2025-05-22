@@ -46,7 +46,7 @@ module.exports = class HabboClient {
     });
 
     await this.page.goto(this.url, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForSelector('canvas', { timeout: 60000 });
+    await this.page.waitForSelector('.nitro-chat-widget', { timeout: 60000 });
 
     // install UI mapping
     await UiMapper.install(this.page, undefined, (sender, msg) => this.onChat(sender, msg));
@@ -66,6 +66,16 @@ module.exports = class HabboClient {
       });
     });
 
+    await this.page.addStyleTag({
+      content: `
+        /* Deshabilita todos los clics en el ícono "habbo" */
+        .navigation-item.icon.icon-habbo {
+          pointer-events: none !important;
+          opacity: 0.5;          /* opcional: lo “grisa” para verlo deshabilitado */
+        }
+      `
+    });
+
     // close initial popup if present
     try {
       const btn = await this.page.$('div.nitro-card-header-close');
@@ -77,6 +87,16 @@ module.exports = class HabboClient {
     } catch (e) {
       console.warn('[POPUP] unable to close:', e.message);
     }
+
+    // minimize the room tool panel so it never steals focus
+    try {
+      await this.page.waitForSelector('.btn-toggle.toggle-roomtool', { timeout: 5000 });
+      await this.page.click('.btn-toggle.toggle-roomtool');
+      console.log('[INIT] Room tool panel minimized');
+    } catch (e) {
+      console.warn('[INIT] Could not find or click the room-tool toggle:', e.message);
+    }
+
 
     // original observer
     await installChatObserver(this.page, (s,m)=>this.onChat(s,m), this.username);

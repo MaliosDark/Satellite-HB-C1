@@ -99,6 +99,12 @@ const schema = {
     goal:     "TEXT",
     status:   "VARCHAR(32)",
     priority: "INT"
+  },
+  agent_recent_topics: {
+    id:      "INT AUTO_INCREMENT PRIMARY KEY",
+    core_id: "VARCHAR(32)",
+    topic:   "TEXT",
+    ts:      "BIGINT"
   }
 };
 

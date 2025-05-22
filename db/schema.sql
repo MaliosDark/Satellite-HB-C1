@@ -131,3 +131,11 @@ CREATE TABLE IF NOT EXISTS items_rooms (
   INDEX(room_id),
   INDEX(item_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS agent_recent_topics (
+  id      INT AUTO_INCREMENT PRIMARY KEY,
+  core_id VARCHAR(32),
+  topic   TEXT,
+  ts      BIGINT,
+  FOREIGN KEY (core_id) REFERENCES agents(core_id) ON DELETE CASCADE
+) ENGINE=InnoDB;

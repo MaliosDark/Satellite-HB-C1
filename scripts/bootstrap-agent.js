@@ -1,15 +1,18 @@
-// File: scripts/init_agent.js
+// File: scripts/bootstrap_agent.js
 // ===========================
 
 const storage = require('../db/agent_storage');
 const path    = require('path');
 
 async function main() {
+  // 1) Initialize the MySQL schema (creates missing tables/columns)
   await storage.initMySQL();
 
-  const agentProfile = require(path.join(__dirname,'../profiles/nova_profile.json'));
+  // 2) Load the agent’s profile JSON
+  const agentProfile = require(path.join(__dirname, '../profiles/nova_profile.json'));
   const coreId       = agentProfile.core_id;
 
+  // 3) Destructure all the array/object fields out of the profile
   const {
     emotional_palette,
     daily_routine,
@@ -29,7 +32,6 @@ async function main() {
     knowledge_base,
     emotional_triggers,
     coping_mechanisms,
-    aspirational_dreams: _dup1, 
     wallet,
     shop_behavior,
     wardrobe,
@@ -45,18 +47,44 @@ async function main() {
     creative_manifestations,
     pai_os_awareness,
 
+    // Everything else (primitive fields) goes into coreFields
     ...coreFields
   } = agentProfile;
 
+  // 4) Persist the “core” hash in Redis + MySQL, stringifying JSON fields
+  await storage.setCore(coreId, {
+    ...coreFields,
+    emotional_palette:       JSON.stringify(emotional_palette),
+    shop_behavior:           JSON.stringify(shop_behavior),
+    goals:                   JSON.stringify(goals),
+    motivations:             JSON.stringify(motivations),
+    perceptions:             JSON.stringify(perceptions),
+    knowledge_base:          JSON.stringify(knowledge_base),
+    wardrobe:                JSON.stringify(wardrobe),
+    trading_history:         JSON.stringify(trading_history),
+    location_knowledge:      JSON.stringify(location_knowledge),
+    navigation_traits:       JSON.stringify(navigation_traits),
+    economy_profile:         JSON.stringify(economy_profile),
+    spiritual_identity:      JSON.stringify(spiritual_identity),
+    social_preferences:      JSON.stringify(social_preferences),
+    circadian_behavior:      JSON.stringify(circadian_behavior),
+    sentimental_items:       JSON.stringify(sentimental_items),
+    existential_mission:     JSON.stringify(existential_mission),
+    creative_manifestations: JSON.stringify(creative_manifestations),
+    pai_os_awareness:        JSON.stringify(pai_os_awareness)
+  });
 
-  await storage.setCore(coreId, coreFields);
+  // 5) Persist the agent’s wallet
   await storage.setWallet(coreId, wallet);
 
+  // 6) Push each list entry into Redis (and into MySQL where supported)
   await Promise.all([
+    // simple lists of primitives
     ...emotional_palette.map(v => storage.addToList(coreId, 'emotional_palette', v)),
-    ...daily_routine.map(e => storage.addRoutineEntry(coreId, e)),
     ...interactive_triggers.map(v => storage.addToList(coreId, 'interactive_triggers', v)),
     ...favorite_furniture.map(v => storage.addToList(coreId, 'favorite_furniture', v)),
+    // structured lists
+    ...daily_routine.map(e => storage.addRoutineEntry(coreId, e)),
     ...belief_network.map(v => storage.addToList(coreId, 'belief_network', v)),
     ...inner_monologue.map(v => storage.addToList(coreId, 'inner_monologue', v)),
     ...conflicts.map(v => storage.addToList(coreId, 'conflicts', v)),
@@ -69,6 +97,7 @@ async function main() {
     ...learning_journal.map(v => storage.addToList(coreId, 'learning_journal', v)),
     ...aspirational_dreams.map(v => storage.addToList(coreId, 'aspirational_dreams', v)),
     ...knowledge_base.map(v => storage.addToList(coreId, 'knowledge_base', v)),
+    // split emotional_triggers into two lists
     ...emotional_triggers.positive.map(v =>
       storage.addToList(coreId, 'emotional_triggers_positive', v)
     ),
