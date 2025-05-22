@@ -173,3 +173,5 @@ async sendChat(page, text) {
     actions[actionName] = className;
   }
 };
+
+// Need to fix the agent going to the hotel view button
