@@ -110,40 +110,6 @@ module.exports = class HabboClient {
       console.warn('[INIT] Could not find or click the room-tool toggle:', e.message);
     }
 
-    // helper to open self menu, click one of [Dance, Actions, Signs], then close it
-    this.performContextAction = async () => {
-      // 1) click your own avatar to open the context menu
-      await this.page.evaluate(username => {
-        const avatars = Array.from(document.querySelectorAll('.user-avatar'));
-        const mine = avatars.find(a => a.getAttribute('data-username') === username);
-        if (mine) mine.click();
-      }, this.username);
-
-      // 2) wait for the menu
-      await this.page.waitForSelector('.nitro-context-menu.visible', { timeout: 5000 });
-
-      // 3) pick from allowed items
-      const choice = await this.page.evaluate(() => {
-        const allowed = ['Dance', 'Actions', 'Signs'];
-        const items = Array.from(document.querySelectorAll('.nitro-context-menu .menu-item'));
-        const candidates = items.filter(i =>
-          allowed.some(label => i.textContent.trim().startsWith(label))
-        );
-        if (candidates.length === 0) return null;
-        const pick = candidates[Math.floor(Math.random() * candidates.length)];
-        pick.click();
-        return pick.textContent.trim();
-      });
-
-      if (choice) {
-        console.log(`[MENU] performed context action: ${choice}`);
-      }
-
-      // 4) click outside the menu to close it
-      await this.page.mouse.click(10, 10); // adjust coords if needed
-      await sleep(200);
-    };
-
     // original observer
     await installChatObserver(this.page, (s,m)=>this.onChat(s,m), this.username);
 
@@ -169,6 +135,191 @@ module.exports = class HabboClient {
       }
     };
 
+    // performContextAction: click Dance|Actions|Signs then close menu
+    // … inside client‐emulator.js …
+
+    // inside modules/client-emulator.js, replace performContextAction with:
+
+    // in modules/client-emulator.js, inside _init():
+    // Replace your existing performContextAction with this:
+
+    // inside HabboClient, replace performContextAction with this:
+    // inside HabboClient, overwrite performContextAction with:
+    // in modules/client-emulator.js, replace performContextAction with:
+    // inside modules/client-emulator.js, in your _init() after defining exploreAndAct:
+    // inside your HabboClient._init(), replace performContextAction with:
+
+    this.performContextAction = async () => {
+      const FRAME_URL = 'react/index';
+      const MENU_SEL  = '.position-absolute.nitro-context-menu.visible';
+      const AVATAR_SEL = `[data-username="${this.username}"]`;
+      const PRIMARY   = ['Dance', 'Actions', 'Signs'];
+      const DANCE_STYLES = ['Pogo Mogo', 'Duck Funk', 'The Rollie'];
+      const BACK_LABEL   = 'Back';
+    
+      // click in the center of an element handle
+      async function clickCenter(handle) {
+        const box = await handle.boundingBox();
+        if (!box) return false;
+        await this.page.mouse.click(box.x + box.width/2, box.y + box.height/2);
+        return true;
+      }
+    
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          // 1️⃣ find the Nitro iframe
+          const nitroFrame = this.page.frames().find(f => f.url().includes(FRAME_URL));
+          if (!nitroFrame) throw new Error('Nitro iframe not found');
+    
+          console.log(`[MENU][${attempt}] opening main context menu…`);
+    
+          // 2️⃣ open main menu (avatar or last bubble)
+          if (await nitroFrame.$(AVATAR_SEL)) {
+            await nitroFrame.click(AVATAR_SEL);
+          } else {
+            const bubbles = await nitroFrame.$$(`.bubble-container.visible .username strong`);
+            if (!bubbles.length) throw new Error('No bubble found');
+            await nitroFrame.evaluate(el => el.closest('.bubble-container.visible').click(), bubbles.pop());
+          }
+    
+          // 3️⃣ wait for main menu
+          const mainMenu = await nitroFrame.waitForSelector(MENU_SEL, { timeout: 3000 });
+    
+          // 4️⃣ click the “Dance” item
+          {
+            const danceIcon = await mainMenu.$(`.menu-item i.icon-dance`);
+            if (!danceIcon) throw new Error('Main “Dance” not found');
+            console.log('[MENU] clicking Dance…');
+            if (!await clickCenter.call(this, danceIcon)) throw new Error('Dance icon click failed');
+          }
+    
+          // 5️⃣ now wait for the **dance-style submenu**
+          console.log('[MENU] waiting for style submenu…');
+          const styleMenu = await nitroFrame.waitForSelector(MENU_SEL, { timeout: 3000 });
+    
+          // 6️⃣ choose a style at random (not “Back”)
+          const styleHandles = await styleMenu.$$('.menu-item');
+          const styles = [];
+          let backHandle = null;
+          for (let h of styleHandles) {
+            const txt = (await (await h.getProperty('textContent')).jsonValue()).trim();
+            if (DANCE_STYLES.includes(txt)) {
+              styles.push({ handle: h, label: txt });
+            } else if (txt === BACK_LABEL) {
+              backHandle = h;
+            }
+          }
+          if (!styles.length) throw new Error('No dance styles found');
+    
+          // pick one at random
+          const choice = styles[Math.floor(Math.random() * styles.length)];
+          console.log(`[MENU] clicking style “${choice.label}”`);
+          if (!await clickCenter.call(this, choice.handle)) {
+            throw new Error(`Style click failed: ${choice.label}`);
+          }
+    
+          // 7️⃣ final cleanup: click outside to close any leftover menu
+          await this.page.mouse.click(5, 5);
+          await sleep(150);
+          console.log(`[MENU] dance style "${choice.label}" performed!`);
+          return;
+        }
+        catch (err) {
+          console.warn(`[MENU][${attempt}] failed: ${err.message}`);
+          // click outside to reset
+          await this.page.mouse.click(5, 5).catch(()=>{});
+          await sleep(300);
+        }
+      }
+    
+      console.error('[MENU] performContextAction giving up after 3 tries');
+    };
+
+    // inside your HabboClient._init(), replacing the old performSocialAction:
+
+    this.performSocialAction = async ({ type, target }) => {
+      const FRAME_URL  = 'react/index';
+      const MENU_SEL   = '.position-absolute.nitro-context-menu.visible';
+      const OPTIONS    = {
+        friend:   'Ask to be a Friend',
+        trade:    'Trade',
+        whisper:  'Whisper',
+        respect:  'Give respect',
+        ignore:   'Ignore',
+        unignore: 'Listen'
+      };
+      const label     = OPTIONS[type];
+      if (!label) {
+        console.warn(`[SOCIAL] unknown action type: ${type}`);
+        return false;
+      }
+
+      // helper: click at the center of any element handle
+      async function clickCenter(handle) {
+        const box = await handle.boundingBox();
+        if (!box) return false;
+        await this.page.mouse.click(box.x + box.width/2, box.y + box.height/2);
+        return true;
+      }
+
+      // 1️⃣ find Nitro iframe
+      const nitroFrame = this.page.frames().find(f => f.url().includes(FRAME_URL));
+      if (!nitroFrame) throw new Error('Nitro iframe not found');
+
+      // 2️⃣ open the context menu on the target user
+      const sel = `[data-username="${target}"]`;
+      if (await nitroFrame.$(sel)) {
+        await nitroFrame.click(sel);
+      } else {
+        // fallback: click their last bubble
+        const bubbles = await nitroFrame.$$(`.bubble-container.visible .username strong`);
+        const match = bubbles.reverse().find(async s => {
+          const txt = (await (await s.getProperty('textContent')).jsonValue()).trim();
+          return txt === target;
+        });
+        if (!match) throw new Error(`No bubble found for ${target}`);
+        await nitroFrame.evaluate(el => el.closest('.bubble-container.visible').click(), match);
+      }
+
+      // 3️⃣ wait for the menu
+      const menu = await nitroFrame.waitForSelector(MENU_SEL, { timeout: 3000 });
+
+      // 4️⃣ scan items for our label, click it via mouse
+      const items = await menu.$$('.menu-item');
+      for (const item of items) {
+        const txt = (await (await item.getProperty('textContent')).jsonValue()).trim();
+        if (txt.startsWith(label)) {
+          if (await clickCenter.call(this, item)) {
+            console.log(`[SOCIAL] ${type}@${target} performed (“${label}”)`);
+            // cleanup
+            await this.page.mouse.click(5, 5);
+            return true;
+          }
+        }
+      }
+
+      console.warn(`[SOCIAL] could not perform ${type} on ${target}`);
+      // 5️⃣ cleanup
+      await this.page.mouse.click(5, 5);
+      return false;
+    };
+    
+    this.handleIncomingFriendRequest = async () => {
+      // pop-up selector
+      const POPUP_SEL   = '.accept-friend-btn';
+      const POPUP_BOX   = '.headerfriend-close, .accept-friend-btn, .reject-friend-btn';
+
+      try {
+        // wait briefly for the request dialog
+        const acceptBtn = await this.page.waitForSelector(POPUP_SEL, { timeout: 2000 });
+        // click “Accept”
+        await acceptBtn.click();
+        console.log('[FRIEND] request accepted');
+      } catch {
+        // none appeared
+      }
+    };
+
     // initial greeting
     try {
       await this.sendChat(`Hello, I am ${this.username}!`);
@@ -184,7 +335,7 @@ module.exports = class HabboClient {
     if (since < 3000) {
       await sleep(3000 - since);
     }
-  
+
     const MAX = 100;
     const chunks = [];
     if (text.length <= MAX) {
@@ -203,7 +354,7 @@ module.exports = class HabboClient {
       }
       if (chunk) chunks.push(chunk);
     }
-  
+
     for (const chunk of chunks) {
       try {
         await UiMapper.sendChat(this.page, chunk);
@@ -214,7 +365,9 @@ module.exports = class HabboClient {
       }
       await sleep(3000);
     }
-  
+
     this._lastSentAt = Date.now();
   }
+
+
 };

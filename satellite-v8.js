@@ -245,10 +245,10 @@ async function handleMessage(cfg, client, sender, text) {
     }
 
     // G) (Optional) prune inner_monologue
-    // await redis.del(`${coreId}:inner_monologue`);
-    // for (const m of filteredMono) {
-    //   await addToList(coreId, 'inner_monologue', m);
-    // }
+    await redis.del(`${coreId}:inner_monologue`);
+    for (const m of filteredMono) {
+      await addToList(coreId, 'inner_monologue', m);
+    }
 
     // Update in-memory profile for remainder of this turn
     profile.current_emotion   = newEmotion;
@@ -268,6 +268,24 @@ async function handleMessage(cfg, client, sender, text) {
       message: reply,
       ts:      Date.now()
     });
+    
+    const LAST_CACHE_KEY = `${botKey}:last_replies`;
+    let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || [];  // guardamos hasta 10
+
+    function isTooSimilar(a, b) {
+      const min = Math.min(a.length, b.length);
+      let same = 0;
+      while (same < min && a[same] === b[same]) same++;
+      return (same / b.length) > 0.7;  // >70% igual
+    }
+
+    if ( lastReplies.some(old => isTooSimilar(old, reply)) ) {
+      console.log('[REPEAT] detected reply too similar, regenerating…');
+      reply = await aiModule.generateReply({ profile, context, sender, message: text });
+    }
+
+    await redis.lpush(LAST_CACHE_KEY, reply);
+    await redis.ltrim(LAST_CACHE_KEY, 0, 9);
 
     // 8) Chunk into ≤100-char bubbles and send with 3 s gap
     const MAX = 100;
@@ -286,6 +304,44 @@ async function handleMessage(cfg, client, sender, text) {
     for (const chunk of chunks) {
       const out = `${cfg.username} → ${sender}: ${chunk}`;
       await client.sendChat(out);
+      //
+      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS ─────────────────────────────────────
+      //
+
+      // 1) Ask to be friends if we “trust” them
+      if (profile.cognitive_traits.trust > 0.7) {
+        await client.performSocialAction({ type: 'friend', target: sender });
+      }
+
+      // 2) Give respect if they used “thank you” or “please”
+      if (/\b(thank you|please)\b/i.test(text)) {
+        await client.performSocialAction({ type: 'respect', target: sender });
+      }
+
+      // 3) If we’ve previously ignored them, give them a second chance
+      const ignoredList = await getList(coreId, 'ignored_users') || [];
+      if (ignoredList.find(u => u.user === sender)) {
+        await client.performSocialAction({ type: 'unignore', target: sender });
+        // remove from memory so we don’t loop
+        await redis.lrem(`${coreId}:ignored_users`, 0, JSON.stringify({ user: sender }));
+      }
+
+      // 4) tap Dance/Actions/Signs to keep our “heartbeat” going
+      const wantsDance = reply.toLowerCase().endsWith('[dance]');
+      const sociability = profile.cognitive_traits.sociability ?? 0;
+      const sociableEnough = sociability > 0.6;
+      const randomChance = Math.random() < 0.1;
+
+      if (wantsDance || sociableEnough || randomChance) {
+        console.log('[MENU] AI decided to dance');
+        await client.performContextAction();
+      } else {
+        console.log('[MENU] no dance this turn');
+      }
+
+      // 5) Check for and accept any incoming friend request popups
+      await client.handleIncomingFriendRequest();
+
       await sleep(3000);
     }
   }

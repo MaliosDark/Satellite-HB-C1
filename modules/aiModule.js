@@ -71,9 +71,9 @@ async function tryModels(modelList, fullPrompt, temperature, maxTokens) {
 // ─────────────────────────────────────────────────────────
 
 const MODELS = {
-  small:  ['llama3.2:1b'],
-  medium: [''],
-  large:  ['qwen3:0.6b']
+  small:  ['benevolentjoker/nsfwvanessa:latest'],
+  medium: ['benevolentjoker/nsfwvanessa:latest'],
+  large:  ['benevolentjoker/nsfwvanessa:latest']
 };
 
 const PARAMS = {
@@ -194,7 +194,7 @@ Goals: ${profileObj.goals.map(g => g.goal).join('; ') || 'none'}.
 Emotional palette: ${profileObj.emotional_palette.join(', ')}.
 
 Please keep your entire reply under ${maxTokens} tokens.
-Do NOT reveal your internal reasoning.
+Do NOT reveal your internal reasoning. Just respond without include thought process.
     `.trim();
 
     // 6) assemble the full conversation history
