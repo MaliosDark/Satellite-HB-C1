@@ -268,9 +268,9 @@ async function handleMessage(cfg, client, sender, text) {
       message: reply,
       ts:      Date.now()
     });
-    
+
     const LAST_CACHE_KEY = `${botKey}:last_replies`;
-    let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || [];  // guardamos hasta 10
+    let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || []; 
 
     function isTooSimilar(a, b) {
       const min = Math.min(a.length, b.length);
@@ -304,10 +304,22 @@ async function handleMessage(cfg, client, sender, text) {
     for (const chunk of chunks) {
       const out = `${cfg.username} → ${sender}: ${chunk}`;
       await client.sendChat(out);
-      //
-      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS ─────────────────────────────────────
-      //
 
+      // scan for players within 150px
+      const nearbyPlayers = await client.getNearbyPlayers(150);
+
+      if (nearbyPlayers.length > 0) {
+        // sort by closest first
+        nearbyPlayers.sort((a, b) => a.distance - b.distance);
+        const { username, distance } = nearbyPlayers[0];
+
+        console.log(`[PROXIMITY] Nearest player: ${username} (${distance}px away)`);
+
+        // whisper or greet them
+        await client.performSocialAction({ type: 'whisper', target: username });
+      }
+
+      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS 
       // 1) Ask to be friends if we “trust” them
       if (profile.cognitive_traits.trust > 0.7) {
         await client.performSocialAction({ type: 'friend', target: sender });

@@ -136,19 +136,6 @@ module.exports = class HabboClient {
     };
 
     // performContextAction: click Dance|Actions|Signs then close menu
-    // … inside client‐emulator.js …
-
-    // inside modules/client-emulator.js, replace performContextAction with:
-
-    // in modules/client-emulator.js, inside _init():
-    // Replace your existing performContextAction with this:
-
-    // inside HabboClient, replace performContextAction with this:
-    // inside HabboClient, overwrite performContextAction with:
-    // in modules/client-emulator.js, replace performContextAction with:
-    // inside modules/client-emulator.js, in your _init() after defining exploreAndAct:
-    // inside your HabboClient._init(), replace performContextAction with:
-
     this.performContextAction = async () => {
       const FRAME_URL = 'react/index';
       const MENU_SEL  = '.position-absolute.nitro-context-menu.visible';
@@ -235,8 +222,6 @@ module.exports = class HabboClient {
       console.error('[MENU] performContextAction giving up after 3 tries');
     };
 
-    // inside your HabboClient._init(), replacing the old performSocialAction:
-
     this.performSocialAction = async ({ type, target }) => {
       const FRAME_URL  = 'react/index';
       const MENU_SEL   = '.position-absolute.nitro-context-menu.visible';
@@ -303,7 +288,7 @@ module.exports = class HabboClient {
       await this.page.mouse.click(5, 5);
       return false;
     };
-    
+
     this.handleIncomingFriendRequest = async () => {
       // pop-up selector
       const POPUP_SEL   = '.accept-friend-btn';
@@ -324,6 +309,48 @@ module.exports = class HabboClient {
     try {
       await this.sendChat(`Hello, I am ${this.username}!`);
     } catch {}
+  }
+
+  /**
+   * Returns an array of { username, distance } for every player
+   * whose avatar is within `radius` pixels of our own avatar.
+   */
+  async getNearbyPlayers(radius = 200) {
+    const FRAME_URL = 'react/index';
+    // 1) find the Nitro iframe
+    const nitroFrame = this.page.frames().find(f => f.url().includes(FRAME_URL));
+    if (!nitroFrame) throw new Error('Nitro iframe not found');
+
+    // 2) run in page context
+    return nitroFrame.evaluate(({ selfName, radius }) => {
+      // Euclidean distance helper
+      function distance(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      // 3) get our own avatar’s center point
+      const selfEl = document.querySelector(`[data-username="${selfName}"]`);
+      if (!selfEl) return [];
+      const box = selfEl.getBoundingClientRect();
+      const selfCenter = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+
+      // 4) find all other avatars and measure distance
+      const nearby = [];
+      document.querySelectorAll('[data-username]').forEach(el => {
+        const user = el.getAttribute('data-username');
+        if (user === selfName) return;
+        const b = el.getBoundingClientRect();
+        const center = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+        const d = distance(selfCenter, center);
+        if (d <= radius) {
+          nearby.push({ username: user, distance: Math.round(d) });
+        }
+      });
+
+      return nearby;
+    }, { selfName: this.username, radius });
   }
 
   /**
