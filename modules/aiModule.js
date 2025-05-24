@@ -2,7 +2,7 @@
 // =========================
 
 const axios     = require('axios');
-const mysql     = require('mysql2/promise');
+const { pool }  = require('../db/agent_storage');
 const path      = require('path');
 const storage   = require('../db/agent_storage');
 const { redis } = storage;
@@ -78,7 +78,7 @@ const MODELS = {
 
 const PARAMS = {
   small:  { maxTokens:  60, temperature: 0.6 },
-  medium: { maxTokens: 60, temperature: 0.7 },
+  medium: { maxTokens:  60, temperature: 0.7 },
   large:  { maxTokens: 110, temperature: 0.8 }
 };
 
@@ -131,18 +131,11 @@ module.exports = {
     const [min, max] = this.THINK_DELAY_RANGE;
     await sleep(randomBetween(min, max));
 
-    // 2) reload the fresh profile row from MySQL
-    const conn = await mysql.createConnection({
-      host:     process.env.DB_HOST,
-      user:     process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME
-    });
-    const [[agentRow]] = await conn.query(
+    // 2) reload the fresh profile row from MySQL via pool
+    const [[agentRow]] = await pool.query(
       `SELECT * FROM agents WHERE core_id = ?`,
       [profile.core_id]
     );
-    await conn.end();
 
     // 3) parse JSON fields
     const cognitive = typeof agentRow.cognitive_traits === 'string'
@@ -192,7 +185,7 @@ module.exports = {
     • Philosophy: ${profileObj.philosophical_position}
     • Current emotion: ${profileObj.current_emotion}
     • Skills: ${profileObj.skills.join(', ') || 'none'}
-    • Goals: ${profileObj.goals.map(g=>g.goal).join('; ') || 'none'}
+    • Goals: ${profileObj.goals.map(g => g.goal).join('; ') || 'none'}
     • Emotional palette: ${profileObj.emotional_palette.join(', ')}
 
     [INTEREST METER]
@@ -235,6 +228,5 @@ module.exports = {
     // 7) dispatch
     const tierList = [...MODELS.small, ...MODELS.medium];
     return tryModels(tierList, fullPrompt, temperature, maxTokens);
-
   }
 };

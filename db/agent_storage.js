@@ -1,74 +1,64 @@
 // File: db/agent_storage.js
 // =========================
 // Redis + MySQL storage for any number of agents.
-// Persists on Redis (Fast) & MySQL (persistent).
+// Uses a connection pool to avoid “Too many connections.”
 
 const Redis = require('ioredis');
 const mysql = require('mysql2/promise');
 const fs    = require('fs').promises;
 require('dotenv').config();
 
-const redis = new Redis({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT
-});
-
-const mysqlConfig = {
+// — MySQL pool configuration —
+const pool = mysql.createPool({
   host:               process.env.DB_HOST,
   user:               process.env.DB_USER,
   password:           process.env.DB_PASS,
   database:           process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit:    parseInt(process.env.DB_POOL_LIMIT, 10) || 10,
+  queueLimit:         0,
   multipleStatements: true,
-};
-
-let _mysqlConn = null;
-async function getConn() {
-  if (!_mysqlConn) {
-    _mysqlConn = await mysql.createConnection(mysqlConfig);
-  }
-  return _mysqlConn;
-}
-
+});
 
 async function initMySQL() {
-  const conn   = await getConn();
   const schema = await fs.readFile(__dirname + '/schema.sql', 'utf8');
-  await conn.query(schema);
+  await pool.query(schema);
 }
 
+// — Redis setup —
+const redis = new Redis({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
 
 function redisKey(coreId, sub) {
   return `${coreId}:${sub}`;
 }
 
 // — Core fields —
+// Write or update agent core record
 async function setCore(coreId, coreObj) {
-  // Redis
   await redis.hmset(redisKey(coreId, 'core'), coreObj);
 
-  // MySQL
   const cols = Object.keys(coreObj);
-  const placeholders = cols.map(_=>'?').join(',');
-  const updates = cols.map(c=>`${c}=VALUES(${c})`).join(',');
+  const placeholders = cols.map(() => '?').join(',');
+  const updates = cols.map(c => `${c}=VALUES(${c})`).join(',');
   const sql = `
-    INSERT INTO agents
-      (core_id, ${cols.join(',')})
-    VALUES
-      (?, ${placeholders})
-    ON DUPLICATE KEY UPDATE
-      ${updates}
+    INSERT INTO agents (core_id, ${cols.join(',')})
+    VALUES (?, ${placeholders})
+    ON DUPLICATE KEY UPDATE ${updates}
   `;
-  const params = [coreId, ...cols.map(c=>coreObj[c])];
-  const conn = await getConn();
-  await conn.query(sql, params);
+  const params = [coreId, ...cols.map(c => coreObj[c])];
+  await pool.query(sql, params);
 }
 
+// Read agent core from Redis
 async function getCore(coreId) {
   return redis.hgetall(redisKey(coreId, 'core'));
 }
 
 // — Wallet —
-// Redis + MySQL.agent_wallet
+// Write or update wallet
 async function setWallet(coreId, walletObj) {
   await redis.hmset(redisKey(coreId, 'wallet'), walletObj);
 
@@ -80,16 +70,22 @@ async function setWallet(coreId, walletObj) {
       duckets=VALUES(duckets),
       diamonds=VALUES(diamonds)
   `;
-  const params = [ coreId, walletObj.credits, walletObj.duckets, walletObj.diamonds ];
-  const conn = await getConn();
-  await conn.query(sql, params);
+  const params = [
+    coreId,
+    walletObj.credits,
+    walletObj.duckets,
+    walletObj.diamonds
+  ];
+  await pool.query(sql, params);
 }
 
+// Read wallet from Redis
 async function getWallet(coreId) {
   return redis.hgetall(redisKey(coreId, 'wallet'));
 }
 
 // — Daily Routine —
+// Add one daily_routine entry
 async function addRoutineEntry(coreId, entry) {
   await redis.rpush(redisKey(coreId, 'daily_routine'), JSON.stringify(entry));
 
@@ -97,65 +93,56 @@ async function addRoutineEntry(coreId, entry) {
     INSERT INTO agent_routine (core_id, time, action)
     VALUES (?, ?, ?)
   `;
-  const conn = await getConn();
-  await conn.query(sql, [ coreId, entry.time, entry.action ]);
+  await pool.query(sql, [coreId, entry.time, entry.action]);
 }
 
+// Read daily_routine list
 async function getRoutine(coreId) {
   const list = await redis.lrange(redisKey(coreId, 'daily_routine'), 0, -1);
   return list.map(JSON.parse);
 }
 
-// — Generic handler for lists backed by both Redis and MySQL —
-// Supports: belief_network, inner_monologue, goals,
-//           learning_journal, relationships, daily_routine, inventory
+// — Generic list handler (Redis + MySQL) —
 async function addToList(coreId, listName, item) {
-  // 1) Always write to Redis
+  // 1) Push into Redis list
   await redis.rpush(redisKey(coreId, listName), JSON.stringify(item));
 
-  // 2) Also persist to MySQL if we have a dedicated table
-  const conn = await getConn();
+  // 2) Persist into corresponding MySQL table if exists
   switch (listName) {
-
     case 'belief_network':
-      // agent_beliefs(core_id, belief, confidence)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_beliefs (core_id, belief, confidence)
          VALUES (?, ?, ?)`,
-        [ coreId, item.belief, item.confidence ]
+        [coreId, item.belief, item.confidence]
       );
       break;
 
     case 'inner_monologue':
-      // agent_monologue(core_id, message)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_monologue (core_id, message)
          VALUES (?, ?)`,
-        [ coreId, item.message ]
+        [coreId, item.message]
       );
       break;
 
     case 'goals':
-      // agent_goals(core_id, goal, status, priority)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_goals (core_id, goal, status, priority)
          VALUES (?, ?, ?, ?)`,
-        [ coreId, item.goal, item.status, item.priority ]
+        [coreId, item.goal, item.status, item.priority]
       );
       break;
 
     case 'learning_journal':
-      // agent_learning(core_id, entry_date, lesson, trigger_event)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_learning (core_id, entry_date, lesson, trigger_event)
          VALUES (?, ?, ?, ?)`,
-        [ coreId, item.date, item.lesson, item.trigger ]
+        [coreId, item.date, item.lesson, item.trigger]
       );
       break;
 
     case 'relationships':
-      // agent_relationships(core_id, target_id, closeness, affection, trust, last_interaction)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_relationships
            (core_id, target_id, closeness, affection, trust, last_interaction)
          VALUES (?, ?, ?, ?, ?, ?)`,
@@ -163,54 +150,54 @@ async function addToList(coreId, listName, item) {
           coreId,
           item.target_id,
           item.closeness,
-          item.affection   || null,
-          item.trust       || null,
+          item.affection || null,
+          item.trust   || null,
           item.last_interaction
         ]
       );
       break;
 
-    case 'daily_routine':
-      // agent_routine(core_id, time, action)
-      await conn.query(
-        `INSERT INTO agent_routine (core_id, time, action)
-         VALUES (?, ?, ?)`,
-        [ coreId, item.time, item.action ]
-      );
-      break;
-
     case 'inventory':
-      // agent_inventory(core_id, item_id, name, emotional_value, acquired)
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_inventory
            (core_id, item_id, name, emotional_value, acquired)
          VALUES (?, ?, ?, ?, ?)`,
-        [ coreId, item.item_id, item.name, item.emotional_value, item.acquired || null ]
+        [
+          coreId,
+          item.item_id,
+          item.name,
+          item.emotional_value,
+          item.acquired || null
+        ]
       );
       break;
 
     case 'recent_topics':
-      await conn.query(
+      await pool.query(
         `INSERT INTO agent_recent_topics (core_id, topic, ts)
-        VALUES (?, ?, ?)`,
-        [ coreId, item.topic, item.ts ]
+         VALUES (?, ?, ?)`,
+        [coreId, item.topic, item.ts]
       );
       break;
 
+    case 'daily_routine':
+      // daily_routine entries handled by addRoutineEntry
+      break;
+
     default:
-      // no MySQL table for this list, Redis-only
+      // Redis-only lists
       break;
   }
 }
 
-
-
+// Read any Redis list
 async function getList(coreId, listName) {
   const list = await redis.lrange(redisKey(coreId, listName), 0, -1);
   return list.map(JSON.parse);
 }
 
 module.exports = {
+  pool,          
   initMySQL,
   redis,
   setCore,

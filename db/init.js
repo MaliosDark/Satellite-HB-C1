@@ -91,7 +91,7 @@ const schema = {
     core_id:    "VARCHAR(32)",
     entry_date: "DATE",
     lesson:     "TEXT",
-    trigger:    "VARCHAR(255)"
+    trigger_event: "VARCHAR(255)"
   },
   agent_goals: {
     id:       "INT AUTO_INCREMENT PRIMARY KEY",
@@ -105,52 +105,77 @@ const schema = {
     core_id: "VARCHAR(32)",
     topic:   "TEXT",
     ts:      "BIGINT"
+  },
+  rooms_users: {
+    id:        "INT AUTO_INCREMENT PRIMARY KEY",
+    room_id:   "INT NOT NULL",
+    user_id:   "VARCHAR(64) NOT NULL",
+    joined_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
+  },
+  items_rooms: {
+    id:        "INT AUTO_INCREMENT PRIMARY KEY",
+    room_id:   "INT NOT NULL",
+    item_id:   "VARCHAR(64) NOT NULL",
+    placed_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
   }
 };
 
 async function init() {
-  const conn = await mysql.createConnection({
-    host:     process.env.DB_HOST || '',
-    user:     process.env.DB_USER || '',
-    password: process.env.DB_PASS || '',
+  // 1) Use a pool to cap concurrent connections
+  const pool = mysql.createPool({
+    host:               process.env.DB_HOST || '',
+    user:               process.env.DB_USER || '',
+    password:           process.env.DB_PASS || '',
+    waitForConnections: true,
+    connectionLimit:    50,
+    queueLimit:         0,
+    multipleStatements: true
   });
 
-  // create database if missing
-  await conn.query(`CREATE DATABASE IF NOT EXISTS pai_os CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
-  await conn.query(`USE pai_os`);
+  // 2) Ensure database exists
+  await pool.query(
+    `CREATE DATABASE IF NOT EXISTS pai_os CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+  );
+  await pool.query(`USE pai_os`);
 
+  // 3) Create tables & add missing columns
   for (const [table, cols] of Object.entries(schema)) {
     // create table if missing
     const colDefs = Object.entries(cols)
       .map(([name, def]) => `\`${name}\` ${def}`)
       .join(',\n  ');
-    await conn.query(`CREATE TABLE IF NOT EXISTS \`${table}\` (
-      ${colDefs}
-    ) ENGINE=InnoDB`);
+    await pool.query(
+      `CREATE TABLE IF NOT EXISTS \`${table}\` (
+        ${colDefs}
+      ) ENGINE=InnoDB`
+    );
 
-    // fetch existing columns
-    const [rows] = await conn.query(`
-      SELECT COLUMN_NAME
-        FROM INFORMATION_SCHEMA.COLUMNS
-       WHERE TABLE_SCHEMA='pai_os'
-         AND TABLE_NAME=?
-    `, [table]);
+    // sync columns
+    const [rows] = await pool.query(
+      `SELECT COLUMN_NAME
+         FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA='pai_os'
+          AND TABLE_NAME=?`,
+      [table]
+    );
     const existing = new Set(rows.map(r => r.COLUMN_NAME));
 
-    // add any missing columns
     for (const [col, def] of Object.entries(cols)) {
       if (!existing.has(col)) {
         console.log(`Adding column ${col} to ${table}`);
-        await conn.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${col}\` ${def}`);
+        await pool.query(
+          `ALTER TABLE \`${table}\` ADD COLUMN \`${col}\` ${def}`
+        );
       }
     }
   }
 
-  await conn.end();
+  // 4) Drain pool
+  await pool.end();
   console.log('✅ DB init complete');
 }
 
-init().catch(err=>{
+init().catch(err => {
   console.error(err);
   process.exit(1);
 });
