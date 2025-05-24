@@ -215,7 +215,7 @@ async function handleMessage(cfg, client, sender, text) {
 
     // 6.6) EVOLUTION & MEMORY-DECAY STEP — based on last turn
     const oldEmo = profile.current_emotion;
-    const oldCog = profile.cognitive_traits;    // now guaranteed to be an object
+    const oldCog = profile.cognitive_traits;  
     const now    = Date.now();
 
     // A) Emotion shift

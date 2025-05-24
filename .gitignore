@@ -1,4 +1,6 @@
 config/bots-config.js
+redis-full-dump.json
+ui-mapping.json
 db/.env
 .env
 node_modules
@@ -7,5 +9,7 @@ modules/logs/chat.jsonl
 profiles/clara_profile.json
 profiles/dorian_profile.json
 profiles/jimmy_profile.json
-redis-full-dump.json
-ui-mapping.json
+
+profiles/satoshi_profile.json
+profiles/zyn_profile.json
+profiles/kael_profile.json
