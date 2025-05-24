@@ -15,11 +15,12 @@ const pool = mysql.createPool({
   password:           process.env.DB_PASS,
   database:           process.env.DB_NAME,
   waitForConnections: true,
-  connectionLimit:    parseInt(process.env.DB_POOL_LIMIT, 10) || 10,
+  connectionLimit:    parseInt(process.env.DB_POOL_LIMIT, 10) || 20,
   queueLimit:         0,
   multipleStatements: true,
 });
 
+// Initialize schema once at startup
 async function initMySQL() {
   const schema = await fs.readFile(__dirname + '/schema.sql', 'utf8');
   await pool.query(schema);
@@ -36,13 +37,12 @@ function redisKey(coreId, sub) {
 }
 
 // — Core fields —
-// Write or update agent core record
 async function setCore(coreId, coreObj) {
   await redis.hmset(redisKey(coreId, 'core'), coreObj);
 
-  const cols = Object.keys(coreObj);
+  const cols         = Object.keys(coreObj);
   const placeholders = cols.map(() => '?').join(',');
-  const updates = cols.map(c => `${c}=VALUES(${c})`).join(',');
+  const updates      = cols.map(c => `${c}=VALUES(${c})`).join(',');
   const sql = `
     INSERT INTO agents (core_id, ${cols.join(',')})
     VALUES (?, ${placeholders})
@@ -52,13 +52,11 @@ async function setCore(coreId, coreObj) {
   await pool.query(sql, params);
 }
 
-// Read agent core from Redis
 async function getCore(coreId) {
   return redis.hgetall(redisKey(coreId, 'core'));
 }
 
 // — Wallet —
-// Write or update wallet
 async function setWallet(coreId, walletObj) {
   await redis.hmset(redisKey(coreId, 'wallet'), walletObj);
 
@@ -70,22 +68,15 @@ async function setWallet(coreId, walletObj) {
       duckets=VALUES(duckets),
       diamonds=VALUES(diamonds)
   `;
-  const params = [
-    coreId,
-    walletObj.credits,
-    walletObj.duckets,
-    walletObj.diamonds
-  ];
+  const params = [coreId, walletObj.credits, walletObj.duckets, walletObj.diamonds];
   await pool.query(sql, params);
 }
 
-// Read wallet from Redis
 async function getWallet(coreId) {
   return redis.hgetall(redisKey(coreId, 'wallet'));
 }
 
 // — Daily Routine —
-// Add one daily_routine entry
 async function addRoutineEntry(coreId, entry) {
   await redis.rpush(redisKey(coreId, 'daily_routine'), JSON.stringify(entry));
 
@@ -96,7 +87,6 @@ async function addRoutineEntry(coreId, entry) {
   await pool.query(sql, [coreId, entry.time, entry.action]);
 }
 
-// Read daily_routine list
 async function getRoutine(coreId) {
   const list = await redis.lrange(redisKey(coreId, 'daily_routine'), 0, -1);
   return list.map(JSON.parse);
@@ -150,8 +140,8 @@ async function addToList(coreId, listName, item) {
           coreId,
           item.target_id,
           item.closeness,
-          item.affection || null,
-          item.trust   || null,
+          item.affection   || null,
+          item.trust       || null,
           item.last_interaction
         ]
       );
@@ -180,26 +170,22 @@ async function addToList(coreId, listName, item) {
       );
       break;
 
-    case 'daily_routine':
-      // daily_routine entries handled by addRoutineEntry
-      break;
-
+    // daily_routine is handled by addRoutineEntry()
     default:
       // Redis-only lists
       break;
   }
 }
 
-// Read any Redis list
 async function getList(coreId, listName) {
-  const list = await redis.lrange(redisKey(coreId, listName), 0, -1);
-  return list.map(JSON.parse);
+  const raw = await redis.lrange(redisKey(coreId, listName), 0, -1);
+  return raw.map(JSON.parse);
 }
 
 module.exports = {
-  pool,          
-  initMySQL,
+  pool,
   redis,
+  initMySQL,
   setCore,
   getCore,
   setWallet,
@@ -207,5 +193,5 @@ module.exports = {
   addRoutineEntry,
   getRoutine,
   addToList,
-  getList
+  getList,
 };
