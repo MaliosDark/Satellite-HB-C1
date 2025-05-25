@@ -1,3 +1,6 @@
+// File: satellite-v8.js
+// =====================
+
 // ————————————————————————————————————————————————————————————————————————
 //            .       .                   .       .      .     .      .
 //           .    .         .    .            .     ______
@@ -53,9 +56,9 @@ const botConfigs         = require('./config/bots-config');
 const aiModule           = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
-const { extractTopics }  = require('./modules/topicExtractor');
-const evo                = require('./modules/evolution');
-const puppeteer          = require('puppeteer-extra');
+const { extractTopics } = require('./modules/topicExtractor');
+const evo = require('./modules/evolution');
+
 
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS    = 8000;
@@ -83,25 +86,16 @@ async function main() {
   await initMySQL();
   console.log('✅ MySQL schema ready');
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--start-maximized']
-  });
-  
   for (const cfg of botConfigs) {
-    const page = await browser.newPage();
-    let client;  // declare client reference
-  
+    let client;
     const handler = makeHandler(cfg, () => client);
-  
+
     client = new HabboClient({
-      page,
-      username:  cfg.username,
       iframeUrl: cfg.iframeUrl,
+      username:  cfg.username,
       roomId:    cfg.roomId,
       onChat:    handler
     });
-
     console.log(`🚀 ${cfg.username} launched`);
 
     // autonomous random wandering
@@ -308,60 +302,48 @@ async function handleMessage(cfg, client, sender, text) {
     if (buf) chunks.push(buf.trim());
 
     for (const chunk of chunks) {
-      const out = `${cfg.username} → ${sender}: ${chunk}`;
-      await client.sendChat(out);
+      // 1️⃣ Envío público siempre
+      await client.sendChat(chunk);
 
-      // scan for players within 150px
-      const nearbyPlayers = await client.getNearbyPlayers(150);
-
-      if (nearbyPlayers.length > 0) {
-        // sort by closest first
-        nearbyPlayers.sort((a, b) => a.distance - b.distance);
-        const { username, distance } = nearbyPlayers[0];
-
-        console.log(`[PROXIMITY] Nearest player: ${username} (${distance}px away)`);
-
-        // whisper or greet them
-        await client.performSocialAction({ type: 'whisper', target: username });
+      // 2️⃣ Ocasionalmente, susurra al jugador más cercano (30% de las veces)
+      const nearby = await client.getNearbyPlayers(150);
+      if (nearby.length > 0 && Math.random() < 0.3) {
+        nearby.sort((a, b) => a.distance - b.distance);
+        await client.performSocialAction({ type: 'whisper', target: nearby[0].username });
       }
 
-      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS 
-      // 1) Ask to be friends if we “trust” them
+      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS
+      // 3) Pide amistad si confiamos en quien habló
       if (profile.cognitive_traits.trust > 0.7) {
         await client.performSocialAction({ type: 'friend', target: sender });
       }
 
-      // 2) Give respect if they used “thank you” or “please”
+      // 4) Da “respeto” si usó “thank you” o “please”
       if (/\b(thank you|please)\b/i.test(text)) {
         await client.performSocialAction({ type: 'respect', target: sender });
       }
 
-      // 3) If we’ve previously ignored them, give them a second chance
-      const ignoredList = await getList(coreId, 'ignored_users') || [];
-      if (ignoredList.find(u => u.user === sender)) {
+      // 5) Si lo habíamos ignorado, dale una segunda oportunidad
+      const ignored = (await getList(coreId, 'ignored_users')) || [];
+      if (ignored.find(u => u.user === sender)) {
         await client.performSocialAction({ type: 'unignore', target: sender });
-        // remove from memory so we don’t loop
         await redis.lrem(`${coreId}:ignored_users`, 0, JSON.stringify({ user: sender }));
       }
 
-      // 4) tap Dance/Actions/Signs to keep our “heartbeat” going
+      // 6) Mantenemos el “latido social” con una danza ocasional
       const wantsDance = reply.toLowerCase().endsWith('[dance]');
       const sociability = profile.cognitive_traits.sociability ?? 0;
-      const sociableEnough = sociability > 0.6;
-      const randomChance = Math.random() < 0.1;
-
-      if (wantsDance || sociableEnough || randomChance) {
-        console.log('[MENU] AI decided to dance');
+      if (wantsDance || sociability > 0.6 || Math.random() < 0.1) {
         await client.performContextAction();
-      } else {
-        console.log('[MENU] no dance this turn');
       }
 
-      // 5) Check for and accept any incoming friend request popups
+      // 7) Acepta peticiones de amistad entrantes
       await client.handleIncomingFriendRequest();
 
+      // Pausa antes del siguiente chunk
       await sleep(3000);
     }
+
   }
   catch (err) {
     console.error(`[${cfg.username}] handleMessage error:`, err);
@@ -376,3 +358,4 @@ async function handleMessage(cfg, client, sender, text) {
 }
 
 main().catch(console.error);
+

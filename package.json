@@ -3,10 +3,10 @@
     "version": "8.0.0",
     "main": "satellite-v8.js",
     "scripts": {
+    "start":      "node scripts/start-with-redis.js",
     "init-db":    "node db/init.js",
     "bootstrap":  "node scripts/bootstrap-agent.js",
-    "satellite":  "node satellite-v8.js",
-    "start":      "node scripts/start-with-redis.js"
+    "satellite":  "node satellite-v8.js"
     },
 
     "dependencies": {

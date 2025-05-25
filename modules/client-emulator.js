@@ -312,50 +312,51 @@ module.exports = class HabboClient {
   }
 
   /**
-   * Returns an array of { username, distance } for every player
-   * whose avatar is within `radius` pixels of our own avatar.
-   */
-  async getNearbyPlayers(radius = 200) {
-    const FRAME_URL = 'react/index';
-    // 1) find the Nitro iframe
-    const nitroFrame = this.page.frames().find(f => f.url().includes(FRAME_URL));
-    if (!nitroFrame) throw new Error('Nitro iframe not found');
+ * Returns an array of { username, distance } for every player
+ * whose avatar is within `radius` pixels of our own avatar.
+ */
+async getNearbyPlayers(radius = 200) {
+  const FRAME_URL = 'react/index';
+  // 1) find the Nitro iframe
+  const nitroFrame = this.page.frames().find(f => f.url().includes(FRAME_URL));
+  if (!nitroFrame) throw new Error('Nitro iframe not found');
 
-    // 2) run in page context
-    return nitroFrame.evaluate(({ selfName, radius }) => {
-      // Euclidean distance helper
-      function distance(a, b) {
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        return Math.sqrt(dx * dx + dy * dy);
+  // 2) run in page context
+  return nitroFrame.evaluate(({ selfName, radius }) => {
+    // Euclidean distance helper
+    function distance(a, b) {
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // 3) get our own avatar’s center point
+    const selfEl = document.querySelector(`[data-username="${selfName}"]`);
+    if (!selfEl) return [];
+    const box = selfEl.getBoundingClientRect();
+    const selfCenter = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+
+    // 4) find all other avatars and measure distance
+    const nearby = [];
+    document.querySelectorAll('[data-username]').forEach(el => {
+      const user = el.getAttribute('data-username');
+      if (user === selfName) return;
+      const b = el.getBoundingClientRect();
+      const center = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+      const d = distance(selfCenter, center);
+      if (d <= radius) {
+        nearby.push({ username: user, distance: Math.round(d) });
       }
+    });
 
-      // 3) get our own avatar’s center point
-      const selfEl = document.querySelector(`[data-username="${selfName}"]`);
-      if (!selfEl) return [];
-      const box = selfEl.getBoundingClientRect();
-      const selfCenter = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-
-      // 4) find all other avatars and measure distance
-      const nearby = [];
-      document.querySelectorAll('[data-username]').forEach(el => {
-        const user = el.getAttribute('data-username');
-        if (user === selfName) return;
-        const b = el.getBoundingClientRect();
-        const center = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
-        const d = distance(selfCenter, center);
-        if (d <= radius) {
-          nearby.push({ username: user, distance: Math.round(d) });
-        }
-      });
-
-      return nearby;
-    }, { selfName: this.username, radius });
-  }
+    return nearby;
+  }, { selfName: this.username, radius });
+}
 
   /**
-   * Sends chat in chunks ≤100 chars, with at least 3 s between each send.
-   */
+ * Sends chat in ≤100-char chunks, with at least 3 s between each send,
+ * and always focuses the public chat box before typing.
+ */
   async sendChat(text) {
     const now   = Date.now();
     const since = now - this._lastSentAt;
@@ -364,35 +365,23 @@ module.exports = class HabboClient {
     }
 
     const MAX = 100;
-    const chunks = [];
-    if (text.length <= MAX) {
-      chunks.push(text);
-    } else {
-      const words = text.split(' ');
-      let chunk = '';
-      for (const w of words) {
-        const candidate = chunk ? `${chunk} ${w}` : w;
-        if (candidate.length > MAX) {
-          chunks.push(chunk);
-          chunk = w;
-        } else {
-          chunk = candidate;
-        }
-      }
-      if (chunk) chunks.push(chunk);
-    }
+    const chunks = text.length <= MAX
+      ? [text]
+      : text.match(new RegExp(`.{1,${MAX}}(?=\\s|$)|\\S+`, 'g'));
 
     for (const chunk of chunks) {
       try {
+        // explicitly focus the public chat input
+        await UiMapper.focusChat(this.page);
         await UiMapper.sendChat(this.page, chunk);
       } catch {
+        // fallback: focus & type
         await this.page.focus('input.chat-input');
         await this.page.keyboard.type(chunk);
         await this.page.keyboard.press('Enter');
       }
       await sleep(3000);
     }
-
     this._lastSentAt = Date.now();
   }
 };
