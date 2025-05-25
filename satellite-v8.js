@@ -60,6 +60,7 @@ const { extractTopics } = require('./modules/topicExtractor');
 const evo = require('./modules/evolution');
 const { retrieveRelevant } = require('./modules/memoryRetriever');
 const memoryEnhancer = require('./modules/memoryEnhancer');
+const memoryManager = require('./modules/memoryManager');
 
 
 
@@ -199,9 +200,15 @@ async function handleMessage(cfg, client, sender, text) {
 
     const query = `${text} | Context: ${context}`;
     const topMemories = await retrieveRelevant(coreId, 'inner_monologue', query, 5);
-    const memorySnippet = topMemories
-      .map(m => `${m.role}:${m.sender}:${m.message}`)
-      .join('\n');
+    const semanticCues = await memoryManager.retrieveMemories(coreId, 'semantic', {
+      query: text,
+      k: 5
+    });
+    const memorySnippet = [
+      ...semanticCues.map(c => c.text || `${c.sender}:${c.message}`),
+      ...topMemories.map(m => `${m.role}:${m.sender}:${m.message}`)
+    ].join('\n');
+    
 
     // 5) Human-like thinking delay
     await sleep(randomBetween(...aiModule.THINK_DELAY_RANGE));
@@ -277,6 +284,14 @@ async function handleMessage(cfg, client, sender, text) {
       ts:      Date.now()
     });
 
+    await memoryManager.writeMemory(coreId, 'episodic', {
+      text,
+      sender,
+      ts: Date.now()
+    });
+    await memoryManager.consolidate(coreId);
+    await memoryManager.applyDecay(coreId);
+    
     // 7.5) Memory enhancing: summaries, pruning, episodes, self-reflection
     await memoryEnhancer.enhance(coreId);
 
