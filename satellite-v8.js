@@ -323,10 +323,9 @@ async function handleMessage(cfg, client, sender, text) {
     if (buf) chunks.push(buf.trim());
 
     for (const chunk of chunks) {
-      // 1️⃣ Envío público siempre
+
       await client.sendChat(chunk);
 
-      // 2️⃣ Ocasionalmente, susurra al jugador más cercano (30% de las veces)
       const nearby = await client.getNearbyPlayers(150);
       if (nearby.length > 0 && Math.random() < 0.3) {
         nearby.sort((a, b) => a.distance - b.distance);
@@ -334,35 +333,132 @@ async function handleMessage(cfg, client, sender, text) {
       }
 
       // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS
-      // 3) Pide amistad si confiamos en quien habló
       if (profile.cognitive_traits.trust > 0.7) {
         await client.performSocialAction({ type: 'friend', target: sender });
       }
 
-      // 4) Da “respeto” si usó “thank you” o “please”
       if (/\b(thank you|please)\b/i.test(text)) {
         await client.performSocialAction({ type: 'respect', target: sender });
       }
 
-      // 5) Si lo habíamos ignorado, dale una segunda oportunidad
       const ignored = (await getList(coreId, 'ignored_users')) || [];
       if (ignored.find(u => u.user === sender)) {
         await client.performSocialAction({ type: 'unignore', target: sender });
         await redis.lrem(`${coreId}:ignored_users`, 0, JSON.stringify({ user: sender }));
       }
 
-      // 6) Mantenemos el “latido social” con una danza ocasional
       const wantsDance = reply.toLowerCase().endsWith('[dance]');
       const sociability = profile.cognitive_traits.sociability ?? 0;
       if (wantsDance || sociability > 0.6 || Math.random() < 0.1) {
         await client.performContextAction();
       }
 
-      // 7) Acepta peticiones de amistad entrantes
       await client.handleIncomingFriendRequest();
 
-      // Pausa antes del siguiente chunk
       await sleep(3000);
+      await negotiateRoomChange(client, 'partnerUsername');
+    }
+
+    // ——————————————————————————————————————————————————————
+    // Room‐Change Negotiation Helpers
+    // ——————————————————————————————————————————————————————
+    /**
+    /**
+     * Scan “All Rooms” and return [{ name, count, handle }]
+     * Entirely on the main page—no frames.
+     */
+    async function scanRooms(client) {
+      const page = client.page;
+      console.log('[scanRooms] Opening Rooms menu…');
+      await page.click('.navigation-item.icon.icon-rooms');
+      // wait for the draggable panel
+      await page.waitForSelector('.draggable-window .nitro-navigator', { visible: true, timeout: 5000 });
+
+      console.log('[scanRooms] Clicking All Rooms tab…');
+      await page.click('.draggable-window .icon-naviallrooms');
+      // wait for the list items
+      await page.waitForSelector('.draggable-window .navigator-item', { timeout: 5000 });
+
+      // collect all navigator-item elements
+      const els = await page.$$('.draggable-window .navigator-item');
+      console.log(`[scanRooms] Found ${els.length} rooms`);
+
+      if (els.length === 0) {
+        throw new Error('No rooms detected after clicking All Rooms');
+      }
+
+      // extract name & badge count
+      return Promise.all(els.map(async el => {
+        const name  = await el.$eval('.text-truncate', n => n.textContent.trim());
+        const badge = await el.$eval('.badge', b => b.textContent.trim()).catch(() => '0');
+        return { name, count: parseInt(badge, 10) || 0, handle: el };
+      }));
+    }
+
+    /**
+     * Negotiates a move: pick empty room or “Somewhere new.”
+     * Retries the entire flow once on error.
+     */
+    async function negotiateRoomChange(client, partnerName) {
+      const page = client.page;
+
+      // wrapper for a single attempt
+      const attempt = async () => {
+        // 20% chance to take the random “Somewhere new” button
+        if (Math.random() < 0.2) {
+          console.log('[negotiate] Taking “Somewhere new” branch');
+          const btns = await page.$$('.nav-bottom .nav-bottom-buttons-text');
+          for (const btn of btns) {
+            const txt = await page.evaluate(el => el.textContent.trim(), btn);
+            if (txt === 'Somewhere new') {
+              await btn.click();
+              return true;
+            }
+          }
+        }
+
+        console.log('[negotiate] Scanning rooms…');
+        const rooms = await scanRooms(client);
+
+        // pick the first empty room
+        const empty = rooms.find(r => r.count === 0);
+        if (!empty) {
+          console.warn('[negotiate] No empty rooms—defaulting to random');
+          return negotiateRoomChange(client, partnerName); // will retry into random branch
+        }
+
+        console.log(`[negotiate] Proposing meeting in "${empty.name}"`);
+        await client.sendChat(`@${partnerName} meet me in "${empty.name}"`);
+
+        // 🚪 Immediately click into the room
+        console.log(`[negotiate] Entering "${empty.name}" immediately`);
+        await empty.handle.click();
+
+        // Optional: keep polling if you really need to know partner joined
+        for (let i = 0; i < 20; i++) {
+          await new Promise(r => setTimeout(r, 1000));
+          const fresh = (await scanRooms(client)).find(r => r.name === empty.name);
+          if (fresh && fresh.count > 0) {
+            console.log(`[negotiate] Partner joined "${empty.name}"`);
+            break;
+          }
+        }
+
+        return true;
+      };
+
+      // try once, on error log short message and retry one more time
+      try {
+        return await attempt();
+      } catch (err) {
+        console.error('[negotiate] Error, retrying:', err.message);
+        try {
+          return await attempt();
+        } catch (err2) {
+          console.error('[negotiate] Second attempt failed:', err2.message);
+          return false;
+        }
+      }
     }
 
   }
