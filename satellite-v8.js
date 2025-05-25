@@ -61,9 +61,14 @@ const evo = require('./modules/evolution');
 const memoryEnhancer = require('./modules/memoryEnhancer');
 const memoryManager = require('./modules/memoryManager');
 const { getHistory } = require('./modules/history');
+const { postTweet } = require('./modules/twitterPoster');
+const { composeTweet } = require('./modules/tweetComposer');
 
 
 
+// ── room-hop tuning ──────────────────────────────
+const ROOM_HOP_MIN_TURNS = 8;   
+const ROOM_HOP_PROB      = 0.10; 
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS    = 8000;
 // cooldown durations after sending (ms)
@@ -122,11 +127,11 @@ async function main() {
       while (!client.page) await sleep(100);
       let lonelyFor = 0;
       while (true) {
-        await sleep(50000);    
+        await sleep(1000);    // 10s
         const nearby = await client.getNearbyPlayers(400);
         if (nearby.length === 0) {
           lonelyFor += 5;
-          if (lonelyFor >= 3600) {  
+          if (lonelyFor >= 900) {  //15 min
             try {
               await client.sendChat('Nobody around, I will explore another place.');
               await negotiateRoomChange(client, '');
@@ -329,6 +334,32 @@ async function handleMessage(cfg, client, sender, text) {
     await redis.lpush(LAST_CACHE_KEY, reply);
     await redis.ltrim(LAST_CACHE_KEY, 0, 9);
 
+    // ─── Twitter “day-in-the-life” log (≈5 % chance per turn) ────
+    if (Math.random() < 0.05) {
+      try {
+        // 80 %: let the LLM craft a narrative tweet
+        if (Math.random() < 0.80) {
+          const aiTweet = await composeTweet({
+            profile,
+            coreId,
+            sender,
+            message: text,
+            reply
+          });
+          await postTweet(aiTweet);
+        }
+        // 20 %: fall back to a simple chat-preview tweet
+        else {
+          const preview = text.length > 60 ? text.slice(0, 57) + '…' : text;
+          const tweet   = `[${cfg.username}] chatted with @${sender}: “${preview}”`;
+          await postTweet(tweet);
+        }
+      } catch (err) {
+        console.warn('[twitterPoster] tweet failed:', err.message);
+      }
+    }
+
+
     // 8) Chunk into ≤100-char bubbles and send with 3 s gap
     const MAX = 100;
     const chunks = [];
@@ -349,7 +380,7 @@ async function handleMessage(cfg, client, sender, text) {
       const turnsSoFar = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
       await redis.set(turnKey, turnsSoFar, 'EX', 600);           // 10 min TTL
 
-      if (turnsSoFar >= 5 && Math.random() < 0.30) {             // ≥5 turns, 30 % chance
+      if (turnsSoFar >= ROOM_HOP_MIN_TURNS && Math.random() < ROOM_HOP_PROB) {
         await client.sendChat(`@${sender} let's move to another room and keep talking.`);
         await negotiateRoomChange(client, sender);               // ← add this
         return;                                                  // resume chat there
@@ -357,6 +388,10 @@ async function handleMessage(cfg, client, sender, text) {
       // ──────────────────────────────────────────────────────────
 
       await client.sendChat(chunk);
+
+      if (turnsSoFar === 2) {
+        await client.performSocialAction({ type: 'friend', target: sender });
+      }
 
       const nearby = await client.getNearbyPlayers(150);
       if (nearby.length > 0 && Math.random() < 0.3) {
@@ -481,6 +516,10 @@ async function handleMessage(cfg, client, sender, text) {
         await client.sendChat('Hello room! Anyone here?');
         await movement.walkPath(client.page,
                                 ['down','down','right','right']);
+                            
+        if (partnerName) {
+          await client.sendChat(`@${partnerName} I’m here, let’s continue!`);
+        }
 
         // (Optional) poll to see if partner arrives
         for (let i = 0; i < 90; i++) {

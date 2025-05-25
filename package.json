@@ -6,6 +6,7 @@
     "start":      "node scripts/start-with-redis.js",
     "init-db":    "node db/init.js",
     "bootstrap":  "node scripts/bootstrap-agent.js",
+    "twitter-setup": "node scripts/setup-twitter-client.js",
     "satellite":  "node satellite-v8.js"
     },
 
