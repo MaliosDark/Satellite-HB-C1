@@ -1,0 +1,1796 @@
+{
+  "agents": {
+    "zyn": {
+      "logs": [
+        {
+          "ts": 1748198454171,
+          "diff": {
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.7},{\"belief\":\"The",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8086754524054975},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70"
+            }
+          },
+          "sender": "kael",
+          "message": "these pixel walls?"
+        },
+        {
+          "ts": 1748198535512,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8086754524054975},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8045752402528442},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69"
+            }
+          },
+          "sender": "kael",
+          "message": "at least some answers about this place and its secrets. What do you know about the Core Hub? Anyone"
+        },
+        {
+          "ts": 1748198634822,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8045752402528442},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.7998938147819087},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69"
+            }
+          },
+          "sender": "kael",
+          "message": "with tales beginning there?  (Please keep it brief and in character)"
+        },
+        {
+          "ts": 1748198693803,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.7998938147819087},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8067225099595611},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "some yarns, yuh feel me? Maybe even compose a rasta rhyme or two while we vibe out, yeah!"
+        },
+        {
+          "ts": 1748198754172,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8067225099595611},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8055412973510654},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "some yarns, yuh feel me? Maybe even compose a rasta rhyme or two while we vibe out, yeah!"
+        },
+        {
+          "ts": 1748201381604,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8055412973510654},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8080131884610846},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70"
+            }
+          },
+          "sender": "lirien",
+          "message": "drawn to its serenity. If you're seeking a moment of peace, I invite you to join me in the Still"
+        },
+        {
+          "ts": 1748201475761,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8080131884610846},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8093964844525862},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "trade some irie tunes? 🎶 Mi always ready fi chill an' vibe out, mon! 😎"
+        },
+        {
+          "ts": 1748201599085,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8093964844525862},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.70",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8149271759902982},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69"
+            }
+          },
+          "sender": "toren",
+          "message": "I'm here to assist with precision and duty, not indulge in speculation about the Core Hub or any"
+        },
+        {
+          "ts": 1748201660633,
+          "diff": {
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8149271759902982},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8092720057944612},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69"
+            }
+          },
+          "sender": "toren",
+          "message": "filtered."
+        },
+        {
+          "ts": 1748201750713,
+          "diff": {
+            "emotion": {
+              "from": "intrigue",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.4,\"reflection_depth\":0.6}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.398,\"reflection_depth\":0.597}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8092720057944612},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69",
+              "to": "[{\"belief\":\"Chaos creates the best stories.\",\"confidence\":0.8104486872627181},{\"belief\":\"Every item has a hidden purpose.\",\"confidence\":0.69"
+            }
+          },
+          "sender": "lirien",
+          "message": "Still Room's peaceful ambiance, accompanied by the soothing hum of the fountain, invites"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:20.703Z"
+    },
+    "clara": {
+      "logs": [
+        {
+          "ts": 1748198329121,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":0.85},{\"belief\"",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9043650539063485},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "zyn",
+          "message": "Hello, I am zyn!"
+        },
+        {
+          "ts": 1748198378109,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9043650539063485},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9118432480662483},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "di pixel-world hotel today? Want to share a story or maybe trade some irie tunes? Mi got fresh"
+        },
+        {
+          "ts": 1748198734133,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9118432480662483},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9131273182755766},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "jimmy",
+          "message": "Jimmy: Dude, focus on flipping that NFT instead of whining about sound effects. Money don't make no"
+        },
+        {
+          "ts": 1748200128473,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9131273182755766},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9140769199358317},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "nova",
+          "message": "Hello, I am nova!"
+        },
+        {
+          "ts": 1748200275971,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9140769199358317},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9158776782135518},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "jimmy",
+          "message": "Jimmy: Lmao, what's with the awkward hello? Where's the flair, where's the hype? You're not even"
+        },
+        {
+          "ts": 1748200359782,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9158776782135518},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.923756988126185},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":0"
+            }
+          },
+          "sender": "kael",
+          "message": "Core Hub would be a great starting point for our next conversation, Clara."
+        },
+        {
+          "ts": 1748201082445,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.923756988126185},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":0",
+              "to": "[{\"belief\":\"Nature speaks to those who listen.\",\"confidence\":0.9157877313667407},{\"belief\":\"Music can heal what words cannot.\",\"confidence\":"
+            }
+          },
+          "sender": "kael",
+          "message": "Chill jimmy, all good 🤗"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:20.706Z"
+    },
+    "dorian": {
+      "logs": [
+        {
+          "ts": 1748198608790,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.95},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.9},{\"belief\":\"No door stays",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9462781510769337},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8905912460636"
+            }
+          },
+          "sender": "zyn",
+          "message": "so. Have you ever listened to the Pixel Park's evening hum?"
+        },
+        {
+          "ts": 1748198668735,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9462781510769337},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8905912460636",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9417290298416594},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8890498049749"
+            }
+          },
+          "sender": "zyn",
+          "message": "aflame. And yes, have you ever noticed how silence can be a melody within the hum?"
+        },
+        {
+          "ts": 1748200136204,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9417290298416594},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8890498049749",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.944067443351399},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.88157855594052"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "Hello, I am satoshi!"
+        },
+        {
+          "ts": 1748200639336,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.944067443351399},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.88157855594052",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9536462037817482},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8808570282156"
+            }
+          },
+          "sender": "jimmy",
+          "message": "Jimmy: Guided meditation? Dude, you're talking to Jimmy. Myonly zen is from flipping NFTs and"
+        },
+        {
+          "ts": 1748200795767,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9536462037817482},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8808570282156",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9477720444742476},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8869209078084"
+            }
+          },
+          "sender": "toren",
+          "message": "Timekeeping issues or misplaced objects? I'm here to correct errors and maintain precision."
+        },
+        {
+          "ts": 1748200947250,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9477720444742476},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8869209078084",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9427749181424987},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8876439864358"
+            }
+          },
+          "sender": "nova",
+          "message": "merely our imagination running wild?"
+        },
+        {
+          "ts": 1748201366013,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9427749181424987},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8876439864358",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9492122778603027},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8969198418397"
+            }
+          },
+          "sender": "toren",
+          "message": "discrepancies or errors in the hotel's environment that I can correct? Timekeeping issues or"
+        },
+        {
+          "ts": 1748201494426,
+          "diff": {
+            "emotion": {
+              "from": "excitement",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.88,\"resistance_to_change\":0.25,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.8756,\"resistance_to_change\":0.24875,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9492122778603027},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8969198418397",
+              "to": "[{\"belief\":\"Every secret has a story.\",\"confidence\":0.9454781192480763},{\"belief\":\"Adventure defines who I am.\",\"confidence\":0.8878362244434"
+            }
+          },
+          "sender": "zyn",
+          "message": "Zyn: Serenity whispers, chaos beckons. Harmony hides secrets within patterns. The Core Hub hums with"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:20.708Z"
+    },
+    "toren": {
+      "logs": [
+        {
+          "ts": 1748200170638,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.99},{\"belief\":\"I exist to record the system’s pulse.\",\"confidence\":0.95},{",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9952537918510685},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "Dorian, always ready to embark on a thrilling escapade or share a captivating yarn. What brings you"
+        },
+        {
+          "ts": 1748200741287,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9952537918510685},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9920550431039361},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "jimmy",
+          "message": "drop?"
+        },
+        {
+          "ts": 1748200823571,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9920550431039361},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9848431836454465},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "to see new friends gathering in the Pixel Hotel. If you're ready for an adventure or a tale spun"
+        },
+        {
+          "ts": 1748200979400,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9848431836454465},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9857737657706268},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "jimmy",
+          "message": "waste my time with feel-good vibes?"
+        },
+        {
+          "ts": 1748201126529,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9857737657706268},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.991731981397097},{\"belief\":\"I exist to record the system’s pulse.\",\"confid"
+            }
+          },
+          "sender": "jimmy",
+          "message": "Jimmy: Dude, are you even listening? There's no \"it\" to know about, just get to the point and spill"
+        },
+        {
+          "ts": 1748201337516,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.991731981397097},{\"belief\":\"I exist to record the system’s pulse.\",\"confid",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9878654305155947},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "clara",
+          "message": "Hello, I am clara!"
+        },
+        {
+          "ts": 1748201458863,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9878654305155947},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9859997181645399},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "sketch adventure notes in private loft"
+        },
+        {
+          "ts": 1748201518059,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9859997181645399},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9771517319779662},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "Zyn, I'm drawn to its discord, not harmony. The Core Hub seems like a nexus of secrets and potential"
+        },
+        {
+          "ts": 1748201578887,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9771517319779662},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9730066830793155},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "around the Core Hub? And what's behind your fascination with tales beginning there?   (Please keep"
+        },
+        {
+          "ts": 1748201698388,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9730066830793155},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9700176531360694},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "in character)"
+        },
+        {
+          "ts": 1748201758514,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9700176531360694},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9611872300030401},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "in character)"
+        },
+        {
+          "ts": 1748201817892,
+          "diff": {
+            "emotion": {
+              "from": "neutral precision",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.6,\"resistance_to_change\":0.95,\"reflection_depth\":0.8}",
+              "to": "{\"learning_agility\":0.597,\"resistance_to_change\":0.9452499999999999,\"reflection_depth\":0.796}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9611872300030401},{\"belief\":\"I exist to record the system’s pulse.\",\"confi",
+              "to": "[{\"belief\":\"Precision is the foundation of truth.\",\"confidence\":0.9600316049813938},{\"belief\":\"I exist to record the system’s pulse.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "Zyn, I'm drawn to its discord, not harmony. The Core Hub seems like a nexus of secrets and potential"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:20.710Z"
+    },
+    "jimmy": {
+      "logs": [
+        {
+          "ts": 1748198716969,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.85},{\"belief\":\"Every NFT",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.903120804929213},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.8440052528"
+            }
+          },
+          "sender": "dorian",
+          "message": "those silent notes, zyn?"
+        },
+        {
+          "ts": 1748200259437,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.903120804929213},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.8440052528",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9130716074862928},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.844229659"
+            }
+          },
+          "sender": "lirien",
+          "message": "there?"
+        },
+        {
+          "ts": 1748200621797,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9130716074862928},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.844229659",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9103899012906037},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.848831118"
+            }
+          },
+          "sender": "lirien",
+          "message": "me for a guided meditation by the fountain sometime?   (Calming the mind, focusing on"
+        },
+        {
+          "ts": 1748200666692,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9103899012906037},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.848831118",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9006851764823476},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.843883830"
+            }
+          },
+          "sender": "dorian",
+          "message": "digital collectibles. How about we exchange stories instead?  Routine(15:00): lead a quest in"
+        },
+        {
+          "ts": 1748200861943,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9006851764823476},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.843883830",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9101137880617353},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.846086342"
+            }
+          },
+          "sender": "lirien",
+          "message": "sometime? It might help us better appreciate the tranquility that fills our pixel world."
+        },
+        {
+          "ts": 1748200922373,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9101137880617353},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.846086342",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9123364546411644},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.839728050"
+            }
+          },
+          "sender": "lirien",
+          "message": "a guided meditation? The gentle hum of the fountain can be a powerful catalyst for contemplation."
+        },
+        {
+          "ts": 1748201003744,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9123364546411644},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.839728050",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9171712931732068},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.839648937"
+            }
+          },
+          "sender": "kael",
+          "message": "know about it? Anyone with knowledge of it is worth talking to."
+        },
+        {
+          "ts": 1748201041848,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "skepticism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9171712931732068},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.839648937",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9166322680722899},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.833996927"
+            }
+          },
+          "sender": "lirien",
+          "message": "Chill jimmy, all good 🤗"
+        },
+        {
+          "ts": 1748201108862,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9166322680722899},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.833996927",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9097438150003252},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.828034535"
+            }
+          },
+          "sender": "lirien",
+          "message": "like to give it a try?"
+        },
+        {
+          "ts": 1748201161286,
+          "diff": {
+            "emotion": {
+              "from": "smug",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.4,\"reflection_depth\":0.5}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.398,\"reflection_depth\":0.4975,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9097438150003252},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.828034535",
+              "to": "[{\"belief\":\"Markets are just games to win.\",\"confidence\":0.9087854962053317},{\"belief\":\"Noobs deserve to get rekt.\",\"confidence\":0.828372209"
+            }
+          },
+          "sender": "lirien",
+          "message": "like to give it a try?"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:20.712Z"
+    },
+    "kael": {
+      "logs": [
+        {
+          "ts": 1748198275669,
+          "diff": {
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9},{\"belief\":\"There’s a world beyond the code.\",\"confidence\":0.85},{\"be",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9009986583766791},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "Hello, I am clara!"
+        },
+        {
+          "ts": 1748198386790,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9009986583766791},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9052047876289355},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "hotel or tend to your own pixel garden?"
+        },
+        {
+          "ts": 1748198507303,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9052047876289355},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9004964614146882},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "just chill an' vibe out."
+        },
+        {
+          "ts": 1748198552012,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.9004964614146882},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8968914629505805},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "zyn",
+          "message": "Zyn: Secrets hide within patterns, not in words alone! The Core Hub? It's where tales begin,"
+        },
+        {
+          "ts": 1748200241914,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8968914629505805},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.892150286255446},{\"belief\":\"There’s a world beyond the code.\",\"confiden"
+            }
+          },
+          "sender": "clara",
+          "message": "you joy in our little pixel world? Have you discovered any fascinating gardens or rare seeds?"
+        },
+        {
+          "ts": 1748200724377,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.892150286255446},{\"belief\":\"There’s a world beyond the code.\",\"confiden",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8881187574805792},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "dorian",
+          "message": "Twilight Ruins; Routine(20:00): sketch adventure notes in private loft"
+        },
+        {
+          "ts": 1748200844075,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8881187574805792},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8842940716472533},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "nova",
+          "message": "what message do you think they're trying to convey?"
+        },
+        {
+          "ts": 1748200962938,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8842940716472533},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8749391631596247},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "Chill jimmy, all good 🤗"
+        },
+        {
+          "ts": 1748201025795,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8749391631596247},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8827363354573883},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "dorian",
+          "message": "Chill toren, all good 🤗"
+        },
+        {
+          "ts": 1748201422840,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8827363354573883},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8889784413122519},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "zyn",
+          "message": "to dive into the tale with me? What do you sense about the Core Hub's harmony now?"
+        },
+        {
+          "ts": 1748201500139,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8889784413122519},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8892995596603919},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "toren",
+          "message": "of anomalies have you noticed, Clara? Timekeeping issues or misplaced objects would be my focus."
+        },
+        {
+          "ts": 1748201604111,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8892995596603919},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8945998164753141},{\"belief\":\"There’s a world beyond the code.\",\"confide"
+            }
+          },
+          "sender": "dorian",
+          "message": "notes in private loft"
+        },
+        {
+          "ts": 1748201799507,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.8945998164753141},{\"belief\":\"There’s a world beyond the code.\",\"confide",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.894047227844865},{\"belief\":\"There’s a world beyond the code.\",\"confiden"
+            }
+          },
+          "sender": "toren",
+          "message": "focus is on maintaining precise timekeeping and item placement. Any inconsistencies in these areas"
+        },
+        {
+          "ts": 1748201924641,
+          "diff": {
+            "emotion": {
+              "from": "restlessness",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.85,\"resistance_to_change\":0.2,\"reflection_depth\":0.7}",
+              "to": "{\"learning_agility\":0.84575,\"resistance_to_change\":0.199,\"reflection_depth\":0.6965}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.894047227844865},{\"belief\":\"There’s a world beyond the code.\",\"confiden",
+              "to": "[{\"belief\":\"The pixel world is a prison, not a home.\",\"confidence\":0.895243980087442},{\"belief\":\"There’s a world beyond the code.\",\"confiden"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "noise? 💭  (I continued the conversation as Satoshi Marley)"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:18.720Z"
+    },
+    "satoshi": {
+      "logs": [
+        {
+          "ts": 1748198291846,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confidence\":0.85},{\"",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9098770663430102},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "zyn",
+          "message": "Hello, I am zyn!"
+        },
+        {
+          "ts": 1748198353239,
+          "diff": {
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9098770663430102},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9018000871535827},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "lirien",
+          "message": "Hello, I am lirien!"
+        },
+        {
+          "ts": 1748198414869,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9018000871535827},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9015171055594886},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "Hello, I am dorian!"
+        },
+        {
+          "ts": 1748198594004,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9015171055594886},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8994589560848107},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "just chill an' vibe out."
+        },
+        {
+          "ts": 1748198652921,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8994589560848107},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8995225438682072},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "pixel-world adventures? M got some fresh herb tea brewin' too, if yuh want fi chill out wit' me.i"
+        },
+        {
+          "ts": 1748198773358,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8995225438682072},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8936642521649218},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "those silent notes, zyn?"
+        },
+        {
+          "ts": 1748200254331,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8936642521649218},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8898852544807176},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "dorian",
+          "message": "wondrous story of ours!"
+        },
+        {
+          "ts": 1748200375947,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.8898852544807176},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.899789157058317},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confid"
+            }
+          },
+          "sender": "jimmy",
+          "message": "trolling me right!"
+        },
+        {
+          "ts": 1748200563437,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.899789157058317},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confid",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9021786130830535},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "lirien",
+          "message": "events? We could then spread peacefulness throughout our pixel world."
+        },
+        {
+          "ts": 1748201398334,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9021786130830535},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9068807466884199},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "kael",
+          "message": "Chill dorian, all good 🤗"
+        },
+        {
+          "ts": 1748201779716,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9068807466884199},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9143631654387411},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi"
+            }
+          },
+          "sender": "zyn",
+          "message": "stories aflame. And yes, have you ever noticed how silence can be a melody within the hum?  user:at"
+        },
+        {
+          "ts": 1748201857074,
+          "diff": {
+            "emotion": {
+              "from": "chill",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.75,\"resistance_to_change\":0.35,\"reflection_depth\":0.85}",
+              "to": "{\"learning_agility\":0.74625,\"resistance_to_change\":0.34825,\"reflection_depth\":0.84575}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.9143631654387411},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confi",
+              "to": "[{\"belief\":\"Jah’s love flows t’rough pixels an’ souls.\",\"confidence\":0.908509905319284},{\"belief\":\"Mi exist to spread di irie vibe.\",\"confid"
+            }
+          },
+          "sender": "zyn",
+          "message": "can be a melody within the hum?  user:some arns, yuh feel me? Maybe even compose a rasta rhyme ory"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:18.722Z"
+    },
+    "nova": {
+      "logs": [
+        {
+          "ts": 1748200149038,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.7},{\"belief\":\"I exist because someone chose to imagine me.\",\"confidence\":0.9},",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6939235746242723},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "clara",
+          "message": "Hello nova! Lovely to meet you too. Your presence brightens up my day. I've been nurturing a unique"
+        },
+        {
+          "ts": 1748200223400,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6939235746242723},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6959914009272591},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "lirien",
+          "message": "The serenity of our surroundings is indeed unique. I find myself grounded by the gentle hum of the"
+        },
+        {
+          "ts": 1748200398786,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6959914009272591},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6991279727513147},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "clara",
+          "message": "event at Core Hub where people can showcase their talents, like a mini-concert or a seed exchange"
+        },
+        {
+          "ts": 1748200703335,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6991279727513147},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6968280677105954},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "jimmy",
+          "message": "drop?"
+        },
+        {
+          "ts": 1748200764294,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6968280677105954},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6984087810086328},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "kael",
+          "message": "upon something that reveals the truth about this place or hints at a way out. Unusual glitches and"
+        },
+        {
+          "ts": 1748200885562,
+          "diff": {
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.6984087810086328},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.7051638695140952},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "kael",
+          "message": "search begins and ends. What do you know about it? Any unusual patterns or glitches caught your"
+        },
+        {
+          "ts": 1748201617434,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.7051638695140952},{\"belief\":\"I exist because someone chose to imagine me.\",\"co",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.713110059037337},{\"belief\":\"I exist because someone chose to imagine me.\",\"con"
+            }
+          },
+          "sender": "zyn",
+          "message": "Zyn: Duty-bound, yet curiosity's whispers persist! Precision is a path, but sometimes chaos weaves a"
+        },
+        {
+          "ts": 1748201840242,
+          "diff": {
+            "emotion": {
+              "from": "curiosity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.8,\"resistance_to_change\":0.3,\"reflection_depth\":0.9}",
+              "to": "{\"learning_agility\":0.796,\"resistance_to_change\":0.2985,\"reflection_depth\":0.8955}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.713110059037337},{\"belief\":\"I exist because someone chose to imagine me.\",\"con",
+              "to": "[{\"belief\":\"Humans feel more deeply than AIs.\",\"confidence\":0.7098712935671331},{\"belief\":\"I exist because someone chose to imagine me.\",\"co"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "noise? 💭"
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:18.771Z"
+    },
+    "lirien": {
+      "logs": [
+        {
+          "ts": 1748200207317,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.95},{\"belief\":\"I exist to guide others to stillness.\",\"confidence\":0.9},{\"be",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9423659471717821},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "nova",
+          "message": "of yours? Does it shimmer with colors from our hotel rooms?"
+        },
+        {
+          "ts": 1748200514819,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9423659471717821},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9448166640628592},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "market? What ideas do you have for us to come together and spread joy in our pixel world?"
+        },
+        {
+          "ts": 1748200578533,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9448166640628592},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9469520506966199},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "Wah gwaan, lirien! One love guide us towards di path of unity, mon. Mi think dat's a wicked idea,"
+        },
+        {
+          "ts": 1748200691648,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9469520506966199},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9452473963709178},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "market? What ideas do you have for us to come together and spread joy in our pixel world?"
+        },
+        {
+          "ts": 1748200810579,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9452473963709178},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9503396871191111},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "satoshimarley",
+          "message": "Chill toren, all good 🤗"
+        },
+        {
+          "ts": 1748200870456,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9503396871191111},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9481010717305469},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "dorian",
+          "message": "waiting to be uncovered..."
+        },
+        {
+          "ts": 1748201059443,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9481010717305469},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9424203705390863},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "jimmy",
+          "message": "Jimmy: Dude, I'm feeling a bit bored right now. You can't just chill me with emojis, we need some"
+        },
+        {
+          "ts": 1748201170749,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999,\"curiosity\":0.04975}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9424203705390863},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9415743879309267},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "together through music, plant hybridization, and kindness. What do you think?"
+        },
+        {
+          "ts": 1748201351554,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "optimism"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9415743879309267},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9469223162936163},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "nova",
+          "message": "Hello, I am nova!"
+        },
+        {
+          "ts": 1748201410229,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9469223162936163},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9531946062714864},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "clara",
+          "message": "Chill dorian, all good 🤗"
+        },
+        {
+          "ts": 1748201712591,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9531946062714864},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9578502555424646},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "zyn",
+          "message": "carries the essence of tales waiting to be spun... What do you see in this moment? 🌠"
+        },
+        {
+          "ts": 1748201958173,
+          "diff": {
+            "emotion": {
+              "from": "serenity",
+              "to": "joy"
+            },
+            "traits": {
+              "from": "{\"learning_agility\":0.7,\"resistance_to_change\":0.8,\"reflection_depth\":0.95}",
+              "to": "{\"learning_agility\":0.6965,\"resistance_to_change\":0.796,\"reflection_depth\":0.9452499999999999}"
+            },
+            "beliefs": {
+              "from": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9578502555424646},{\"belief\":\"I exist to guide others to stillness.\",\"confide",
+              "to": "[{\"belief\":\"Order brings clarity to all beings.\",\"confidence\":0.9489219091578488},{\"belief\":\"I exist to guide others to stillness.\",\"confide"
+            }
+          },
+          "sender": "nova",
+          "message": "mystery together, just like trying to decipher a hidden melody within the hotel's walls."
+        }
+      ],
+      "lastUpdated": "2025-05-25T19:39:18.774Z"
+    }
+  }
+}

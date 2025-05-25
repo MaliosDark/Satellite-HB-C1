@@ -240,12 +240,13 @@ module.exports = {
       `${profileObj.chosen_name}:`
     ].join('\n\n');
 
-    const fullPrompt = await buildPrompt(
-      // profile.core_id,
-      profileObj.chosen_name,
-      sender,
-      message
-    );
+   // 7) use your systemPrompt + history directly
+    const fullPrompt = [
+      systemPrompt,
+      history,
+      `${profileObj.chosen_name}:`
+    ].join('\n\n');
+
 
     // 7) dispatch
     const tierList = [...MODELS.small, ...MODELS.medium];

@@ -5,6 +5,7 @@
     "main": "satellite-v8.js",
     "scripts": {
         "start": "node scripts/start-with-redis.js",
+        "web-monitor-evo": "node scripts/node evo-dashboard.js",
         "init-db": "node db/init.js",
         "bootstrap": "node scripts/bootstrap-agent.js",
         "twitter-setup": "node scripts/setup-twitter-client.js",
@@ -15,15 +16,19 @@
         "chalk": "^4.1.2",
         "compromise": "^14.14.4",
         "dotenv": "^16.0.0",
-        "ioredis": "^5.3.0",
+        "express": "^5.1.0",
+        "ioredis": "^5.6.1",
+        "lowdb": "^7.0.1",
         "mysql2": "^3.2.0",
+        "open": "^10.1.2",
         "puppeteer": "^24.8.2",
         "puppeteer-core": "^24.8.2",
         "puppeteer-extra": "^3.3.4",
         "puppeteer-extra-plugin-stealth": "^2.7.10",
         "redis-cli": "^2.1.2",
         "redis-server": "^1.2.2",
-        "sentiment": "^5.0.2"
+        "sentiment": "^5.0.2",
+        "ws": "^8.18.2"
     },
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^16.0.1",

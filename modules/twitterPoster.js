@@ -46,7 +46,6 @@ if (process.env.TWITTER_DISABLE === 'true') {
     return;             
   }
   // ────────────────────────────────────────────────
-  
 
 // ──────────────────────────────────────────────────────────────
 // 1) Ensure agent-twitter-client is available
@@ -84,45 +83,41 @@ async function initialiseScraper(retries = 0) {
     const scraper = new Scraper({ proxy: PROXY_URL });
 
     // A) try cookie-based login first
-    if (fs.existsSync(TWITTER_COOKIE_FILE)) {
-        try {
-        const raw = JSON.parse(fs.readFileSync(TWITTER_COOKIE_FILE, 'utf8'));
-    
-        // 🛠  normalise: legacy { key, value }  →  { name, value }
-        const cookies = raw.map(c => {
-            if (c.name) return c;                           
-            if (c.key) {
-            return {
-                name:     c.key,
-                value:    c.value,
-                domain:   c.domain || '.twitter.com',
-                path:     c.path   || '/',
-                secure:   !!c.secure,
-                httpOnly: !!c.httpOnly,
-                expires:  c.expires
-                ? Math.floor(new Date(c.expires).getTime() / 1000) // seconds
-                : undefined
-            };
-            }
-            throw new Error('Unrecognised cookie format');
-        });
-    
-        await scraper.setCookies(cookies);
-        if (await scraper.isLoggedIn()) {
-            console.log('[twitterPoster] Logged in via cached cookies');
-            fs.writeFileSync(
-                TWITTER_COOKIE_FILE,
-                JSON.stringify(await scraper.getCookies(), null, 2),
-                'utf8'
-              );
-            return scraper;
+    // A) try cookie-based login first ───────────────────────────────
+if (fs.existsSync(TWITTER_COOKIE_FILE)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(TWITTER_COOKIE_FILE, 'utf8'));
+  
+      // 🛠  normalise: legacy { key, value }  →  { name, value }
+      const cookies = raw.map(c => {
+        if (c.name) return c;                           // already good
+        if (c.key) {
+          return {
+            name:     c.key,
+            value:    c.value,
+            domain:   c.domain || '.twitter.com',
+            path:     c.path   || '/',
+            secure:   !!c.secure,
+            httpOnly: !!c.httpOnly,
+            expires:  c.expires
+              ? Math.floor(new Date(c.expires).getTime() / 1000) // seconds
+              : undefined
+          };
         }
-        console.log('[twitterPoster] Cached cookies expired – doing full login');
-        } catch (err) {
-        console.warn('[twitterPoster] Failed reading cookies:', err.message);
-        }
+        throw new Error('Unrecognised cookie format');
+      });
+  
+      await scraper.setCookies(cookies);
+      if (await scraper.isLoggedIn()) {
+        console.log('[twitterPoster] Logged in via cached cookies');
+        return scraper;
+      }
+      console.log('[twitterPoster] Cached cookies expired – doing full login');
+    } catch (err) {
+      console.warn('[twitterPoster] Failed reading cookies:', err.message);
     }
-    
+  }
+  
 
     // B) full credential login ➜ cache cookies
     console.log('[twitterPoster] Performing password login…');

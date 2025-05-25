@@ -230,11 +230,8 @@ async function handleMessage(cfg, client, sender, text) {
 
   try {
      // 2) Load or bootstrap profile
-    let profile = await getCore(cfg.botId);
-    if (!profile || !profile.core_id) {
-      profile = await aiModule.loadProfile(cfg.username);
-    }
-    const coreId = profile.core_id;
+     const profile = await aiModule.loadProfile(cfg.username);
+     const coreId  = profile.core_id;
 
     // Make sure cognitive_traits is always an object, never a "[object Object]" string
     if (typeof profile.cognitive_traits === 'string') {
