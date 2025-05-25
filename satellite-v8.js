@@ -1,6 +1,3 @@
-// File: satellite-v8.js
-// =====================
-
 // ————————————————————————————————————————————————————————————————————————
 //            .       .                   .       .      .     .      .
 //           .    .         .    .            .     ______
@@ -56,9 +53,9 @@ const botConfigs         = require('./config/bots-config');
 const aiModule           = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
-const { extractTopics } = require('./modules/topicExtractor');
-const evo = require('./modules/evolution');
-
+const { extractTopics }  = require('./modules/topicExtractor');
+const evo                = require('./modules/evolution');
+const puppeteer          = require('puppeteer-extra');
 
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS    = 8000;
@@ -86,16 +83,25 @@ async function main() {
   await initMySQL();
   console.log('✅ MySQL schema ready');
 
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: ['--start-maximized']
+  });
+  
   for (const cfg of botConfigs) {
-    let client;
+    const page = await browser.newPage();
+    let client;  // declare client reference
+  
     const handler = makeHandler(cfg, () => client);
-
+  
     client = new HabboClient({
-      iframeUrl: cfg.iframeUrl,
+      page,
       username:  cfg.username,
+      iframeUrl: cfg.iframeUrl,
       roomId:    cfg.roomId,
       onChat:    handler
     });
+
     console.log(`🚀 ${cfg.username} launched`);
 
     // autonomous random wandering
@@ -370,4 +376,3 @@ async function handleMessage(cfg, client, sender, text) {
 }
 
 main().catch(console.error);
-

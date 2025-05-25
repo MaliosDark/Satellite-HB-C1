@@ -13,3 +13,5 @@ profiles/jimmy_profile.json
 profiles/satoshi_profile.json
 profiles/zyn_profile.json
 profiles/kael_profile.json
+dump.rdb
+vendor/redis/

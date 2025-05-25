@@ -395,6 +395,4 @@ module.exports = class HabboClient {
 
     this._lastSentAt = Date.now();
   }
-
-
 };
