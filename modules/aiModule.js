@@ -113,11 +113,11 @@ module.exports = {
   /**
    * Entry point: queue up LLM turns
    */
-  async generateReply({ profile, context, sender, message }) {
+  async generateReply({ profile, context, sender, message, memory = '' }) {
     this._turnPromise = this._turnPromise
-      .catch(() => {})  // ignore prior errors
+      .catch(() => {})
       .then(() =>
-        this._internalGenerateReply({ profile, context, sender, message })
+        this._internalGenerateReply({ profile, context, sender, message, memory })
       );
     return this._turnPromise;
   },
@@ -125,7 +125,7 @@ module.exports = {
   /**
    * Build the prompt and dispatch to Ollama (or Sofía fallback)
    */
-  async _internalGenerateReply({ profile, context, sender, message }) {
+  async _internalGenerateReply({ profile, context, sender, message, memory }) {
     // 1) human-like typing delay
     const [min, max] = this.THINK_DELAY_RANGE;
     await sleep(randomBetween(min, max));
@@ -212,15 +212,16 @@ You: “Based on my memory I have beliefs: [Belief: …], and my inner_monologue
 ==== END SYSTEM INSTRUCTIONS ====
     `.trim();
 
-    // 6) assemble a lean history
+     // 6) assemble a lean history
     const history = [
+      `Memory:\n${memory}`,                           // new memory block (empty if none)
       `Beliefs (top3): ${beliefLines.slice(-3).join('; ')}`,
       `Recent routine: ${routineLines.slice(-2).join('; ')}`,
       'Chat history:',
       ...convoLines,
       `${sender}: ${message}`,
       `${profileObj.chosen_name}:`
-    ].join('\n');
+    ].join('\n\n');
 
     const fullPrompt = `${systemPrompt}\n\n${history}`;
 

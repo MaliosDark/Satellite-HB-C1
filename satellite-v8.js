@@ -58,6 +58,8 @@ const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
 const { extractTopics } = require('./modules/topicExtractor');
 const evo = require('./modules/evolution');
+const { retrieveRelevant } = require('./modules/memoryRetriever');
+
 
 
 // debounce before replying (ms)
@@ -179,31 +181,36 @@ async function handleMessage(cfg, client, sender, text) {
     }
 
     // 3) Gather memory (commented for later study)
-    
-    const lists = [
-      'daily_routine','belief_network','inner_monologue','conflicts',
-      'personal_timeline','relationships','motivations','dream_generator',
-      'goals','perceptions','learning_journal','aspirational_dreams'
-    ];
-    let memArr = [];
-    for (const name of lists) {
-      memArr.push(...await getList(coreId, name));
-    }
-    const memText = memArr.map(e => JSON.stringify(e)).join('\n');
+    // const lists = [
+    //   'daily_routine','belief_network','inner_monologue','conflicts',
+    //   'personal_timeline','relationships','motivations','dream_generator',
+    //   'goals','perceptions','learning_journal','aspirational_dreams'
+    // ];
+    // let memArr = [];
+    // for (const name of lists) {
+    //   memArr.push(...await getList(coreId, name));
+    // }
+    // const memText = memArr.map(e => JSON.stringify(e)).join('\n');
     
 
     // 4) Get current room context
     const context = await getRoomContext(cfg.botId);
+
+    const query = `${text} | Context: ${context}`;
+    const topMemories = await retrieveRelevant(coreId, 'inner_monologue', query, 5);
+    const memorySnippet = topMemories
+      .map(m => `${m.role}:${m.sender}:${m.message}`)
+      .join('\n');
 
     // 5) Human-like thinking delay
     await sleep(randomBetween(...aiModule.THINK_DELAY_RANGE));
 
     // 6) Generate reply
     let reply = await aiModule.generateReply({
-      // memory:  memText,    // commented out for now
       profile,
       context,
       sender,
+      memory: memorySnippet,
       message: text
     });
 
