@@ -47,6 +47,7 @@ const {
   setCore,
   addToList,
   getList,
+  getWallet,
   redis
 } = require('./db/agent_storage');
 
@@ -63,6 +64,8 @@ const memoryManager = require('./modules/memoryManager');
 const { getHistory } = require('./modules/history');
 const { postTweet } = require('./modules/twitterPoster');
 const { composeTweet } = require('./modules/tweetComposer');
+const quick = require('./modules/quickRules');
+const evolLog = require('./modules/evolutionTracker');
 
 
 
@@ -87,6 +90,15 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+// ── helper used by makeSnapshot ────────────────────────────────
+const toStr = v => {
+  if (v && typeof v === 'object') {
+    return JSON.stringify(v).slice(0, 140);   
+  }
+  return v;
+};
+
 
 // per-bot & per-sender locks
 const busy        = new Map();
@@ -155,23 +167,43 @@ async function main() {
 }
 
 /**
+/**
  * Creates a debounced onChat handler per bot.
  */
 function makeHandler(cfg, getClient) {
-  return (senderRaw, textRaw) => {
+  return async (senderRaw, textRaw) => {
     const botName = cfg.username.toLowerCase();
     const sender  = senderRaw.toLowerCase();
     const text    = textRaw.trim();
-    if (sender === botName) return;
+
+    if (sender === botName) return;          // ignore self
+
+    // instant rule-based reactions (no LLM)
+    await quick.run(getClient(), sender, text);
 
     clearTimeout(replyTimers.get(sender));
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       replyTimers.delete(sender);
       await handleMessage(cfg, getClient(), sender, text);
     }, REPLY_DEBOUNCE_MS);
-    replyTimers.set(sender, t);
+
+    replyTimers.set(sender, timer);
   };
 }
+
+// ——— quick agent snapshot ———
+function makeSnapshot({ emotion, traits, beliefs, wallet }) {
+  return {
+    emotion,                     // string
+    traits  : toStr(traits),
+    beliefs : toStr((beliefs || []).slice(0, 10)),
+    credits : wallet.credits  ?? 0,
+    duckets : wallet.duckets  ?? 0,
+    diamonds: wallet.diamonds ?? 0
+  };
+}
+
+
 
 /**
  * Main message handling: turn-lock → load memory → LLM → send → cleanup.
@@ -266,10 +298,45 @@ async function handleMessage(cfg, client, sender, text) {
 
     // B) Cognitive traits shift
     const newCogTraits = evo.computeCognitiveShift(oldCog, text, reply);
+    
+
 
     // C) Belief revision
     const rawBeliefs     = await getList(coreId, 'belief_network');
     const updatedBeliefs = evo.reviseBeliefs(rawBeliefs, text, reply);
+
+    // ——— snapshot + evolución log  ————————————
+    const walletNow  = await getWallet(coreId) || {};
+
+    function safe(val) {
+      if (val == null) return null;
+      if (typeof val === 'object') {
+        return JSON.stringify(val).slice(0, 160);
+      }
+      return val;
+    }
+
+    const beforeSnap = makeSnapshot({
+      emotion : oldEmo,
+      traits  : oldCog,
+      beliefs : rawBeliefs,
+      wallet  : walletNow
+    });
+
+    const afterSnap  = makeSnapshot({
+      emotion : newEmotion,
+      traits  : newCogTraits,
+      beliefs : updatedBeliefs,
+      wallet  : walletNow
+    });
+
+    await evolLog.log(
+      coreId,
+      beforeSnap,
+      afterSnap,
+      { sender, message: text }
+    );
+    // ———————
 
     // D) Memory decay
     const rawMono     = await getList(coreId, 'inner_monologue');
@@ -321,7 +388,10 @@ async function handleMessage(cfg, client, sender, text) {
     await memoryManager.applyDecay(coreId);
     
     // 7.5) Memory enhancing: summaries, pruning, episodes, self-reflection
-    await memoryEnhancer.enhance(coreId);
+    // await memoryEnhancer.enhance(coreId);
+    // await redis.rpush(`${coreId}:evolution_log`,
+    //   JSON.stringify({ ts: Date.now(), emotion: newEmotion })
+    // );
 
     const LAST_CACHE_KEY = `${botKey}:last_replies`;
     let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || []; 

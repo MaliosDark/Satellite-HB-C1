@@ -81,6 +81,17 @@ async function applyDecay(coreId) {
   }
 }
 
+setInterval(async () => {
+    const now = Date.now();
+    for (const key of await redis.keys('*:inner_monologue')) {
+      const items = (await redis.lrange(key, 0, -1)).map(JSON.parse);
+      const keep  = items.filter(i => now - i.ts < 3_600_000); // ≤1 h
+      await redis.del(key);
+      for (const x of keep) await redis.rpush(key, JSON.stringify(x));
+    }
+  }, 10 * 60 * 1000); // every 10 min
+  
+
 module.exports = {
   writeMemory,
   retrieveMemories,

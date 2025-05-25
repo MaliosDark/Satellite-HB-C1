@@ -1,18 +1,18 @@
 {
     "name": "pai-os-satellite-hb-c1",
     "version": "8.0.0",
+    "type": "commonjs",
     "main": "satellite-v8.js",
     "scripts": {
-    "start":      "node scripts/start-with-redis.js",
-    "init-db":    "node db/init.js",
-    "bootstrap":  "node scripts/bootstrap-agent.js",
-    "twitter-setup": "node scripts/setup-twitter-client.js",
-    "satellite":  "node satellite-v8.js"
+        "start": "node scripts/start-with-redis.js",
+        "init-db": "node db/init.js",
+        "bootstrap": "node scripts/bootstrap-agent.js",
+        "twitter-setup": "node scripts/setup-twitter-client.js",
+        "satellite": "node satellite-v8.js"
     },
-
     "dependencies": {
         "axios": "^1.4.0",
-        "chalk": "^5.4.1",
+        "chalk": "^4.1.2",
         "compromise": "^14.14.4",
         "dotenv": "^16.0.0",
         "ioredis": "^5.3.0",

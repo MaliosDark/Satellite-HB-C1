@@ -4,6 +4,7 @@
 const axios     = require('axios');
 const path      = require('path');
 const storage   = require('../db/agent_storage');
+const { buildPrompt } = require('./conversationManager');
 const { pool, redis } = storage;
 require('dotenv').config();
 
@@ -239,7 +240,12 @@ module.exports = {
       `${profileObj.chosen_name}:`
     ].join('\n\n');
 
-    const fullPrompt = `${systemPrompt}\n\n${history}`;
+    const fullPrompt = await buildPrompt(
+      // profile.core_id,
+      profileObj.chosen_name,
+      sender,
+      message
+    );
 
     // 7) dispatch
     const tierList = [...MODELS.small, ...MODELS.medium];

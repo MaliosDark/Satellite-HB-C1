@@ -36,6 +36,18 @@ const {
   TWITTER_COOKIE_FILE = path.join(__dirname, '.twitter-cookies.json')
 } = process.env;
 
+// ── early-exit switch ───────────────────────────
+if (process.env.TWITTER_DISABLE === 'true') {
+    console.log('[twitterPoster] disabled via TWITTER_DISABLE=true');
+    module.exports = {
+      postTweet : () => false,
+      getScraper: () => null
+    };
+    return;             
+  }
+  // ────────────────────────────────────────────────
+  
+
 // ──────────────────────────────────────────────────────────────
 // 1) Ensure agent-twitter-client is available
 // ──────────────────────────────────────────────────────────────
