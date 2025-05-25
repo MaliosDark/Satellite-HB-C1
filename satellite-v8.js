@@ -58,9 +58,9 @@ const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
 const { extractTopics } = require('./modules/topicExtractor');
 const evo = require('./modules/evolution');
-const { retrieveRelevant } = require('./modules/memoryRetriever');
 const memoryEnhancer = require('./modules/memoryEnhancer');
 const memoryManager = require('./modules/memoryManager');
+const { getHistory } = require('./modules/history');
 
 
 
@@ -182,34 +182,29 @@ async function handleMessage(cfg, client, sender, text) {
       }
     }
 
-    // 3) Gather memory (commented for later study)
-    // const lists = [
-    //   'daily_routine','belief_network','inner_monologue','conflicts',
-    //   'personal_timeline','relationships','motivations','dream_generator',
-    //   'goals','perceptions','learning_journal','aspirational_dreams'
-    // ];
-    // let memArr = [];
-    // for (const name of lists) {
-    //   memArr.push(...await getList(coreId, name));
-    // }
-    // const memText = memArr.map(e => JSON.stringify(e)).join('\n');
-    
+    // 3) Gather a unified history slice
+    const historyEntries = await getHistory(coreId, [
+      'inner_monologue',
+      'belief_network',
+      'episodes'
+    ], 30);
 
-    // 4) Get current room context
+    // 4) Build a single memory snippet
     const context = await getRoomContext(cfg.botId);
+    const memorySnippet = historyEntries.map(e => {
+      if (e.role === 'user' || e.role === 'bot') {
+        return `${e.role}:${e.message}`;
+      }
+      if (e.belief) {
+        return `belief:${e.belief}`;
+      }
+      if (e.summary || e.text) {
+        return `summary:${e.summary || e.text}`;
+      }
+      return JSON.stringify(e);
+    }).join('\n');
 
-    const query = `${text} | Context: ${context}`;
-    const topMemories = await retrieveRelevant(coreId, 'inner_monologue', query, 5);
-    const semanticCues = await memoryManager.retrieveMemories(coreId, 'semantic', {
-      query: text,
-      k: 5
-    });
-    const memorySnippet = [
-      ...semanticCues.map(c => c.text || `${c.sender}:${c.message}`),
-      ...topMemories.map(m => `${m.role}:${m.sender}:${m.message}`)
-    ].join('\n');
     
-
     // 5) Human-like thinking delay
     await sleep(randomBetween(...aiModule.THINK_DELAY_RANGE));
 
