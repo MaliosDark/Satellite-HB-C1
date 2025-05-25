@@ -59,6 +59,7 @@ const movement           = require('./modules/room-movement');
 const { extractTopics } = require('./modules/topicExtractor');
 const evo = require('./modules/evolution');
 const { retrieveRelevant } = require('./modules/memoryRetriever');
+const memoryEnhancer = require('./modules/memoryEnhancer');
 
 
 
@@ -275,6 +276,9 @@ async function handleMessage(cfg, client, sender, text) {
       message: reply,
       ts:      Date.now()
     });
+
+    // 7.5) Memory enhancing: summaries, pruning, episodes, self-reflection
+    await memoryEnhancer.enhance(coreId);
 
     const LAST_CACHE_KEY = `${botKey}:last_replies`;
     let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || []; 
