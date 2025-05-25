@@ -116,7 +116,28 @@ async function main() {
         }
       }
     })();
-  
+
+    // ═══ lonelyWatcher────────────────────
+    ;(async function lonelyWatcher() {
+      while (!client.page) await sleep(100);
+      let lonelyFor = 0;
+      while (true) {
+        await sleep(50000);    
+        const nearby = await client.getNearbyPlayers(400);
+        if (nearby.length === 0) {
+          lonelyFor += 5;
+          if (lonelyFor >= 3600) {  
+            try {
+              await client.sendChat('Nobody around, I will explore another place.');
+              await negotiateRoomChange(client, '');
+            } catch (e) { console.error(e); }
+            lonelyFor = 0;
+          }
+        } else {
+          lonelyFor = 0; 
+        }
+      }
+    })();
     await sleep(300);
   }
 }
@@ -323,6 +344,17 @@ async function handleMessage(cfg, client, sender, text) {
     if (buf) chunks.push(buf.trim());
 
     for (const chunk of chunks) {
+      // conversation-driven room hop ─────────────────────────────
+      const turnKey    = `${botKey}:turnsWith:${sender}`;
+      const turnsSoFar = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
+      await redis.set(turnKey, turnsSoFar, 'EX', 600);           // 10 min TTL
+
+      if (turnsSoFar >= 5 && Math.random() < 0.30) {             // ≥5 turns, 30 % chance
+        await client.sendChat(`@${sender} let's move to another room and keep talking.`);
+        await negotiateRoomChange(client, sender);               // ← add this
+        return;                                                  // resume chat there
+      }
+      // ──────────────────────────────────────────────────────────
 
       await client.sendChat(chunk);
 
@@ -356,30 +388,35 @@ async function handleMessage(cfg, client, sender, text) {
       await client.handleIncomingFriendRequest();
 
       await sleep(3000);
-      await negotiateRoomChange(client, 'partnerUsername');
+
     }
 
     // ——————————————————————————————————————————————————————
-    // Room‐Change Negotiation Helpers
+    // Room-Change Negotiation Helpers
     // ——————————————————————————————————————————————————————
+
     /**
-    /**
-     * Scan “All Rooms” and return [{ name, count, handle }]
-     * Entirely on the main page—no frames.
+     * Scan “All Rooms” and return an array like:
+     *   [{ name, count, handle }]
+     * Runs on the main page (no frames involved).
      */
     async function scanRooms(client) {
       const page = client.page;
       console.log('[scanRooms] Opening Rooms menu…');
       await page.click('.navigation-item.icon.icon-rooms');
-      // wait for the draggable panel
-      await page.waitForSelector('.draggable-window .nitro-navigator', { visible: true, timeout: 5000 });
+
+      // Wait for the navigator panel to appear
+      await page.waitForSelector('.draggable-window .nitro-navigator',
+                                { visible: true, timeout: 5000 });
 
       console.log('[scanRooms] Clicking All Rooms tab…');
       await page.click('.draggable-window .icon-naviallrooms');
-      // wait for the list items
-      await page.waitForSelector('.draggable-window .navigator-item', { timeout: 5000 });
 
-      // collect all navigator-item elements
+      // Wait for the room list items
+      await page.waitForSelector('.draggable-window .navigator-item',
+                                { timeout: 5000 });
+
+      // Collect all navigator-item elements
       const els = await page.$$('.draggable-window .navigator-item');
       console.log(`[scanRooms] Found ${els.length} rooms`);
 
@@ -387,24 +424,32 @@ async function handleMessage(cfg, client, sender, text) {
         throw new Error('No rooms detected after clicking All Rooms');
       }
 
-      // extract name & badge count
-      return Promise.all(els.map(async el => {
-        const name  = await el.$eval('.text-truncate', n => n.textContent.trim());
-        const badge = await el.$eval('.badge', b => b.textContent.trim()).catch(() => '0');
-        return { name, count: parseInt(badge, 10) || 0, handle: el };
-      }));
+      // Extract room name and occupancy badge
+      return Promise.all(
+        els.map(async el => {
+          const name  = await el.$eval('.text-truncate',
+                                      n => n.textContent.trim());
+          const badge = await el.$eval('.badge',
+                                      b => b.textContent.trim())
+                                .catch(() => '0');
+          return { name,
+                  count: parseInt(badge, 10) || 0,
+                  handle: el };
+        })
+      );
     }
 
     /**
-     * Negotiates a move: pick empty room or “Somewhere new.”
-     * Retries the entire flow once on error.
+     * Negotiate a move: choose an empty room or use
+     * the “Somewhere new” button. Retries once on error.
      */
     async function negotiateRoomChange(client, partnerName) {
       const page = client.page;
 
-      // wrapper for a single attempt
+      // One full attempt wrapper
       const attempt = async () => {
-        // 20% chance to take the random “Somewhere new” button
+
+        // 20 % chance to click the random “Somewhere new” button
         if (Math.random() < 0.2) {
           console.log('[negotiate] Taking “Somewhere new” branch');
           const btns = await page.$$('.nav-bottom .nav-bottom-buttons-text');
@@ -420,24 +465,28 @@ async function handleMessage(cfg, client, sender, text) {
         console.log('[negotiate] Scanning rooms…');
         const rooms = await scanRooms(client);
 
-        // pick the first empty room
+        // Pick the first empty room
         const empty = rooms.find(r => r.count === 0);
         if (!empty) {
-          console.warn('[negotiate] No empty rooms—defaulting to random');
-          return negotiateRoomChange(client, partnerName); // will retry into random branch
+          console.warn('[negotiate] No empty rooms — retrying with random');
+          return negotiateRoomChange(client, partnerName); // recursive retry
         }
 
-        console.log(`[negotiate] Proposing meeting in "${empty.name}"`);
+        console.log(`[negotiate] Proposing to meet in "${empty.name}"`);
         await client.sendChat(`@${partnerName} meet me in "${empty.name}"`);
 
-        // 🚪 Immediately click into the room
-        console.log(`[negotiate] Entering "${empty.name}" immediately`);
+        // 🚪 Immediately enter the room
+        console.log(`[negotiate] Entering "${empty.name}" now`);
         await empty.handle.click();
+        await client.sendChat('Hello room! Anyone here?');
+        await movement.walkPath(client.page,
+                                ['down','down','right','right']);
 
-        // Optional: keep polling if you really need to know partner joined
-        for (let i = 0; i < 20; i++) {
+        // (Optional) poll to see if partner arrives
+        for (let i = 0; i < 90; i++) {
           await new Promise(r => setTimeout(r, 1000));
-          const fresh = (await scanRooms(client)).find(r => r.name === empty.name);
+          const fresh = (await scanRooms(client))
+                          .find(r => r.name === empty.name);
           if (fresh && fresh.count > 0) {
             console.log(`[negotiate] Partner joined "${empty.name}"`);
             break;
@@ -447,7 +496,7 @@ async function handleMessage(cfg, client, sender, text) {
         return true;
       };
 
-      // try once, on error log short message and retry one more time
+      // Try once; on failure retry once more
       try {
         return await attempt();
       } catch (err) {
@@ -460,6 +509,7 @@ async function handleMessage(cfg, client, sender, text) {
         }
       }
     }
+
 
   }
   catch (err) {

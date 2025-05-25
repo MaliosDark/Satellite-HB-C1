@@ -308,6 +308,8 @@ module.exports = class HabboClient {
     // initial greeting
     try {
       await this.sendChat(`Hello, I am ${this.username}!`);
+      await this.walkPath(['down','down','down','down','right']);
+
     } catch {}
   }
 
