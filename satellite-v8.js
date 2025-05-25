@@ -68,7 +68,8 @@ const { composeTweet } = require('./modules/tweetComposer');
 
 // ── room-hop tuning ──────────────────────────────
 const ROOM_HOP_MIN_TURNS = 8;   
-const ROOM_HOP_PROB      = 0.10; 
+const ROOM_HOP_PROB      = 0.15; 
+const CROWD_THRESHOLD    = 5;
 // debounce before replying (ms)
 const REPLY_DEBOUNCE_MS    = 8000;
 // cooldown durations after sending (ms)
@@ -125,13 +126,18 @@ async function main() {
     // ═══ lonelyWatcher────────────────────
     ;(async function lonelyWatcher() {
       while (!client.page) await sleep(100);
-      let lonelyFor = 0;
+
+      const CHECK_INTERVAL_MS     = 10_000;   // 10 s reales
+      const LONELY_THRESHOLD_SECS = 900;      // 15 min
+
+      let lonelyFor = 0;                      // segundos acumulados
       while (true) {
-        await sleep(1000);    // 10s
+        await sleep(CHECK_INTERVAL_MS);
+
         const nearby = await client.getNearbyPlayers(400);
         if (nearby.length === 0) {
-          lonelyFor += 5;
-          if (lonelyFor >= 900) {  //15 min
+          lonelyFor += CHECK_INTERVAL_MS / 1000;
+          if (lonelyFor >= LONELY_THRESHOLD_SECS) {
             try {
               await client.sendChat('Nobody around, I will explore another place.');
               await negotiateRoomChange(client, '');
@@ -139,10 +145,11 @@ async function main() {
             lonelyFor = 0;
           }
         } else {
-          lonelyFor = 0; 
+          lonelyFor = 0;
         }
       }
     })();
+
     await sleep(300);
   }
 }
@@ -375,28 +382,35 @@ async function handleMessage(cfg, client, sender, text) {
     if (buf) chunks.push(buf.trim());
 
     for (const chunk of chunks) {
-      // conversation-driven room hop ─────────────────────────────
-      const turnKey    = `${botKey}:turnsWith:${sender}`;
-      const turnsSoFar = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
-      await redis.set(turnKey, turnsSoFar, 'EX', 600);           // 10 min TTL
+       // conversation-driven room hop ─────────────────────────────
+        const turnKey    = `${botKey}:turnsWith:${sender}`;
+        const turnsSoFar = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
+        await redis.set(turnKey, turnsSoFar, 'EX', 600);           // 10 min TTL
 
-      if (turnsSoFar >= ROOM_HOP_MIN_TURNS && Math.random() < ROOM_HOP_PROB) {
-        await client.sendChat(`@${sender} let's move to another room and keep talking.`);
-        await negotiateRoomChange(client, sender);               // ← add this
-        return;                                                  // resume chat there
-      }
+        const nearby     = await client.getNearbyPlayers(200);
+        const isCrowded  = nearby.length >= CROWD_THRESHOLD;
+        const hopLockKey = `${botKey}:room_hopped_with:${sender}`;
+        const hopLocked  = !!(await redis.get(hopLockKey));
+
+        if (!hopLocked &&
+            isCrowded &&
+            turnsSoFar >= ROOM_HOP_MIN_TURNS &&
+            Math.random() < ROOM_HOP_PROB) {
+          await redis.set(hopLockKey, 1, 'EX', 3600);              // bloquea más hops 1 h
+          await client.sendChat(`@${sender} let's move to another room and keep talking.`);
+          await negotiateRoomChange(client, sender);
+          return;                                                  // seguimos allá
+        }
       // ──────────────────────────────────────────────────────────
+      if (nearby.length > 0 && Math.random() < 0.3) {
+        nearby.sort((a, b) => a.distance - b.distance);
+        await client.performSocialAction({ type: 'whisper', target: nearby[0].username });
+      }
 
       await client.sendChat(chunk);
 
       if (turnsSoFar === 2) {
         await client.performSocialAction({ type: 'friend', target: sender });
-      }
-
-      const nearby = await client.getNearbyPlayers(150);
-      if (nearby.length > 0 && Math.random() < 0.3) {
-        nearby.sort((a, b) => a.distance - b.distance);
-        await client.performSocialAction({ type: 'whisper', target: nearby[0].username });
       }
 
       // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS
