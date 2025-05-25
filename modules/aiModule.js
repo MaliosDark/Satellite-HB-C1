@@ -22,6 +22,18 @@ function randomBetween(a, b) {
   return Math.floor(Math.random() * (b - a + 1)) + a;
 }
 
+// ── leak-filter helper ───────────────────────────
+const LEAK_REGEX =
+  /(core philosophy|current feeling|practical skills|personal goals|emotional tones|memory:|beliefs \(top3\)|recent routine|style examples)/i;
+
+function sanitizeLLMReply(txt) {
+  return txt
+    .split('\n')
+    .filter(line => !LEAK_REGEX.test(line))
+    .join(' ')
+    .trim();
+}
+
 /**
  * Call a single Ollama model, enforcing the hard maxTokens cap.
  */
@@ -231,6 +243,8 @@ module.exports = {
 
     // 7) dispatch
     const tierList = [...MODELS.small, ...MODELS.medium];
-    return tryModels(tierList, fullPrompt, temperature, maxTokens);
+    const raw = await tryModels(tierList, fullPrompt, temperature, maxTokens);
+    return sanitizeLLMReply(raw);
+
   }
 };
