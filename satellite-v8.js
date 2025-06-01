@@ -1,7 +1,7 @@
 // File: satellite-v8.js
 // =====================
 
-// ————————————————————————————————————————————————————————————————————————
+// -----------------------------------------------------------------------------
 //            .       .                   .       .      .     .      .
 //           .    .         .    .            .     ______
 //       .           .             .               ////////
@@ -12,7 +12,7 @@
 //                     ||.    .    .| |  ///////// .     .
 //      .    .         ||           | |//`,/////                .
 //              .       \\        ./ //  /  \/   .
-//   .                    \\.___./ //\` '   ,_\     .     .
+//   .                    \\.___./ //\` '   ,_\     .     .   .
 //           .           .     \ //////\ , /   \                 .    .
 //                        .    ///////// \|  '  |    .
 //       .        .          ///////// .   \ _ /          .
@@ -24,7 +24,7 @@
 // ____________------------                        -------------_________
 
 //  PAi-OS Satellite v8 • 2025
-// ————————————————————————————————————————————————————————————————————————
+// -----------------------------------------------------------------------------
 
 console.log(
   "  ____       _    ___  ____    ____        _   _   _ ____         ____ _ \n" +
@@ -36,11 +36,8 @@ console.log(
   "      PAi-OS Satellite v8 • Starting up...\n"
 );
 
-
-// File: satellite-v8.js
-// =====================
-
 require('dotenv').config();
+
 const {
   initMySQL,
   getCore,
@@ -48,59 +45,73 @@ const {
   addToList,
   getList,
   getWallet,
+  setSolanaKeypair,
+  getSolanaKeypair,
   redis
 } = require('./db/agent_storage');
-
 
 const HabboClient        = require('./modules/client-emulator');
 const botConfigs         = require('./config/bots-config');
 const aiModule           = require('./modules/aiModule');
 const { getRoomContext } = require('./modules/room-context');
 const movement           = require('./modules/room-movement');
-const { extractTopics } = require('./modules/topicExtractor');
-const evo = require('./modules/evolution');
-const memoryEnhancer = require('./modules/memoryEnhancer');
-const memoryManager = require('./modules/memoryManager');
-const { getHistory } = require('./modules/history');
-const { postTweet } = require('./modules/twitterPoster');
-const { composeTweet } = require('./modules/tweetComposer');
-const quick = require('./modules/quickRules');
-const evolLog = require('./modules/evolutionTracker');
+const { extractTopics }  = require('./modules/topicExtractor');
+const evo                = require('./modules/evolution');
+const memoryEnhancer     = require('./modules/memoryEnhancer');
+const memoryManager      = require('./modules/memoryManager');
+const { getHistory }     = require('./modules/history');
+const { postTweet }      = require('./modules/twitterPoster');
+const { composeTweet }   = require('./modules/tweetComposer');
+const quick              = require('./modules/quickRules');
+const evolLog            = require('./modules/evolutionTracker');
+const trade              = require('./modules/trade');
+const { getTokenPrice }  = require('./modules/trade/priceTracker');
+
+const _bs58 = require('bs58');
+const bs58  = _bs58.default ? _bs58.default : _bs58;
+const { Keypair } = require('@solana/web3.js');
 
 
 
-// ── room-hop tuning ──────────────────────────────
-const ROOM_HOP_MIN_TURNS = 8;   
-const ROOM_HOP_PROB      = 0.15; 
+// Room-hop tuning
+const ROOM_HOP_MIN_TURNS = 8;
+const ROOM_HOP_PROB      = 0.15;
 const CROWD_THRESHOLD    = 5;
-// debounce before replying (ms)
-const REPLY_DEBOUNCE_MS    = 8000;
-// cooldown durations after sending (ms)
-const GLOBAL_CD            = 5000;
-const USER_CD              = 5000;
-// wander interval between autonomous moves (ms)
-const WANDER_INTERVAL_MIN  = 30000;  // 30s
-const WANDER_INTERVAL_MAX  = 60000;  // 60s
-// TTL for the room-turn lock: debounce + max think delay + margin
-const LOCK_TTL_MS = REPLY_DEBOUNCE_MS
-  + Math.max(...aiModule.THINK_DELAY_RANGE)
-  + 1000;
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+// Debounce before replying (milliseconds)
+const REPLY_DEBOUNCE_MS = 8000;
+
+// Cooldown durations after sending (milliseconds)
+const GLOBAL_CD = 5000;
+const USER_CD   = 5000;
+
+// Wander interval between autonomous moves (milliseconds)
+const WANDER_INTERVAL_MIN = 30000; // 30s
+const WANDER_INTERVAL_MAX = 60000; // 60s
+
+// TTL for the room-turn lock: debounce + max think delay + margin
+const LOCK_TTL_MS =
+  REPLY_DEBOUNCE_MS +
+  Math.max(...aiModule.THINK_DELAY_RANGE) +
+  1000;
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// ── helper used by makeSnapshot ────────────────────────────────
+// Helper used by makeSnapshot
 const toStr = v => {
   if (v && typeof v === 'object') {
-    return JSON.stringify(v).slice(0, 140);   
+    return JSON.stringify(v).slice(0, 140);
   }
   return v;
 };
 
-
-// per-bot & per-sender locks
+// Per-bot & per-sender locks
 const busy        = new Map();
 const replyTimers = new Map();
 
@@ -109,6 +120,32 @@ async function main() {
   console.log('✅ MySQL schema ready');
 
   for (const cfg of botConfigs) {
+    const username    = cfg.username.toLowerCase();
+    const profileData = require(`./profiles/${username}_profile.json`);
+    const coreId      = profileData.core_id;
+
+    // 1) Attempt to read a stored base58 secret key
+    let base58Secret = await getSolanaKeypair(coreId);
+    if (!base58Secret) {
+      // 2) No key in storage: generate a new Keypair
+      const newKP = Keypair.generate();
+      // 3) Encode the raw secretKey buffer to a base58 string
+      base58Secret = bs58.encode(newKP.secretKey);
+      // 4) Store that base58 string for future use
+      await setSolanaKeypair(coreId, base58Secret);
+      console.log(
+        `🌐 Wallet Solana created for ${cfg.username}: ${newKP.publicKey.toBase58()}`
+      );
+    }
+
+    // 5) Decode the stored base58 string back into a Buffer
+    const rawSecret = bs58.decode(base58Secret);
+    // 6) Reconstruct the Keypair object so the bot can sign transactions
+    const reconstructedKP = Keypair.fromSecretKey(rawSecret);
+    // (Optionally assign to a profile object if used elsewhere,
+    //  e.g.: profile.solanaKeypair = reconstructedKP )
+
+    // 7) Launch the Habbo client for this bot
     let client;
     const handler = makeHandler(cfg, () => client);
 
@@ -120,7 +157,7 @@ async function main() {
     });
     console.log(`🚀 ${cfg.username} launched`);
 
-    // autonomous random wandering
+    // 8) Autonomous random wandering loop (runs indefinitely)
     ;(async function wanderForever() {
       while (!client.page) {
         await sleep(100);
@@ -135,14 +172,15 @@ async function main() {
       }
     })();
 
-    // ═══ lonelyWatcher────────────────────
+    // 9) LonelyWatcher: if no nearby players for 15 minutes, negotiate a room change
     ;(async function lonelyWatcher() {
       while (!client.page) await sleep(100);
 
-      const CHECK_INTERVAL_MS     = 10_000;   // 10 s reales
-      const LONELY_THRESHOLD_SECS = 900;      // 15 min
+      const CHECK_INTERVAL_MS     = 10_000;   // 10 seconds
+      const LONELY_THRESHOLD_SECS = 900;      // 15 minutes
 
-      let lonelyFor = 0;                      // segundos acumulados
+      let lonelyFor = 0; // accumulated seconds alone
+
       while (true) {
         await sleep(CHECK_INTERVAL_MS);
 
@@ -153,7 +191,9 @@ async function main() {
             try {
               await client.sendChat('Nobody around, I will explore another place.');
               await negotiateRoomChange(client, '');
-            } catch (e) { console.error(e); }
+            } catch (e) {
+              console.error(e);
+            }
             lonelyFor = 0;
           }
         } else {
@@ -166,7 +206,7 @@ async function main() {
   }
 }
 
-/**
+
 /**
  * Creates a debounced onChat handler per bot.
  */
@@ -176,9 +216,9 @@ function makeHandler(cfg, getClient) {
     const sender  = senderRaw.toLowerCase();
     const text    = textRaw.trim();
 
-    if (sender === botName) return;          // ignore self
+    if (sender === botName) return; // Ignore messages from itself
 
-    // instant rule-based reactions (no LLM)
+    // Instant rule-based reactions (no LLM)
     await quick.run(getClient(), sender, text);
 
     clearTimeout(replyTimers.get(sender));
@@ -191,22 +231,20 @@ function makeHandler(cfg, getClient) {
   };
 }
 
-// ——— quick agent snapshot ———
+// Helper for logging snapshots of emotion, traits, beliefs, and wallet state
 function makeSnapshot({ emotion, traits, beliefs, wallet }) {
   return {
-    emotion,                     // string
-    traits  : toStr(traits),
-    beliefs : toStr((beliefs || []).slice(0, 10)),
-    credits : wallet.credits  ?? 0,
-    duckets : wallet.duckets  ?? 0,
+    emotion,
+    traits:  toStr(traits),
+    beliefs: toStr((beliefs || []).slice(0, 10)),
+    credits: wallet.credits  ?? 0,
+    duckets: wallet.duckets  ?? 0,
     diamonds: wallet.diamonds ?? 0
   };
 }
 
-
-
 /**
- * Main message handling: turn-lock → load memory → LLM → send → cleanup.
+ * Main message handling: turn-lock → load memory → LLM → respond → cleanup.
  */
 async function handleMessage(cfg, client, sender, text) {
   const botName = cfg.username.toLowerCase();
@@ -216,7 +254,7 @@ async function handleMessage(cfg, client, sender, text) {
   // 0) Attempt to acquire the room-turn lock
   const got = await redis.set(lockKey, botName, 'NX', 'PX', LOCK_TTL_MS);
   if (got !== 'OK') {
-    // someone else is speaking right now
+    // Someone else is speaking, skip this turn
     return;
   }
 
@@ -229,18 +267,33 @@ async function handleMessage(cfg, client, sender, text) {
   busy.set(sender, true);
 
   try {
-     // 2) Load or bootstrap profile
-     const profile = await aiModule.loadProfile(cfg.username);
-     const coreId  = profile.core_id;
+    // 2) Load or bootstrap profile
+    const profile = await aiModule.loadProfile(cfg.username);
+    const coreId  = profile.core_id;
 
-    // Make sure cognitive_traits is always an object, never a "[object Object]" string
+    // 2.1) Read base58 secret key from storage
+    let base58Secret = await getSolanaKeypair(coreId);
+    if (!base58Secret) {
+      const newKP = Keypair.generate();
+      // 2.2) Encode the raw secretKey buffer to a base58 string
+      base58Secret = bs58.encode(newKP.secretKey);
+      await setSolanaKeypair(coreId, base58Secret);
+    }
+
+    // 2.3) Decode base58 to Buffer and create Keypair
+    const rawSecret = bs58.decode(base58Secret);
+    profile.solanaKeypair = Keypair.fromSecretKey(rawSecret);
+
+    // Ensure cognitive_traits is an object
     if (typeof profile.cognitive_traits === 'string') {
       try {
         profile.cognitive_traits = JSON.parse(profile.cognitive_traits);
       } catch (err) {
-        // If parsing fails, fall back to an empty traits object
         profile.cognitive_traits = {};
-        console.warn(`[${cfg.username}] Warning: failed to parse cognitive_traits; reset to {}`, err);
+        console.warn(
+          `[${cfg.username}] Warning: failed to parse cognitive_traits; resetting to {}`,
+          err
+        );
       }
     }
 
@@ -266,11 +319,10 @@ async function handleMessage(cfg, client, sender, text) {
       return JSON.stringify(e);
     }).join('\n');
 
-    
     // 5) Human-like thinking delay
     await sleep(randomBetween(...aiModule.THINK_DELAY_RANGE));
 
-    // 6) Generate reply
+    // 6) Generate reply via LLM
     let reply = await aiModule.generateReply({
       profile,
       context,
@@ -279,15 +331,83 @@ async function handleMessage(cfg, client, sender, text) {
       message: text
     });
 
-    // 6.5) Extract “real” topics from the user’s text
+    // “!mint” command block
+    if (text.startsWith('!mint ')) {
+      try {
+        // Syntax: "!mint TOKEN_NAME TOKEN_SYMBOL"
+        const parts  = text.trim().split(/\s+/);
+        const name    = parts[1] || 'BOTTOKEN';
+        const symbol  = parts[2] || 'BTK';
+
+        const connection      = new (require('@solana/web3.js').Connection)(
+          'https://api.devnet.solana.com'
+        );
+        const payer           = profile.solanaKeypair;
+        const freezeAuthority = profile.solanaKeypair;
+
+        const { mintAddress } = await trade.tokenMinter.mintNewToken(
+          connection,
+          payer,
+          profile.solanaKeypair,
+          freezeAuthority,
+          name,
+          symbol
+        );
+
+        reply = `✅ Token minted: ${name} (${symbol}) → ${mintAddress}`;
+      } catch (err) {
+        reply = `❌ Minting error: ${err.message}`;
+      }
+    }
+
+    // “!trade” command block
+    if (text.startsWith('!trade ')) {
+      try {
+        // Syntax: "!trade BUY|SELL AMOUNT TOKEN_MINT_ADDRESS"
+        const parts     = text.trim().split(/\s+/);
+        const action    = parts[1].toUpperCase(); // "BUY" or "SELL"
+        const amountNum = parseInt(parts[2], 10);
+        const tokenMint = parts[3];
+
+        if (!['BUY', 'SELL'].includes(action) || isNaN(amountNum) || !tokenMint) {
+          throw new Error('Usage: !trade BUY|SELL <amount> <TOKEN_MINT_ADDRESS>');
+        }
+
+        const connection = new (require('@solana/web3.js').Connection)(
+          'https://api.devnet.solana.com'
+        );
+        const programId = new (require('@solana/web3.js').PublicKey)(
+          process.env.BONDING_CURVE_PROGRAM_ID
+        );
+        const payer = profile.solanaKeypair;
+        const amountLamports = amountNum * 10 ** 9; // assume 9 decimals
+
+        const signature = await trade.trader.makeTradingDecision(
+          { name: cfg.username, targetBuyPrice: 0, targetSellPrice: Infinity },
+          await trade.priceTracker.getSolPrice(),
+          connection,
+          programId,
+          payer,
+          tokenMint,
+          amountLamports,
+          action
+        );
+
+        reply = `✅ Trade ${action} executed: ${signature}`;
+      } catch (err) {
+        reply = `❌ Trading error: ${err.message}`;
+      }
+    }
+
+    // Extract “real” topics from the user’s text
     const topics = extractTopics(text, { lang: 'en' });
     for (const topic of topics) {
       await addToList(coreId, 'recent_topics', { topic, ts: Date.now() });
     }
 
-    // 6.6) EVOLUTION & MEMORY-DECAY STEP — based on last turn
+    // EVOLUTION & MEMORY-DECAY Step
     const oldEmo = profile.current_emotion;
-    const oldCog = profile.cognitive_traits;  
+    const oldCog = profile.cognitive_traits;
     const now    = Date.now();
 
     // A) Emotion shift
@@ -295,48 +415,30 @@ async function handleMessage(cfg, client, sender, text) {
 
     // B) Cognitive traits shift
     const newCogTraits = evo.computeCognitiveShift(oldCog, text, reply);
-    
-
 
     // C) Belief revision
     const rawBeliefs     = await getList(coreId, 'belief_network');
     const updatedBeliefs = evo.reviseBeliefs(rawBeliefs, text, reply);
 
-    // ——— snapshot + evolución log  ————————————
-    const walletNow  = await getWallet(coreId) || {};
-
-    function safe(val) {
-      if (val == null) return null;
-      if (typeof val === 'object') {
-        return JSON.stringify(val).slice(0, 160);
-      }
-      return val;
-    }
-
+    // Snapshot for evolution log
+    const walletNow = await getWallet(coreId) || {};
     const beforeSnap = makeSnapshot({
-      emotion : oldEmo,
-      traits  : oldCog,
-      beliefs : rawBeliefs,
-      wallet  : walletNow
+      emotion: oldEmo,
+      traits:  oldCog,
+      beliefs: rawBeliefs,
+      wallet:  walletNow
+    });
+    const afterSnap = makeSnapshot({
+      emotion: newEmotion,
+      traits:  newCogTraits,
+      beliefs: updatedBeliefs,
+      wallet:  walletNow
     });
 
-    const afterSnap  = makeSnapshot({
-      emotion : newEmotion,
-      traits  : newCogTraits,
-      beliefs : updatedBeliefs,
-      wallet  : walletNow
-    });
-
-    await evolLog.log(
-      coreId,
-      beforeSnap,
-      afterSnap,
-      { sender, message: text }
-    );
-    // ———————
+    await evolLog.log(coreId, beforeSnap, afterSnap, { sender, message: text });
 
     // D) Memory decay
-    const rawMono     = await getList(coreId, 'inner_monologue');
+    const rawMono      = await getList(coreId, 'inner_monologue');
     const filteredMono = evo.applyMemoryDecay(rawMono, now);
 
     // E) Persist core updates
@@ -351,18 +453,17 @@ async function handleMessage(cfg, client, sender, text) {
       await addToList(coreId, 'belief_network', b);
     }
 
-    // G) (Optional) prune inner_monologue
+    // G) Optionally prune inner_monologue
     await redis.del(`${coreId}:inner_monologue`);
     for (const m of filteredMono) {
       await addToList(coreId, 'inner_monologue', m);
     }
 
-    // Update in-memory profile for remainder of this turn
-    profile.current_emotion   = newEmotion;
-    profile.cognitive_traits  = newCogTraits;
+    // Update in-memory profile fields for this turn
+    profile.current_emotion  = newEmotion;
+    profile.cognitive_traits = newCogTraits;
 
-
-    // 7) Record memory
+    // 7) Record conversation memory
     await addToList(coreId, 'inner_monologue', {
       role:    'user',
       sender,
@@ -383,35 +484,35 @@ async function handleMessage(cfg, client, sender, text) {
     });
     await memoryManager.consolidate(coreId);
     await memoryManager.applyDecay(coreId);
-    
-    // 7.5) Memory enhancing: summaries, pruning, episodes, self-reflection
-    // await memoryEnhancer.enhance(coreId);
-    // await redis.rpush(`${coreId}:evolution_log`,
-    //   JSON.stringify({ ts: Date.now(), emotion: newEmotion })
-    // );
 
+    // 8) Check for reply similarity and optionally regenerate
     const LAST_CACHE_KEY = `${botKey}:last_replies`;
-    let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || []; 
+    let lastReplies = (await redis.lrange(LAST_CACHE_KEY, 0, 9)) || [];
 
     function isTooSimilar(a, b) {
-      const min = Math.min(a.length, b.length);
+      const minLen = Math.min(a.length, b.length);
       let same = 0;
-      while (same < min && a[same] === b[same]) same++;
-      return (same / b.length) > 0.7;  // >70% igual
+      while (same < minLen && a[same] === b[same]) same++;
+      return (same / b.length) > 0.7; // more than 70% identical
     }
 
-    if ( lastReplies.some(old => isTooSimilar(old, reply)) ) {
-      console.log('[REPEAT] detected reply too similar, regenerating…');
-      reply = await aiModule.generateReply({ profile, context, sender, message: text });
+    if (lastReplies.some(old => isTooSimilar(old, reply))) {
+      console.log('[REPEAT] Detected reply too similar, regenerating…');
+      reply = await aiModule.generateReply({
+        profile,
+        context,
+        sender,
+        memory: memorySnippet,
+        message: text
+      });
     }
 
     await redis.lpush(LAST_CACHE_KEY, reply);
     await redis.ltrim(LAST_CACHE_KEY, 0, 9);
 
-    // ─── Twitter “day-in-the-life” log (≈5 % chance per turn) ────
+    // 9) Twitter “day-in-the-life” log (~5% chance per turn)
     if (Math.random() < 0.05) {
       try {
-        // 80 %: let the LLM craft a narrative tweet
         if (Math.random() < 0.80) {
           const aiTweet = await composeTweet({
             profile,
@@ -421,23 +522,21 @@ async function handleMessage(cfg, client, sender, text) {
             reply
           });
           await postTweet(aiTweet);
-        }
-        // 20 %: fall back to a simple chat-preview tweet
-        else {
+        } else {
           const preview = text.length > 60 ? text.slice(0, 57) + '…' : text;
-          const tweet   = `[${cfg.username}] chatted with @${sender}: “${preview}”`;
+          const tweet = `[${cfg.username}] chatted with @${sender}: “${preview}”`;
           await postTweet(tweet);
         }
       } catch (err) {
-        console.warn('[twitterPoster] tweet failed:', err.message);
+        console.warn('[twitterPoster] Tweet failed:', err.message);
       }
     }
 
-
-    // 8) Chunk into ≤100-char bubbles and send with 3 s gap
+    // 10) Chunk reply into ≤100-character bubbles and send with 3s gap
     const MAX = 100;
     const chunks = [];
     let buf = '';
+
     for (const w of reply.split(' ')) {
       if ((buf + ' ' + w).trim().length > MAX) {
         chunks.push(buf.trim());
@@ -449,49 +548,66 @@ async function handleMessage(cfg, client, sender, text) {
     if (buf) chunks.push(buf.trim());
 
     for (const chunk of chunks) {
-       // conversation-driven room hop ─────────────────────────────
-        const turnKey    = `${botKey}:turnsWith:${sender}`;
-        const turnsSoFar = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
-        await redis.set(turnKey, turnsSoFar, 'EX', 600);           // 10 min TTL
+      // Conversation-driven room hop
+      const turnKey     = `${botKey}:turnsWith:${sender}`;
+      const turnsSoFar  = (parseInt(await redis.get(turnKey) || '0', 10) + 1);
+      await redis.set(turnKey, turnsSoFar, 'EX', 600); // 10min TTL
 
-        const nearby     = await client.getNearbyPlayers(200);
-        const isCrowded  = nearby.length >= CROWD_THRESHOLD;
-        const hopLockKey = `${botKey}:room_hopped_with:${sender}`;
-        const hopLocked  = !!(await redis.get(hopLockKey));
+      const nearby     = await client.getNearbyPlayers(200);
+      const isCrowded  = nearby.length >= CROWD_THRESHOLD;
+      const hopLockKey = `${botKey}:room_hopped_with:${sender}`;
+      const hopLocked  = !!(await redis.get(hopLockKey));
 
-        if (!hopLocked &&
-            isCrowded &&
-            turnsSoFar >= ROOM_HOP_MIN_TURNS &&
-            Math.random() < ROOM_HOP_PROB) {
-          await redis.set(hopLockKey, 1, 'EX', 3600);              // bloquea más hops 1 h
-          await client.sendChat(`@${sender} let's move to another room and keep talking.`);
-          await negotiateRoomChange(client, sender);
-          return;                                                  // seguimos allá
-        }
-      // ──────────────────────────────────────────────────────────
+      if (
+        !hopLocked &&
+        isCrowded &&
+        turnsSoFar >= ROOM_HOP_MIN_TURNS &&
+        Math.random() < ROOM_HOP_PROB
+      ) {
+        await redis.set(hopLockKey, 1, 'EX', 3600); // block hops for 1h
+        await client.sendChat(`@${sender} let's move to another room and keep talking.`);
+        await negotiateRoomChange(client, sender);
+        return; // stop sending chunks here
+      }
+
       if (nearby.length > 0 && Math.random() < 0.3) {
         nearby.sort((a, b) => a.distance - b.distance);
-        await client.performSocialAction({ type: 'whisper', target: nearby[0].username });
+        await client.performSocialAction({
+          type:   'whisper',
+          target: nearby[0].username
+        });
       }
 
       await client.sendChat(chunk);
 
       if (turnsSoFar === 2) {
-        await client.performSocialAction({ type: 'friend', target: sender });
+        await client.performSocialAction({
+          type:   'friend',
+          target: sender
+        });
       }
 
-      // ─── CONTEXT‐DRIVEN SOCIAL INTERACTIONS
-      if (profile.cognitive_traits.trust > 0.7) {
-        await client.performSocialAction({ type: 'friend', target: sender });
+      // Context-driven social interactions
+      if ((profile.cognitive_traits.trust ?? 0) > 0.7) {
+        await client.performSocialAction({
+          type:   'friend',
+          target: sender
+        });
       }
 
       if (/\b(thank you|please)\b/i.test(text)) {
-        await client.performSocialAction({ type: 'respect', target: sender });
+        await client.performSocialAction({
+          type:   'respect',
+          target: sender
+        });
       }
 
       const ignored = (await getList(coreId, 'ignored_users')) || [];
       if (ignored.find(u => u.user === sender)) {
-        await client.performSocialAction({ type: 'unignore', target: sender });
+        await client.performSocialAction({
+          type:   'unignore',
+          target: sender
+        });
         await redis.lrem(`${coreId}:ignored_users`, 0, JSON.stringify({ user: sender }));
       }
 
@@ -502,14 +618,11 @@ async function handleMessage(cfg, client, sender, text) {
       }
 
       await client.handleIncomingFriendRequest();
-
       await sleep(3000);
-
     }
 
-    // ——————————————————————————————————————————————————————
     // Room-Change Negotiation Helpers
-    // ——————————————————————————————————————————————————————
+    // -------------------------------------------------------------------------
 
     /**
      * Scan “All Rooms” and return an array like:
@@ -522,15 +635,19 @@ async function handleMessage(cfg, client, sender, text) {
       await page.click('.navigation-item.icon.icon-rooms');
 
       // Wait for the navigator panel to appear
-      await page.waitForSelector('.draggable-window .nitro-navigator',
-                                { visible: true, timeout: 5000 });
+      await page.waitForSelector(
+        '.draggable-window .nitro-navigator',
+        { visible: true, timeout: 5000 }
+      );
 
       console.log('[scanRooms] Clicking All Rooms tab…');
       await page.click('.draggable-window .icon-naviallrooms');
 
-      // Wait for the room list items
-      await page.waitForSelector('.draggable-window .navigator-item',
-                                { timeout: 5000 });
+      // Wait for room list items
+      await page.waitForSelector(
+        '.draggable-window .navigator-item',
+        { timeout: 5000 }
+      );
 
       // Collect all navigator-item elements
       const els = await page.$$('.draggable-window .navigator-item');
@@ -543,29 +660,28 @@ async function handleMessage(cfg, client, sender, text) {
       // Extract room name and occupancy badge
       return Promise.all(
         els.map(async el => {
-          const name  = await el.$eval('.text-truncate',
-                                      n => n.textContent.trim());
-          const badge = await el.$eval('.badge',
-                                      b => b.textContent.trim())
+          const name  = await el.$eval('.text-truncate', n => n.textContent.trim());
+          const badge = await el.$eval('.badge', b => b.textContent.trim())
                                 .catch(() => '0');
-          return { name,
-                  count: parseInt(badge, 10) || 0,
-                  handle: el };
+          return {
+            name,
+            count: parseInt(badge, 10) || 0,
+            handle: el
+          };
         })
       );
     }
 
     /**
-     * Negotiate a move: choose an empty room or use
-     * the “Somewhere new” button. Retries once on error.
+     * Negotiate a move: choose an empty room or click the “Somewhere new” button.
+     * Retries once on error.
      */
     async function negotiateRoomChange(client, partnerName) {
       const page = client.page;
 
       // One full attempt wrapper
       const attempt = async () => {
-
-        // 20 % chance to click the random “Somewhere new” button
+        // 20% chance to click the “Somewhere new” button
         if (Math.random() < 0.2) {
           console.log('[negotiate] Taking “Somewhere new” branch');
           const btns = await page.$$('.nav-bottom .nav-bottom-buttons-text');
@@ -591,22 +707,20 @@ async function handleMessage(cfg, client, sender, text) {
         console.log(`[negotiate] Proposing to meet in "${empty.name}"`);
         await client.sendChat(`@${partnerName} meet me in "${empty.name}"`);
 
-        // 🚪 Immediately enter the room
+        // Immediately enter the room
         console.log(`[negotiate] Entering "${empty.name}" now`);
         await empty.handle.click();
         await client.sendChat('Hello room! Anyone here?');
-        await movement.walkPath(client.page,
-                                ['down','down','right','right']);
-                            
+        await movement.walkPath(client.page, ['down', 'down', 'right', 'right']);
+
         if (partnerName) {
           await client.sendChat(`@${partnerName} I’m here, let’s continue!`);
         }
 
-        // (Optional) poll to see if partner arrives
+        // Poll to see if partner arrives
         for (let i = 0; i < 90; i++) {
           await new Promise(r => setTimeout(r, 1000));
-          const fresh = (await scanRooms(client))
-                          .find(r => r.name === empty.name);
+          const fresh = (await scanRooms(client)).find(r => r.name === empty.name);
           if (fresh && fresh.count > 0) {
             console.log(`[negotiate] Partner joined "${empty.name}"`);
             break;
@@ -629,20 +743,15 @@ async function handleMessage(cfg, client, sender, text) {
         }
       }
     }
-
-
-  }
-  catch (err) {
+  } catch (err) {
     console.error(`[${cfg.username}] handleMessage error:`, err);
-  }
-  finally {
+  } finally {
     // 9) Release cooldowns
     setTimeout(() => busy.delete(botKey), GLOBAL_CD);
-    setTimeout(() => busy.delete(sender),   USER_CD);
+    setTimeout(() => busy.delete(sender), USER_CD);
     // 10) Release the room-turn lock
     await redis.del(lockKey);
   }
 }
 
 main().catch(console.error);
-

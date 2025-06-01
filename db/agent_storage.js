@@ -32,6 +32,16 @@ const redis = new Redis({
   port: process.env.REDIS_PORT,
 });
 
+
+async function setSolanaKeypair(coreId, keypairBase58) {
+  await redis.hset(`${coreId}:solana`, 'secret', keypairBase58);
+}
+
+async function getSolanaKeypair(coreId) {
+  const data = await redis.hgetall(`${coreId}:solana`);
+  return data.secret || null;
+}
+
 function redisKey(coreId, sub) {
   return `${coreId}:${sub}`;
 }
@@ -190,6 +200,8 @@ module.exports = {
   getCore,
   setWallet,
   getWallet,
+  setSolanaKeypair,
+  getSolanaKeypair,
   addRoutineEntry,
   getRoutine,
   addToList,

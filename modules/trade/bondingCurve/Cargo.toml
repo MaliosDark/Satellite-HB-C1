@@ -1,0 +1,5 @@
+# modules/trade/bondingCurve/Cargo.toml
+[workspace]
+members = [
+  "programs/bonding_curve"
+]

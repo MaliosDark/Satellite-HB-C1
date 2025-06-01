@@ -1,0 +1,14 @@
+# File: modules/trade/bondingCurve/Cargo.toml
+
+[package]
+name = "bonding_curve"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "bonding_curve"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+anchor-lang = "0.24.2"
+anchor-spl = "0.24.2"
