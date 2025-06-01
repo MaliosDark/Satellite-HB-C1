@@ -13,7 +13,8 @@ const {
   } = require('@solana/spl-token');
   const anchor = require('@project-serum/anchor');
   
-  const PROGRAM_ID = new PublicKey('FILL_IN_YOUR_PROGRAM_ID_HERE');
+  // ← Replace this with your real Program ID
+  const PROGRAM_ID = new PublicKey('2eoCVVq7AAavNFUvZrHdY3KP8DeX1QEDZDJQC8UQ78ms');
   
   class Trader {
     constructor(provider) {
@@ -25,43 +26,43 @@ const {
       );
     }
   
-    // Buy `amount` tokens. User pays lamports.
-    async buy(amount) {
-      const user = this.provider.wallet.publicKey;
+    // Buy `amount` tokens of whatever mint the state PDA points to
+    async buy(mintAddress, amount) {
+      const mintPubkey = new PublicKey(mintAddress);
   
-      // Derive PDAs
+      // derive PDAs
       const [statePda] = await PublicKey.findProgramAddress(
-        [Buffer.from('state')],
+        [Buffer.from('state'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
       const [reservePda] = await PublicKey.findProgramAddress(
-        [Buffer.from('reserve')],
+        [Buffer.from('reserve'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
-      const [mintAuthorityPda] = await PublicKey.findProgramAddress(
-        [Buffer.from('mint-authority')],
+      const [mintAuthPda] = await PublicKey.findProgramAddress(
+        [Buffer.from('mint-authority'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
   
-      // Find or create user's token account for the mint
-      const mint = (await this.program.account.state.fetch(statePda)).mint;
-      const userTokenAccount = await getOrCreateAssociatedTokenAccount(
+      // get/create user token account
+      const user = this.provider.wallet.publicKey;
+      const ata = await getOrCreateAssociatedTokenAccount(
         this.provider.connection,
         this.provider.wallet.payer,
-        new PublicKey(mint),
+        mintPubkey,
         user
       );
   
-      // Build transaction
+      // call on‐chain buy()
       const tx = await this.program.methods
         .buy(new anchor.BN(amount))
         .accounts({
           state: statePda,
           user: user,
           reserve: reservePda,
-          mint: new PublicKey(mint),
-          mintAuthority: mintAuthorityPda,
-          userTokenAccount: userTokenAccount.address,
+          mint: mintPubkey,
+          mintAuthority: mintAuthPda,
+          userTokenAccount: ata.address,
           tokenProgram: TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         })
@@ -69,43 +70,43 @@ const {
       return tx;
     }
   
-    // Sell `amount` tokens. User burns tokens and receives lamports.
-    async sell(amount) {
-      const user = this.provider.wallet.publicKey;
+    // Sell `amount` tokens
+    async sell(mintAddress, amount) {
+      const mintPubkey = new PublicKey(mintAddress);
   
-      // Derive PDAs
+      // derive PDAs
       const [statePda] = await PublicKey.findProgramAddress(
-        [Buffer.from('state')],
+        [Buffer.from('state'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
       const [reservePda] = await PublicKey.findProgramAddress(
-        [Buffer.from('reserve')],
+        [Buffer.from('reserve'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
-      const [mintAuthorityPda] = await PublicKey.findProgramAddress(
-        [Buffer.from('mint-authority')],
+      const [mintAuthPda] = await PublicKey.findProgramAddress(
+        [Buffer.from('mint-authority'), mintPubkey.toBuffer()],
         PROGRAM_ID
       );
   
-      // User's token account
-      const mint = (await this.program.account.state.fetch(statePda)).mint;
-      const userTokenAccount = await getOrCreateAssociatedTokenAccount(
+      // get user token account
+      const user = this.provider.wallet.publicKey;
+      const ata = await getOrCreateAssociatedTokenAccount(
         this.provider.connection,
         this.provider.wallet.payer,
-        new PublicKey(mint),
+        mintPubkey,
         user
       );
   
-      // Build transaction
+      // call on‐chain sell()
       const tx = await this.program.methods
         .sell(new anchor.BN(amount))
         .accounts({
           state: statePda,
           user: user,
           reserve: reservePda,
-          mint: new PublicKey(mint),
-          mintAuthority: mintAuthorityPda,
-          userTokenAccount: userTokenAccount.address,
+          mint: mintPubkey,
+          mintAuthority: mintAuthPda,
+          userTokenAccount: ata.address,
           tokenProgram: TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         })
