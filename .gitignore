@@ -12,6 +12,7 @@ vendor
 node_modules
 node_modules/
 modules/logs/chat.jsonl
+db.json
 profiles/clara_profile.json
 profiles/dorian_profile.json
 profiles/jimmy_profile.json
