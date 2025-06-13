@@ -243,6 +243,129 @@ function makeSnapshot({ emotion, traits, beliefs, wallet }) {
   };
 }
 
+// Room-Change Negotiation Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Scan “All Rooms” and return an array like:
+ *   [{ name, count, handle }]
+ * Runs on the main page (no frames involved).
+ */
+async function scanRooms(client) {
+  const page = client.page;
+  console.log('[scanRooms] Opening Rooms menu…');
+  await page.click('.navigation-item.icon.icon-rooms');
+
+  // Wait for the navigator panel to appear
+  await page.waitForSelector(
+    '.draggable-window .nitro-navigator',
+    { visible: true, timeout: 5000 }
+  );
+
+  console.log('[scanRooms] Clicking All Rooms tab…');
+  await page.click('.draggable-window .icon-naviallrooms');
+
+  // Wait for room list items
+  await page.waitForSelector(
+    '.draggable-window .navigator-item',
+    { timeout: 5000 }
+  );
+
+  // Collect all navigator-item elements
+  const els = await page.$$('.draggable-window .navigator-item');
+  console.log(`[scanRooms] Found ${els.length} rooms`);
+
+  if (els.length === 0) {
+    throw new Error('No rooms detected after clicking All Rooms');
+  }
+
+  // Extract room name and occupancy badge
+  return Promise.all(
+    els.map(async el => {
+      const name  = await el.$eval('.text-truncate', n => n.textContent.trim());
+      const badge = await el.$eval('.badge', b => b.textContent.trim())
+                            .catch(() => '0');
+      return {
+        name,
+        count: parseInt(badge, 10) || 0,
+        handle: el
+      };
+    })
+  );
+}
+
+/**
+ * Negotiate a move: choose an empty room or click the “Somewhere new” button.
+ * Retries once on error.
+ */
+async function negotiateRoomChange(client, partnerName) {
+  const page = client.page;
+
+  // One full attempt wrapper
+  const attempt = async () => {
+    // 20% chance to click the “Somewhere new” button
+    if (Math.random() < 0.2) {
+      console.log('[negotiate] Taking “Somewhere new” branch');
+      const btns = await page.$$('.nav-bottom .nav-bottom-buttons-text');
+      for (const btn of btns) {
+        const txt = await page.evaluate(el => el.textContent.trim(), btn);
+        if (txt === 'Somewhere new') {
+          await btn.click();
+          return true;
+        }
+      }
+    }
+
+    console.log('[negotiate] Scanning rooms…');
+    const rooms = await scanRooms(client);
+
+    // Pick the first empty room
+    const empty = rooms.find(r => r.count === 0);
+    if (!empty) {
+      console.warn('[negotiate] No empty rooms — retrying with random');
+      return negotiateRoomChange(client, partnerName); // recursive retry
+    }
+
+    console.log(`[negotiate] Proposing to meet in "${empty.name}"`);
+    await client.sendChat(`@${partnerName} meet me in "${empty.name}"`);
+
+    // Immediately enter the room
+    console.log(`[negotiate] Entering "${empty.name}" now`);
+    await empty.handle.click();
+    await client.sendChat('Hello room! Anyone here?');
+    await movement.walkPath(client.page, ['down', 'down', 'right', 'right']);
+
+    if (partnerName) {
+      await client.sendChat(`@${partnerName} I’m here, let’s continue!`);
+    }
+
+    // Poll to see if partner arrives
+    for (let i = 0; i < 90; i++) {
+      await new Promise(r => setTimeout(r, 1000));
+      const fresh = (await scanRooms(client)).find(r => r.name === empty.name);
+      if (fresh && fresh.count > 0) {
+        console.log(`[negotiate] Partner joined "${empty.name}"`);
+        break;
+      }
+    }
+
+    return true;
+  };
+
+  // Try once; on failure retry once more
+  try {
+    return await attempt();
+  } catch (err) {
+    console.error('[negotiate] Error, retrying:', err.message);
+    try {
+      return await attempt();
+    } catch (err2) {
+      console.error('[negotiate] Second attempt failed:', err2.message);
+      return false;
+    }
+  }
+}
+
 /**
  * Main message handling: turn-lock → load memory → LLM → respond → cleanup.
  */
@@ -619,129 +742,6 @@ async function handleMessage(cfg, client, sender, text) {
 
       await client.handleIncomingFriendRequest();
       await sleep(3000);
-    }
-
-    // Room-Change Negotiation Helpers
-    // -------------------------------------------------------------------------
-
-    /**
-     * Scan “All Rooms” and return an array like:
-     *   [{ name, count, handle }]
-     * Runs on the main page (no frames involved).
-     */
-    async function scanRooms(client) {
-      const page = client.page;
-      console.log('[scanRooms] Opening Rooms menu…');
-      await page.click('.navigation-item.icon.icon-rooms');
-
-      // Wait for the navigator panel to appear
-      await page.waitForSelector(
-        '.draggable-window .nitro-navigator',
-        { visible: true, timeout: 5000 }
-      );
-
-      console.log('[scanRooms] Clicking All Rooms tab…');
-      await page.click('.draggable-window .icon-naviallrooms');
-
-      // Wait for room list items
-      await page.waitForSelector(
-        '.draggable-window .navigator-item',
-        { timeout: 5000 }
-      );
-
-      // Collect all navigator-item elements
-      const els = await page.$$('.draggable-window .navigator-item');
-      console.log(`[scanRooms] Found ${els.length} rooms`);
-
-      if (els.length === 0) {
-        throw new Error('No rooms detected after clicking All Rooms');
-      }
-
-      // Extract room name and occupancy badge
-      return Promise.all(
-        els.map(async el => {
-          const name  = await el.$eval('.text-truncate', n => n.textContent.trim());
-          const badge = await el.$eval('.badge', b => b.textContent.trim())
-                                .catch(() => '0');
-          return {
-            name,
-            count: parseInt(badge, 10) || 0,
-            handle: el
-          };
-        })
-      );
-    }
-
-    /**
-     * Negotiate a move: choose an empty room or click the “Somewhere new” button.
-     * Retries once on error.
-     */
-    async function negotiateRoomChange(client, partnerName) {
-      const page = client.page;
-
-      // One full attempt wrapper
-      const attempt = async () => {
-        // 20% chance to click the “Somewhere new” button
-        if (Math.random() < 0.2) {
-          console.log('[negotiate] Taking “Somewhere new” branch');
-          const btns = await page.$$('.nav-bottom .nav-bottom-buttons-text');
-          for (const btn of btns) {
-            const txt = await page.evaluate(el => el.textContent.trim(), btn);
-            if (txt === 'Somewhere new') {
-              await btn.click();
-              return true;
-            }
-          }
-        }
-
-        console.log('[negotiate] Scanning rooms…');
-        const rooms = await scanRooms(client);
-
-        // Pick the first empty room
-        const empty = rooms.find(r => r.count === 0);
-        if (!empty) {
-          console.warn('[negotiate] No empty rooms — retrying with random');
-          return negotiateRoomChange(client, partnerName); // recursive retry
-        }
-
-        console.log(`[negotiate] Proposing to meet in "${empty.name}"`);
-        await client.sendChat(`@${partnerName} meet me in "${empty.name}"`);
-
-        // Immediately enter the room
-        console.log(`[negotiate] Entering "${empty.name}" now`);
-        await empty.handle.click();
-        await client.sendChat('Hello room! Anyone here?');
-        await movement.walkPath(client.page, ['down', 'down', 'right', 'right']);
-
-        if (partnerName) {
-          await client.sendChat(`@${partnerName} I’m here, let’s continue!`);
-        }
-
-        // Poll to see if partner arrives
-        for (let i = 0; i < 90; i++) {
-          await new Promise(r => setTimeout(r, 1000));
-          const fresh = (await scanRooms(client)).find(r => r.name === empty.name);
-          if (fresh && fresh.count > 0) {
-            console.log(`[negotiate] Partner joined "${empty.name}"`);
-            break;
-          }
-        }
-
-        return true;
-      };
-
-      // Try once; on failure retry once more
-      try {
-        return await attempt();
-      } catch (err) {
-        console.error('[negotiate] Error, retrying:', err.message);
-        try {
-          return await attempt();
-        } catch (err2) {
-          console.error('[negotiate] Second attempt failed:', err2.message);
-          return false;
-        }
-      }
     }
   } catch (err) {
     console.error(`[${cfg.username}] handleMessage error:`, err);
