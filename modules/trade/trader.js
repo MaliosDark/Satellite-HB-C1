@@ -16,15 +16,15 @@ const {
   // ← Replace this with your real Program ID
   const PROGRAM_ID = new PublicKey('2eoCVVq7AAavNFUvZrHdY3KP8DeX1QEDZDJQC8UQ78ms');
   
-  class Trader {
-    constructor(provider) {
-      this.provider = provider; // anchor AnchorProvider
-      this.program = new anchor.Program(
-        require('./bonding_curve/idl.json'),
-        PROGRAM_ID,
-        provider
-      );
-    }
+class Trader {
+  constructor(provider) {
+    this.provider = provider; // anchor AnchorProvider
+    this.program = new anchor.Program(
+      require('./bonding_curve/idl.json'),
+      PROGRAM_ID,
+      provider
+    );
+  }
   
     // Buy `amount` tokens of whatever mint the state PDA points to
     async buy(mintAddress, amount) {
@@ -112,8 +112,37 @@ const {
         })
         .rpc();
       return tx;
-    }
   }
-  
-  module.exports = { Trader };
+}
+
+// Convenience helper used by the CLI and other modules
+// to perform a single buy or sell action.
+async function makeTradingDecision(
+  config,
+  _currentPrice,
+  connection,
+  programId,
+  payer,
+  mintAddress,
+  amountLamports,
+  action
+) {
+  const wallet = new anchor.Wallet(payer);
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: 'confirmed',
+    commitment: 'confirmed',
+  });
+  anchor.setProvider(provider);
+  const trader = new Trader(provider);
+  const tokens = Math.floor(amountLamports / 1_000_000_000);
+  if (action === 'BUY') {
+    return trader.buy(mintAddress, tokens);
+  }
+  if (action === 'SELL') {
+    return trader.sell(mintAddress, tokens);
+  }
+  throw new Error('Action must be BUY or SELL');
+}
+
+module.exports = { Trader, makeTradingDecision };
   
