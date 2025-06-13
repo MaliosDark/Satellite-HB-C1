@@ -25,7 +25,7 @@ function randomBetween(a, b) {
 
 // ── leak-filter helper ───────────────────────────
 const LEAK_REGEX =
-  /(core philosophy|current feeling|practical skills|personal goals|emotional tones|memory:|beliefs \(top3\)|recent routine|style examples)/i;
+  /(core philosophy|current feeling|practical skills|personal goals|emotional tones|memory:|beliefs \(top3\)|recent routine|style examples|^analysis:|^summary:|^notes?:|^thoughts?:|^observation:)/i;
 
 function sanitizeLLMReply(txt) {
   return txt
