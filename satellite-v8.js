@@ -517,10 +517,48 @@ async function handleMessage(cfg, client, sender, text) {
         );
 
         reply = `✅ Trade ${action} executed: ${signature}`;
-      } catch (err) {
-        reply = `❌ Trading error: ${err.message}`;
-      }
+
+    } catch (err) {
+      reply = `❌ Trading error: ${err.message}`;
     }
+  }
+
+  // "!wallet" command block
+  if (text.trim() === '!wallet') {
+    const addr = profile.solanaKeypair.publicKey.toBase58();
+    reply = `My wallet: ${addr}`;
+  }
+
+  // "!send" command block
+  if (text.startsWith('!send ')) {
+    try {
+      // Usage: !send TOKEN_MINT AMOUNT DEST_PUBLIC_KEY
+      const parts = text.trim().split(/\s+/);
+      const mint  = parts[1];
+      const amt   = parseInt(parts[2], 10);
+      const dest  = parts[3];
+
+      if (!mint || isNaN(amt) || !dest) {
+        throw new Error('Usage: !send <TOKEN_MINT> <amount> <DEST_PUBLIC_KEY>');
+      }
+
+      const connection = new (require('@solana/web3.js').Connection)(
+        'https://api.devnet.solana.com'
+      );
+
+      const sig = await trade.trader.sendTokens(
+        connection,
+        profile.solanaKeypair,
+        mint,
+        dest,
+        amt * 10 ** 9
+      );
+
+      reply = `✅ Sent ${amt} of ${mint} → ${dest} (${sig})`;
+    } catch (err) {
+      reply = `❌ Send error: ${err.message}`;
+    }
+  }
 
     // Extract “real” topics from the user’s text
     const topics = extractTopics(text, { lang: 'en' });

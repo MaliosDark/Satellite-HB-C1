@@ -8,8 +8,9 @@ const {
     Transaction,
   } = require('@solana/web3.js');
   const {
-    TOKEN_PROGRAM_ID,
-    getOrCreateAssociatedTokenAccount,
+  TOKEN_PROGRAM_ID,
+  getOrCreateAssociatedTokenAccount,
+  createTransferInstruction,
   } = require('@solana/spl-token');
   const anchor = require('@project-serum/anchor');
   
@@ -71,7 +72,7 @@ class Trader {
     }
   
     // Sell `amount` tokens
-    async sell(mintAddress, amount) {
+  async sell(mintAddress, amount) {
       const mintPubkey = new PublicKey(mintAddress);
   
       // derive PDAs
@@ -111,9 +112,44 @@ class Trader {
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-      return tx;
+        return tx;
+    }
+
+    // Transfer `amount` tokens to another wallet
+    async transferToken(mintAddress, destination, amount) {
+      const mintPubkey = new PublicKey(mintAddress);
+      const destPubkey = new PublicKey(destination);
+
+      const from = this.provider.wallet.publicKey;
+
+      const fromAta = await getOrCreateAssociatedTokenAccount(
+        this.provider.connection,
+        this.provider.wallet.payer,
+        mintPubkey,
+        from
+      );
+      const toAta = await getOrCreateAssociatedTokenAccount(
+        this.provider.connection,
+        this.provider.wallet.payer,
+        mintPubkey,
+        destPubkey
+      );
+
+      const tx = new Transaction().add(
+        createTransferInstruction(
+          fromAta.address,
+          toAta.address,
+          from,
+          amount,
+          [],
+          TOKEN_PROGRAM_ID
+        )
+      );
+
+      const sig = await this.provider.sendAndConfirm(tx, []);
+      return sig;
+    }
   }
-}
 
 // Convenience helper used by the CLI and other modules
 // to perform a single buy or sell action.
@@ -144,5 +180,17 @@ async function makeTradingDecision(
   throw new Error('Action must be BUY or SELL');
 }
 
-module.exports = { Trader, makeTradingDecision };
+// Convenience helper to transfer tokens between wallets
+async function sendTokens(connection, payer, mintAddress, destination, amount) {
+  const wallet = new anchor.Wallet(payer);
+  const provider = new anchor.AnchorProvider(connection, wallet, {
+    preflightCommitment: 'confirmed',
+    commitment: 'confirmed',
+  });
+  anchor.setProvider(provider);
+  const trader = new Trader(provider);
+  return trader.transferToken(mintAddress, destination, amount);
+}
+
+module.exports = { Trader, makeTradingDecision, sendTokens };
   
