@@ -44,4 +44,17 @@ async function getTokenPrice(mintAddress) {
   return entry.usd;
 }
 
-module.exports = { getTokenPrice };
+async function getSolPrice() {
+  const url = 'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd';
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`CoinGecko error: ${res.status} ${res.statusText}`);
+  }
+  const data = await res.json();
+  if (!data.solana || typeof data.solana.usd !== 'number') {
+    throw new Error('Price not available for SOL');
+  }
+  return data.solana.usd;
+}
+
+module.exports = { getTokenPrice, getSolPrice };

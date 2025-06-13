@@ -32,7 +32,11 @@ async function downloadImage(url, mintAddress) {
     const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to download image');
     const buffer = await res.arrayBuffer();
-    const filePath = path.join(__dirname, 'images', `${mintAddress}.png`);
+    const imagesDir = path.join(__dirname, 'images');
+    if (!fs.existsSync(imagesDir)) {
+        fs.mkdirSync(imagesDir, { recursive: true });
+    }
+    const filePath = path.join(imagesDir, `${mintAddress}.png`);
     fs.writeFileSync(filePath, Buffer.from(buffer));
     return filePath;
 }
@@ -66,12 +70,17 @@ async function mintNewToken(connection, payer, mintAuthority, freezeAuthority, n
         telegram: "https://t.com/paios_gaming"
     };
 
-    const metadataPath = path.join(__dirname, 'metadata', `${mintAddress}.json`);
+    const metadataDir = path.join(__dirname, 'metadata');
+    if (!fs.existsSync(metadataDir)) {
+        fs.mkdirSync(metadataDir, { recursive: true });
+    }
+    const metadataPath = path.join(metadataDir, `${mintAddress}.json`);
     fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
 
     return {
         mintAddress,
-        metadata
+        metadata,
+        localImagePath
     };
 }
 
