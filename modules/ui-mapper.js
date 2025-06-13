@@ -174,4 +174,4 @@ async sendChat(page, text) {
   }
 };
 
-// Need to fix the agent going to the hotel view button
+// TODO: prevent agent from clicking the hotel view button

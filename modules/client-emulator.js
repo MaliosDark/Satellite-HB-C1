@@ -258,10 +258,11 @@ module.exports = class HabboClient {
       } else {
         // fallback: click their last bubble
         const bubbles = await nitroFrame.$$(`.bubble-container.visible .username strong`);
-        const match = bubbles.reverse().find(async s => {
+        let match = null;
+        for (const s of bubbles.reverse()) {
           const txt = (await (await s.getProperty('textContent')).jsonValue()).trim();
-          return txt === target;
-        });
+          if (txt === target) { match = s; break; }
+        }
         if (!match) throw new Error(`No bubble found for ${target}`);
         await nitroFrame.evaluate(el => el.closest('.bubble-container.visible').click(), match);
       }
