@@ -68,7 +68,7 @@ cp .env.example .env     # edit DB, Redis, LLM credentials
 cp config/bots-config.example.js config/bots-config.js
 npm run init-db
 npm run start
-````
+```
 
 ---
 

@@ -11,7 +11,8 @@
         "init-db": "node db/init.js",
         "bootstrap": "node scripts/bootstrap-agent.js",
         "twitter-setup": "node scripts/setup-twitter-client.js",
-        "satellite": "node satellite-v8.js"
+        "satellite": "node satellite-v8.js",
+        "test": "mocha"
     },
     "dependencies": {
         "@project-serum/anchor": "^0.26.0",
@@ -41,6 +42,8 @@
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^16.0.1",
         "d3": "^7.9.0",
-        "rollup": "^4.41.0"
+        "rollup": "^4.41.0",
+        "mocha": "^10.2.0",
+        "chai": "^4.3.7"
     }
 }
