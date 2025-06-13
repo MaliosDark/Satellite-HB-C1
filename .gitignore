@@ -27,3 +27,6 @@ profiles/zara_profile.json
 modules/trade/bondingCurve/programs/bonding_curve/idl.json
 modules/trade/bondingCurve/target*
 modules/trade/bondingCurve/Anchor.toml
+modules/trade/images/
+modules/trade/metadata/
+treasury-keypair.json
